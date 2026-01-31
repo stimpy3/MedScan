@@ -1,0 +1,5917 @@
+{
+  "amoxycillin": {
+    "rxcui": "723",
+    "atc": [
+      "A02BD",
+      "J01CA"
+    ]
+  },
+  "clavulanic acid": {
+    "rxcui": "21216",
+    "atc": []
+  },
+  "azithromycin": {
+    "rxcui": "18631",
+    "atc": [
+      "J01FA",
+      "S01AA"
+    ]
+  },
+  "ambroxol": {
+    "rxcui": "625",
+    "atc": [
+      "R02AD",
+      "R05CB",
+      "R03CC"
+    ]
+  },
+  "levosalbutamol": {
+    "rxcui": "237159",
+    "atc": []
+  },
+  "guaifenesin": {
+    "rxcui": "5032",
+    "atc": [
+      "R05CA"
+    ]
+  },
+  "fexofenadine": {
+    "rxcui": "87636",
+    "atc": [
+      "R06AX"
+    ]
+  },
+  "pheniramine": {
+    "rxcui": "8132",
+    "atc": [
+      "D04AA",
+      "R06AB"
+    ]
+  },
+  "montelukast": {
+    "rxcui": "88249",
+    "atc": [
+      "R03DC"
+    ]
+  },
+  "hydroxyzine": {
+    "rxcui": "5553",
+    "atc": [
+      "N05BB"
+    ]
+  },
+  "phenylephrine": {
+    "rxcui": "8163",
+    "atc": [
+      "S01FB",
+      "C01CA",
+      "C05AX",
+      "R01AA",
+      "R01AB",
+      "R01BA",
+      "S01GA"
+    ]
+  },
+  "chlorpheniramine": {
+    "rxcui": "2400",
+    "atc": [
+      "R06AB"
+    ]
+  },
+  "dextromethorphan hydrobromide": {
+    "rxcui": "102490",
+    "atc": [
+      "N06AX",
+      "R05DA"
+    ]
+  },
+  "ranitidine": {
+    "rxcui": "9143",
+    "atc": [
+      "A02BA"
+    ]
+  },
+  "salbutamol": {
+    "rxcui": "435",
+    "atc": [
+      "R03AC",
+      "R03CC"
+    ]
+  },
+  "promethazine": {
+    "rxcui": "8745",
+    "atc": [
+      "D04AA",
+      "R06AD"
+    ]
+  },
+  "albendazole": {
+    "rxcui": "430",
+    "atc": [
+      "P02CA"
+    ]
+  },
+  "alprazolam": {
+    "rxcui": "596",
+    "atc": [
+      "N05BA"
+    ]
+  },
+  "aceclofenac": {
+    "rxcui": "16689",
+    "atc": [
+      "M01AB",
+      "M02AA"
+    ]
+  },
+  "rabeprazole": {
+    "rxcui": "114979",
+    "atc": [
+      "A02BC"
+    ]
+  },
+  "lorazepam": {
+    "rxcui": "6470",
+    "atc": [
+      "N05BA"
+    ]
+  },
+  "domperidone": {
+    "rxcui": "3626",
+    "atc": [
+      "A03FA"
+    ]
+  },
+  "omeprazole": {
+    "rxcui": "7646",
+    "atc": [
+      "A02BD",
+      "A02BC"
+    ]
+  },
+  "ticagrelor": {
+    "rxcui": "1116632",
+    "atc": [
+      "B01AC"
+    ]
+  },
+  "disodium hydrogen": {
+    "rxcui": null,
+    "atc": []
+  },
+  "alfuzosin": {
+    "rxcui": "17300",
+    "atc": [
+      "G04CA"
+    ]
+  },
+  "vitamin d3": {
+    "rxcui": "1244014",
+    "atc": []
+  },
+  "camylofin": {
+    "rxcui": "20136",
+    "atc": [
+      "A03AA"
+    ]
+  },
+  "paracetamol": {
+    "rxcui": "161",
+    "atc": [
+      "N02BE",
+      "N02AJ"
+    ]
+  },
+  "acebrophylline": {
+    "rxcui": "236595",
+    "atc": [
+      "R02AD",
+      "R05CB"
+    ]
+  },
+  "erythromycin": {
+    "rxcui": "4053",
+    "atc": [
+      "D10AF",
+      "J01FA",
+      "S01AA"
+    ]
+  },
+  "terbutaline": {
+    "rxcui": "10368",
+    "atc": [
+      "R03AC",
+      "R03CC"
+    ]
+  },
+  "bromhexine": {
+    "rxcui": "1753",
+    "atc": [
+      "R05CB"
+    ]
+  },
+  "lidocaine": {
+    "rxcui": "6387",
+    "atc": [
+      "C01BB",
+      "C05AD",
+      "D04AB",
+      "N01BB",
+      "R02AD",
+      "S01HA",
+      "S02DA"
+    ]
+  },
+  "nifedipine": {
+    "rxcui": "7417",
+    "atc": [
+      "C07FB",
+      "C08CA"
+    ]
+  },
+  "amitriptyline": {
+    "rxcui": "704",
+    "atc": [
+      "N06AA"
+    ]
+  },
+  "chlordiazepoxide": {
+    "rxcui": "2356",
+    "atc": [
+      "N05BA"
+    ]
+  },
+  "acetylcysteine": {
+    "rxcui": "197",
+    "atc": [
+      "R05CB",
+      "S01XA",
+      "V03AB"
+    ]
+  },
+  "ornidazole": {
+    "rxcui": "7701",
+    "atc": [
+      "G01AF",
+      "J01XD",
+      "P01AB"
+    ]
+  },
+  "fluconazole": {
+    "rxcui": "4450",
+    "atc": [
+      "D01AC",
+      "J02AC"
+    ]
+  },
+  "isoniazid": {
+    "rxcui": "6038",
+    "atc": [
+      "J04AM",
+      "J04AC"
+    ]
+  },
+  "rifampicin": {
+    "rxcui": "9384",
+    "atc": [
+      "J04AM",
+      "J04AB"
+    ]
+  },
+  "ethambutol": {
+    "rxcui": "4110",
+    "atc": [
+      "J04AK",
+      "J04AM"
+    ]
+  },
+  "pyrazinamide": {
+    "rxcui": "8987",
+    "atc": [
+      "J04AM",
+      "J04AK"
+    ]
+  },
+  "amikacin": {
+    "rxcui": "641",
+    "atc": [
+      "D06AX",
+      "J01GB",
+      "S01AA"
+    ]
+  },
+  "vitamin a": {
+    "rxcui": "11246",
+    "atc": [
+      "A11CA",
+      "D10AD",
+      "R01AX",
+      "S01XA"
+    ]
+  },
+  "azathioprine": {
+    "rxcui": "1256",
+    "atc": [
+      "L04AX"
+    ]
+  },
+  "glimepiride": {
+    "rxcui": "25789",
+    "atc": [
+      "A10BB",
+      "A10BD"
+    ]
+  },
+  "nitroglycerin": {
+    "rxcui": "4917",
+    "atc": [
+      "C01DA",
+      "C05AE"
+    ]
+  },
+  "fluticasone propionate": {
+    "rxcui": "50121",
+    "atc": [
+      "R03AK",
+      "D07AC",
+      "R01AD",
+      "R03BA"
+    ]
+  },
+  "azelastine": {
+    "rxcui": "18603",
+    "atc": [
+      "R01AC",
+      "R06AX",
+      "S01GX"
+    ]
+  },
+  "beclometasone": {
+    "rxcui": "1347",
+    "atc": [
+      "A07EA",
+      "D07AC",
+      "R01AD",
+      "R03BA"
+    ]
+  },
+  "adapalene": {
+    "rxcui": "60223",
+    "atc": [
+      "D10AD"
+    ]
+  },
+  "acyclovir": {
+    "rxcui": "281",
+    "atc": [
+      "D06BB",
+      "J05AB",
+      "S01AD"
+    ]
+  },
+  "cyproheptadine": {
+    "rxcui": "3013",
+    "atc": [
+      "R06AX"
+    ]
+  },
+  "tricholine": {
+    "rxcui": null,
+    "atc": []
+  },
+  "sorbitol": {
+    "rxcui": "9945",
+    "atc": [
+      "A06AD",
+      "A06AG",
+      "B05CX",
+      "V04CC"
+    ]
+  },
+  "ampicillin": {
+    "rxcui": "733",
+    "atc": [
+      "J01CR",
+      "J01CA",
+      "S01AA"
+    ]
+  },
+  "cloxacillin": {
+    "rxcui": "2625",
+    "atc": [
+      "J01CF"
+    ]
+  },
+  "fluticasone furoate": {
+    "rxcui": "705022",
+    "atc": [
+      "D07AC",
+      "R01AD",
+      "R03BA"
+    ]
+  },
+  "azelaic acid": {
+    "rxcui": "18602",
+    "atc": [
+      "D10AX"
+    ]
+  },
+  "memantine": {
+    "rxcui": "6719",
+    "atc": [
+      "N06DA",
+      "N06DX"
+    ]
+  },
+  "metformin": {
+    "rxcui": "6809",
+    "atc": [
+      "A10BD",
+      "A10BA"
+    ]
+  },
+  "amantadine": {
+    "rxcui": "620",
+    "atc": [
+      "N04BB"
+    ]
+  },
+  "dicloxacillin": {
+    "rxcui": "3356",
+    "atc": [
+      "J01CF"
+    ]
+  },
+  "paracetamol/acetaminophen": {
+    "rxcui": null,
+    "atc": []
+  },
+  "tramadol": {
+    "rxcui": "10689",
+    "atc": [
+      "N02AX",
+      "N02AJ"
+    ]
+  },
+  "orciprenaline": {
+    "rxcui": "7688",
+    "atc": [
+      "R03AB",
+      "R03CB"
+    ]
+  },
+  "buprenorphine": {
+    "rxcui": "1819",
+    "atc": [
+      "N02AE",
+      "N07BC"
+    ]
+  },
+  "camphor": {
+    "rxcui": "1952",
+    "atc": []
+  },
+  "menthol": {
+    "rxcui": "6750",
+    "atc": []
+  },
+  "naphazoline": {
+    "rxcui": "7247",
+    "atc": [
+      "R01AA",
+      "R01AB",
+      "S01GA"
+    ]
+  },
+  "oseltamivir": {
+    "rxcui": "260101",
+    "atc": [
+      "J05AH"
+    ]
+  },
+  "atropine": {
+    "rxcui": "1223",
+    "atc": [
+      "A03BA",
+      "S01FA",
+      "V03AB"
+    ]
+  },
+  "testosterone": {
+    "rxcui": "10379",
+    "atc": [
+      "G03BA",
+      "G03EA"
+    ]
+  },
+  "sildenafil": {
+    "rxcui": "136411",
+    "atc": [
+      "G04BE"
+    ]
+  },
+  "human insulin": {
+    "rxcui": "253182",
+    "atc": [
+      "A10AB",
+      "A10AC",
+      "A10AD",
+      "A10AE",
+      "A10AF"
+    ]
+  },
+  "mifepristone": {
+    "rxcui": "6964",
+    "atc": [
+      "G03XB"
+    ]
+  },
+  "misoprostol": {
+    "rxcui": "42331",
+    "atc": [
+      "M01AE",
+      "A02BB",
+      "G02AD"
+    ]
+  },
+  "codeine": {
+    "rxcui": "2670",
+    "atc": [
+      "N02AJ",
+      "R05DA"
+    ]
+  },
+  "insulin glulisine": {
+    "rxcui": "400008",
+    "atc": [
+      "A10AB"
+    ]
+  },
+  "telmisartan": {
+    "rxcui": "73494",
+    "atc": [
+      "C09CA",
+      "C09DB"
+    ]
+  },
+  "amlodipine": {
+    "rxcui": "17767",
+    "atc": [
+      "C09XA",
+      "C09BB",
+      "C08CA",
+      "C10BX",
+      "C09DB",
+      "C09DX"
+    ]
+  },
+  "hydrochlorothiazide": {
+    "rxcui": "5487",
+    "atc": [
+      "C09XA",
+      "C03AA",
+      "C09DX"
+    ]
+  },
+  "loperamide": {
+    "rxcui": "6468",
+    "atc": [
+      "A07DA"
+    ]
+  },
+  "clindamycin": {
+    "rxcui": "2582",
+    "atc": [
+      "D10AF",
+      "G01AA",
+      "J01FF"
+    ]
+  },
+  "aripiprazole": {
+    "rxcui": "89013",
+    "atc": [
+      "N05AX"
+    ]
+  },
+  "melatonin": {
+    "rxcui": "6711",
+    "atc": [
+      "N05CH"
+    ]
+  },
+  "carboxymethylcellulose": {
+    "rxcui": "2062",
+    "atc": []
+  },
+  "apixaban": {
+    "rxcui": "1364430",
+    "atc": [
+      "B01AF"
+    ]
+  },
+  "acamprosate": {
+    "rxcui": "82819",
+    "atc": [
+      "N07BB"
+    ]
+  },
+  "aluminium hydroxide": {
+    "rxcui": "612",
+    "atc": [
+      "A02AD",
+      "A02AB"
+    ]
+  },
+  "milk of magnesia": {
+    "rxcui": "243353",
+    "atc": [
+      "A02AA",
+      "G04BX"
+    ]
+  },
+  "simethicone": {
+    "rxcui": "9796",
+    "atc": []
+  },
+  "oxetacaine": {
+    "rxcui": null,
+    "atc": []
+  },
+  "desonide": {
+    "rxcui": "3254",
+    "atc": [
+      "D07AB",
+      "S01BA"
+    ]
+  },
+  "albumin": {
+    "rxcui": null,
+    "atc": []
+  },
+  "ursodeoxycholic acid": {
+    "rxcui": "11065",
+    "atc": [
+      "A05AA"
+    ]
+  },
+  "glycopyrrolate": {
+    "rxcui": "4955",
+    "atc": [
+      "D11AA"
+    ]
+  },
+  "diclofenac": {
+    "rxcui": "3355",
+    "atc": [
+      "D11AX",
+      "M01AB",
+      "M02AA",
+      "S01BC"
+    ]
+  },
+  "methylphenidate": {
+    "rxcui": "6901",
+    "atc": [
+      "N06BA"
+    ]
+  },
+  "alendronic acid": {
+    "rxcui": "236083",
+    "atc": [
+      "M05BA"
+    ]
+  },
+  "anastrozole": {
+    "rxcui": "84857",
+    "atc": [
+      "L02BG"
+    ]
+  },
+  "donepezil": {
+    "rxcui": "135447",
+    "atc": [
+      "N06DA"
+    ]
+  },
+  "prochlorperazine": {
+    "rxcui": "8704",
+    "atc": [
+      "N05AB"
+    ]
+  },
+  "drotaverine": {
+    "rxcui": "23684",
+    "atc": [
+      "A03AD"
+    ]
+  },
+  "choline salicylate": {
+    "rxcui": "20974",
+    "atc": [
+      "N02BA"
+    ]
+  },
+  "brinzolamide": {
+    "rxcui": "194881",
+    "atc": [
+      "S01EC"
+    ]
+  },
+  "magnesium": {
+    "rxcui": "6574",
+    "atc": []
+  },
+  "ammonium chloride": {
+    "rxcui": "712",
+    "atc": [
+      "B05XA",
+      "G04BA"
+    ]
+  },
+  "acitretin": {
+    "rxcui": "16818",
+    "atc": [
+      "D05BB"
+    ]
+  },
+  "brimonidine": {
+    "rxcui": "134615",
+    "atc": [
+      "D11AX",
+      "S01EA",
+      "S01GA"
+    ]
+  },
+  "stabilized oxychloro": {
+    "rxcui": null,
+    "atc": []
+  },
+  "dapsone": {
+    "rxcui": "3108",
+    "atc": [
+      "D10AX",
+      "J04BA"
+    ]
+  },
+  "ranibizumab": {
+    "rxcui": "595060",
+    "atc": [
+      "S01LA"
+    ]
+  },
+  "ketorolac": {
+    "rxcui": "35827",
+    "atc": [
+      "S01FB",
+      "M01AB",
+      "S01BC"
+    ]
+  },
+  "metadoxine": {
+    "rxcui": null,
+    "atc": []
+  },
+  "olopatadine": {
+    "rxcui": "135391",
+    "atc": [
+      "R01AC",
+      "S01GX"
+    ]
+  },
+  "methylcobalamin": {
+    "rxcui": "29421",
+    "atc": [
+      "B03BA"
+    ]
+  },
+  "aprepitant": {
+    "rxcui": "358255",
+    "atc": [
+      "A04AD"
+    ]
+  },
+  "diloxanide": {
+    "rxcui": "67182",
+    "atc": [
+      "P01AB",
+      "P01AC"
+    ]
+  },
+  "apremilast": {
+    "rxcui": "1492727",
+    "atc": [
+      "L04AA"
+    ]
+  },
+  "alpha ketoanalogue": {
+    "rxcui": null,
+    "atc": []
+  },
+  "losartan": {
+    "rxcui": "52175",
+    "atc": [
+      "C09CA"
+    ]
+  },
+  "streptomycin": {
+    "rxcui": "10109",
+    "atc": [
+      "A07AA",
+      "J01GA"
+    ]
+  },
+  "etizolam": {
+    "rxcui": null,
+    "atc": []
+  },
+  "propranolol": {
+    "rxcui": "8787",
+    "atc": [
+      "C07AA"
+    ]
+  },
+  "sertraline": {
+    "rxcui": "36437",
+    "atc": [
+      "N06AB"
+    ]
+  },
+  "benzoyl peroxide": {
+    "rxcui": "1418",
+    "atc": [
+      "D10AE"
+    ]
+  },
+  "flupenthixol": {
+    "rxcui": "4495",
+    "atc": [
+      "N05AF"
+    ]
+  },
+  "epalrestat": {
+    "rxcui": null,
+    "atc": []
+  },
+  "mefenamic acid": {
+    "rxcui": "6693",
+    "atc": [
+      "M01AG"
+    ]
+  },
+  "bupivacaine": {
+    "rxcui": "1815",
+    "atc": [
+      "N01BB"
+    ]
+  },
+  "edaravone": {
+    "rxcui": "1921877",
+    "atc": [
+      "N07XX"
+    ]
+  },
+  "hydroxypropylmethylcellulose": {
+    "rxcui": "27334",
+    "atc": [
+      "S01KA"
+    ]
+  },
+  "recombinant human erythropoietin alfa": {
+    "rxcui": "105694",
+    "atc": []
+  },
+  "carbimazole": {
+    "rxcui": "2020",
+    "atc": [
+      "H03BB"
+    ]
+  },
+  "l-leucine": {
+    "rxcui": "6308",
+    "atc": []
+  },
+  "l-isoleucine": {
+    "rxcui": "6033",
+    "atc": []
+  },
+  "glycine": {
+    "rxcui": "4919",
+    "atc": [
+      "B05CX"
+    ]
+  },
+  "l-arginine": {
+    "rxcui": "1091",
+    "atc": [
+      "B05XB"
+    ]
+  },
+  "metoprolol succinate": {
+    "rxcui": "221124",
+    "atc": [
+      "C07AB"
+    ]
+  },
+  "sodium acid": {
+    "rxcui": null,
+    "atc": []
+  },
+  "bevacizumab": {
+    "rxcui": "253337",
+    "atc": [
+      "L01FG",
+      "S01LA"
+    ]
+  },
+  "l-ornithine l-aspartate": {
+    "rxcui": null,
+    "atc": []
+  },
+  "disulfiram": {
+    "rxcui": "3554",
+    "atc": [
+      "N07BB",
+      "P03AA"
+    ]
+  },
+  "hydroxyquinolines": {
+    "rxcui": null,
+    "atc": []
+  },
+  "aztreonam": {
+    "rxcui": "1272",
+    "atc": [
+      "J01DF"
+    ]
+  },
+  "pancreatin": {
+    "rxcui": "7880",
+    "atc": []
+  },
+  "armodafinil": {
+    "rxcui": "641465",
+    "atc": [
+      "N06BA"
+    ]
+  },
+  "benfotiamine": {
+    "rxcui": "18891",
+    "atc": [
+      "A11DA"
+    ]
+  },
+  "levo-carnitine": {
+    "rxcui": null,
+    "atc": []
+  },
+  "resveratrol": {
+    "rxcui": "1000492",
+    "atc": []
+  },
+  "vitamin b6": {
+    "rxcui": "42954",
+    "atc": []
+  },
+  "amino acids": {
+    "rxcui": null,
+    "atc": []
+  },
+  "polidocanol": {
+    "rxcui": "968170",
+    "atc": [
+      "C05BB"
+    ]
+  },
+  "tocilizumab": {
+    "rxcui": "612865",
+    "atc": [
+      "L04AC"
+    ]
+  },
+  "diphenhydramine": {
+    "rxcui": "3498",
+    "atc": [
+      "M01AE",
+      "D04AA",
+      "R06AA"
+    ]
+  },
+  "potassium chloride": {
+    "rxcui": "8591",
+    "atc": [
+      "A12BA",
+      "B05XA"
+    ]
+  },
+  "sevelamer": {
+    "rxcui": "214824",
+    "atc": [
+      "V03AE"
+    ]
+  },
+  "racecadotril": {
+    "rxcui": "16738",
+    "atc": [
+      "A07XA"
+    ]
+  },
+  "abiraterone": {
+    "rxcui": "1100072",
+    "atc": [
+      "L02BX",
+      "L01XK"
+    ]
+  },
+  "doxorubicin": {
+    "rxcui": "3639",
+    "atc": [
+      "L01DB"
+    ]
+  },
+  "alpha glycerylphosphorylcholine": {
+    "rxcui": null,
+    "atc": []
+  },
+  "atracurium": {
+    "rxcui": "1218",
+    "atc": [
+      "M03AC"
+    ]
+  },
+  "citric acid": {
+    "rxcui": "21183",
+    "atc": [
+      "A09AB"
+    ]
+  },
+  "atomoxetine": {
+    "rxcui": "38400",
+    "atc": [
+      "N06BA"
+    ]
+  },
+  "alprostadil": {
+    "rxcui": "598",
+    "atc": [
+      "C01EA",
+      "G04BE"
+    ]
+  },
+  "sucralfate": {
+    "rxcui": "10156",
+    "atc": [
+      "A02BX"
+    ]
+  },
+  "estradiol": {
+    "rxcui": "4083",
+    "atc": [
+      "G03CA",
+      "G03AA",
+      "G03AB"
+    ]
+  },
+  "isoxsuprine": {
+    "rxcui": "6066",
+    "atc": [
+      "C04AA"
+    ]
+  },
+  "rabies vaccine, human": {
+    "rxcui": null,
+    "atc": []
+  },
+  "adalimumab": {
+    "rxcui": "327361",
+    "atc": [
+      "L04AB"
+    ]
+  },
+  "nandrolone decanoate": {
+    "rxcui": "31494",
+    "atc": [
+      "A14AB",
+      "S01XA"
+    ]
+  },
+  "chloramphenicol": {
+    "rxcui": "2348",
+    "atc": [
+      "D06AX",
+      "D10AF",
+      "G01AA",
+      "J01BA",
+      "S01AA",
+      "S02AA",
+      "S03AA"
+    ]
+  },
+  "dexamethasone": {
+    "rxcui": "3264",
+    "atc": [
+      "A01AC",
+      "C05AA",
+      "D07AB",
+      "D07XB",
+      "D10AA",
+      "H02AB",
+      "R01AD",
+      "S01BA",
+      "S01CB",
+      "S02BA",
+      "S03BA"
+    ]
+  },
+  "tinidazole": {
+    "rxcui": "10612",
+    "atc": [
+      "G01AF",
+      "J01XD",
+      "P01AB"
+    ]
+  },
+  "azacitidine": {
+    "rxcui": "1251",
+    "atc": [
+      "L01BC"
+    ]
+  },
+  "corticotropin": {
+    "rxcui": "376",
+    "atc": [
+      "H01AA"
+    ]
+  },
+  "melitracen": {
+    "rxcui": "446248",
+    "atc": [
+      "N06AA"
+    ]
+  },
+  "dicyclomine": {
+    "rxcui": "3361",
+    "atc": [
+      "A03AA"
+    ]
+  },
+  "deferasirox": {
+    "rxcui": "614373",
+    "atc": [
+      "V03AC"
+    ]
+  },
+  "almotriptan": {
+    "rxcui": "279645",
+    "atc": [
+      "N02CC"
+    ]
+  },
+  "progesterone": {
+    "rxcui": "8727",
+    "atc": [
+      "G03DA"
+    ]
+  },
+  "pralidoxime": {
+    "rxcui": "34345",
+    "atc": [
+      "V03AB"
+    ]
+  },
+  "penicillamine": {
+    "rxcui": "7975",
+    "atc": [
+      "M01CC"
+    ]
+  },
+  "ginkgo biloba": {
+    "rxcui": "236809",
+    "atc": []
+  },
+  "piracetam": {
+    "rxcui": "8351",
+    "atc": [
+      "N06BX"
+    ]
+  },
+  "vinpocetine": {
+    "rxcui": "24506",
+    "atc": [
+      "N06BX"
+    ]
+  },
+  "pregabalin": {
+    "rxcui": "187832",
+    "atc": [
+      "N02BF"
+    ]
+  },
+  "clotrimazole": {
+    "rxcui": "2623",
+    "atc": [
+      "A01AB",
+      "D01AC",
+      "G01AF"
+    ]
+  },
+  "gentamicin": {
+    "rxcui": "1596450",
+    "atc": [
+      "D06AX",
+      "J01GB",
+      "S01AA",
+      "S02AA",
+      "S03AA"
+    ]
+  },
+  "cetrorelix": {
+    "rxcui": "68147",
+    "atc": [
+      "H01CC"
+    ]
+  },
+  "glucosamine": {
+    "rxcui": "4845",
+    "atc": [
+      "M01AX"
+    ]
+  },
+  "diacerein": {
+    "rxcui": "22759",
+    "atc": [
+      "M01AX"
+    ]
+  },
+  "methyl sulfonyl methane": {
+    "rxcui": null,
+    "atc": []
+  },
+  "ketamine": {
+    "rxcui": "6130",
+    "atc": [
+      "N01AX"
+    ]
+  },
+  "sulphacetamide": {
+    "rxcui": "10169",
+    "atc": [
+      "D10AF",
+      "S01AB"
+    ]
+  },
+  "xylometazoline": {
+    "rxcui": "39841",
+    "atc": [
+      "R01AA",
+      "R01AB",
+      "S01GA"
+    ]
+  },
+  "octreotide": {
+    "rxcui": "7617",
+    "atc": [
+      "H01CB"
+    ]
+  },
+  "lamivudine": {
+    "rxcui": "68244",
+    "atc": [
+      "J05AR",
+      "J05AF"
+    ]
+  },
+  "tenofovir disoproxil": {
+    "rxcui": "300195",
+    "atc": [
+      "J05AR",
+      "J05AF"
+    ]
+  },
+  "efavirenz": {
+    "rxcui": "195085",
+    "atc": [
+      "J05AR",
+      "J05AG"
+    ]
+  },
+  "seratrodast": {
+    "rxcui": null,
+    "atc": []
+  },
+  "enzalutamide": {
+    "rxcui": "1307298",
+    "atc": [
+      "L02BB"
+    ]
+  },
+  "zoledronic acid": {
+    "rxcui": "77655",
+    "atc": [
+      "M05BA"
+    ]
+  },
+  "secnidazole": {
+    "rxcui": "36314",
+    "atc": [
+      "P01AB"
+    ]
+  },
+  "naltrexone": {
+    "rxcui": "7243",
+    "atc": [
+      "A08AA",
+      "N02AA",
+      "N07BB"
+    ]
+  },
+  "desmopressin": {
+    "rxcui": "3251",
+    "atc": [
+      "H01BA"
+    ]
+  },
+  "leflunomide": {
+    "rxcui": "27169",
+    "atc": [
+      "L04AK"
+    ]
+  },
+  "ethinyl estradiol": {
+    "rxcui": "4124",
+    "atc": [
+      "G03AA",
+      "G03AB",
+      "G03CA",
+      "L02AA"
+    ]
+  },
+  "drospirenone": {
+    "rxcui": "11636",
+    "atc": [
+      "G03AC",
+      "G03AA"
+    ]
+  },
+  "vitamin c": {
+    "rxcui": "1151",
+    "atc": [
+      "A11GA",
+      "G01AD",
+      "S01XA"
+    ]
+  },
+  "clidinium": {
+    "rxcui": "21232",
+    "atc": []
+  },
+  "alfacalcidol": {
+    "rxcui": "12062",
+    "atc": [
+      "A11CC"
+    ]
+  },
+  "tropicamide": {
+    "rxcui": "10869",
+    "atc": [
+      "S01FA"
+    ]
+  },
+  "levocetirizine": {
+    "rxcui": "356887",
+    "atc": [
+      "R06AE"
+    ]
+  },
+  "l-methyl folate": {
+    "rxcui": "1592257",
+    "atc": []
+  },
+  "arginine": {
+    "rxcui": "1091",
+    "atc": [
+      "B05XB"
+    ]
+  },
+  "l-histidine": {
+    "rxcui": "5340",
+    "atc": []
+  },
+  "lysine": {
+    "rxcui": "6536",
+    "atc": [
+      "B05XB"
+    ]
+  },
+  "benzocaine": {
+    "rxcui": "1399",
+    "atc": [
+      "C05AD",
+      "D04AB",
+      "N01BA",
+      "R02AD"
+    ]
+  },
+  "chlorbutol": {
+    "rxcui": "2378",
+    "atc": [
+      "A04AD"
+    ]
+  },
+  "paradichlorobenzene": {
+    "rxcui": null,
+    "atc": []
+  },
+  "turpentine oil": {
+    "rxcui": "10938",
+    "atc": []
+  },
+  "snake venom antiserum": {
+    "rxcui": null,
+    "atc": []
+  },
+  "levofloxacin": {
+    "rxcui": "82122",
+    "atc": [
+      "J01MA",
+      "S01AE"
+    ]
+  },
+  "interferon beta-1a": {
+    "rxcui": "75917",
+    "atc": [
+      "L03AB"
+    ]
+  },
+  "paclitaxel": {
+    "rxcui": "56946",
+    "atc": [
+      "L01CD"
+    ]
+  },
+  "diethylcarbamazine": {
+    "rxcui": "3384",
+    "atc": [
+      "P02CB"
+    ]
+  },
+  "cetirizine": {
+    "rxcui": "20610",
+    "atc": [
+      "R06AE",
+      "S01GX"
+    ]
+  },
+  "equine rabies immunoglobulin": {
+    "rxcui": null,
+    "atc": []
+  },
+  "dactinomycin": {
+    "rxcui": "3100",
+    "atc": [
+      "L01DA"
+    ]
+  },
+  "hemocoagulase": {
+    "rxcui": null,
+    "atc": []
+  },
+  "melphalan": {
+    "rxcui": "6718",
+    "atc": [
+      "L01AA"
+    ]
+  },
+  "zinc gluconate": {
+    "rxcui": "58300",
+    "atc": [
+      "A12CB"
+    ]
+  },
+  "diatrizoic acid": {
+    "rxcui": "1546223",
+    "atc": [
+      "V08AA"
+    ]
+  },
+  "silymarin": {
+    "rxcui": "9794",
+    "atc": [
+      "A05BA"
+    ]
+  },
+  "itolizumab": {
+    "rxcui": null,
+    "atc": []
+  },
+  "proparacaine": {
+    "rxcui": "34905",
+    "atc": [
+      "S01HA"
+    ]
+  },
+  "doxofylline": {
+    "rxcui": null,
+    "atc": []
+  },
+  "ritonavir": {
+    "rxcui": "85762",
+    "atc": [
+      "J05AP",
+      "J05AR",
+      "J05AE"
+    ]
+  },
+  "lopinavir": {
+    "rxcui": "195088",
+    "atc": [
+      "J05AR"
+    ]
+  },
+  "pegfilgrastim": {
+    "rxcui": "338036",
+    "atc": [
+      "L03AA"
+    ]
+  },
+  "calcium": {
+    "rxcui": "1895",
+    "atc": []
+  },
+  "metronidazole": {
+    "rxcui": "6922",
+    "atc": [
+      "A02BD",
+      "P01AB",
+      "J01RA",
+      "A01AB",
+      "D06BX",
+      "G01AF",
+      "J01XD"
+    ]
+  },
+  "sodium cromoglycate": {
+    "rxcui": "3538",
+    "atc": [
+      "A07EB",
+      "D11AH",
+      "R01AC",
+      "R03BC",
+      "S01GX"
+    ]
+  },
+  "bupropion": {
+    "rxcui": "42347",
+    "atc": [
+      "A08AA",
+      "N06AX"
+    ]
+  },
+  "ramipril": {
+    "rxcui": "35296",
+    "atc": [
+      "C09AA",
+      "C09BB"
+    ]
+  },
+  "epirubicin": {
+    "rxcui": "3995",
+    "atc": [
+      "L01DB"
+    ]
+  },
+  "lactobacillus": {
+    "rxcui": null,
+    "atc": []
+  },
+  "adrenochrome monosemicarbazone": {
+    "rxcui": "2011",
+    "atc": [
+      "B02BX"
+    ]
+  },
+  "dextrose": {
+    "rxcui": "4850",
+    "atc": [
+      "B05CX",
+      "V04CA",
+      "V06DC"
+    ]
+  },
+  "diphtheria toxoid": {
+    "rxcui": "798304",
+    "atc": [
+      "J07AF"
+    ]
+  },
+  "tetanus toxoid": {
+    "rxcui": "798306",
+    "atc": [
+      "J07AM"
+    ]
+  },
+  "pertussis toxoid": {
+    "rxcui": null,
+    "atc": []
+  },
+  "ondansetron": {
+    "rxcui": "26225",
+    "atc": [
+      "A04AA"
+    ]
+  },
+  "filgrastim": {
+    "rxcui": "68442",
+    "atc": [
+      "L03AA"
+    ]
+  },
+  "hyaluronidase": {
+    "rxcui": "5464",
+    "atc": [
+      "B06AA"
+    ]
+  },
+  "palonosetron": {
+    "rxcui": "70561",
+    "atc": [
+      "A04AA"
+    ]
+  },
+  "perindopril erbumine": {
+    "rxcui": "72260",
+    "atc": [
+      "C09AA"
+    ]
+  },
+  "atorvastatin": {
+    "rxcui": "83367",
+    "atc": [
+      "C10BA",
+      "C10BX",
+      "C10AA"
+    ]
+  },
+  "caspofungin": {
+    "rxcui": "140108",
+    "atc": [
+      "J02AX"
+    ]
+  },
+  "aprotinin": {
+    "rxcui": "1056",
+    "atc": [
+      "B02AB"
+    ]
+  },
+  "interferon alpha 2a": {
+    "rxcui": null,
+    "atc": []
+  },
+  "nitazoxanide": {
+    "rxcui": "31819",
+    "atc": [
+      "P01AX"
+    ]
+  },
+  "ofloxacin": {
+    "rxcui": "7623",
+    "atc": [
+      "J01MA",
+      "S01AE",
+      "S02AA"
+    ]
+  },
+  "vasopressin": {
+    "rxcui": "11149",
+    "atc": []
+  },
+  "folic acid": {
+    "rxcui": "4511",
+    "atc": [
+      "B03AD",
+      "B03BB",
+      "V04CX"
+    ]
+  },
+  "potassium": {
+    "rxcui": "8588",
+    "atc": [
+      "C03CB",
+      "C03AB"
+    ]
+  },
+  "thiopental sodium": {
+    "rxcui": "282416",
+    "atc": [
+      "N01AF",
+      "N05CA"
+    ]
+  },
+  "enalapril": {
+    "rxcui": "3827",
+    "atc": [
+      "C09AA"
+    ]
+  },
+  "policosanol": {
+    "rxcui": "69440",
+    "atc": [
+      "C10AX"
+    ]
+  },
+  "etofylline": {
+    "rxcui": "24611",
+    "atc": []
+  },
+  "budesonide": {
+    "rxcui": "19831",
+    "atc": [
+      "A07EA",
+      "D07AC",
+      "R01AD",
+      "R03BA",
+      "R03AK"
+    ]
+  },
+  "betamethasone": {
+    "rxcui": "1514",
+    "atc": [
+      "A07EA",
+      "C05AA",
+      "D07AC",
+      "D07XC",
+      "H02AB",
+      "R01AD",
+      "R03BA",
+      "S01BA",
+      "S01CB",
+      "S02BA",
+      "S03BA"
+    ]
+  },
+  "clioquinol": {
+    "rxcui": "5942",
+    "atc": [
+      "D08AH",
+      "D09AA",
+      "G01AC",
+      "P01AA",
+      "S02AA"
+    ]
+  },
+  "neomycin": {
+    "rxcui": "7299",
+    "atc": [
+      "A01AB",
+      "A07AA",
+      "B05CA",
+      "D06AX",
+      "J01GB",
+      "R02AB",
+      "S01AA",
+      "S02AA",
+      "S03AA"
+    ]
+  },
+  "sodium": {
+    "rxcui": "9853",
+    "atc": []
+  },
+  "ibuprofen": {
+    "rxcui": "5640",
+    "atc": [
+      "N02AJ",
+      "C01EB",
+      "G02CC",
+      "M01AE",
+      "M02AA",
+      "R02AX"
+    ]
+  },
+  "hyoscine butylbromide": {
+    "rxcui": "1851",
+    "atc": [
+      "A03BB"
+    ]
+  },
+  "povidone iodine": {
+    "rxcui": "8611",
+    "atc": [
+      "D08AG",
+      "D09AA",
+      "D11AC",
+      "G01AX",
+      "R02AA",
+      "S01AX"
+    ]
+  },
+  "saroglitazar": {
+    "rxcui": null,
+    "atc": []
+  },
+  "miconazole": {
+    "rxcui": "6932",
+    "atc": [
+      "A01AB",
+      "A07AC",
+      "D01AC",
+      "G01AF",
+      "J02AB",
+      "S02AA"
+    ]
+  },
+  "sulfamethoxazole": {
+    "rxcui": "10180",
+    "atc": [
+      "J01EC",
+      "J01EE"
+    ]
+  },
+  "trimethoprim": {
+    "rxcui": "10829",
+    "atc": [
+      "J01EE",
+      "J01EA"
+    ]
+  },
+  "baclofen": {
+    "rxcui": "1292",
+    "atc": [
+      "M03BX"
+    ]
+  },
+  "bilastine": {
+    "rxcui": null,
+    "atc": []
+  },
+  "ivermectin": {
+    "rxcui": "6069",
+    "atc": [
+      "D11AX",
+      "P02CF"
+    ]
+  },
+  "formoterol": {
+    "rxcui": "25255",
+    "atc": [
+      "R03AK",
+      "R03AC",
+      "R03CC"
+    ]
+  },
+  "human normal immunoglobulin": {
+    "rxcui": null,
+    "atc": []
+  },
+  "betahistine": {
+    "rxcui": "1511",
+    "atc": [
+      "N07CA"
+    ]
+  },
+  "teriparatide": {
+    "rxcui": "32915",
+    "atc": [
+      "H05AA"
+    ]
+  },
+  "etoricoxib": {
+    "rxcui": "307296",
+    "atc": [
+      "M01AH"
+    ]
+  },
+  "insulin glargine": {
+    "rxcui": "274783",
+    "atc": [
+      "A10AE"
+    ]
+  },
+  "bethanechol": {
+    "rxcui": "19257",
+    "atc": [
+      "N07AB"
+    ]
+  },
+  "mupirocin": {
+    "rxcui": "42372",
+    "atc": [
+      "D06AX",
+      "R01AX"
+    ]
+  },
+  "trihexyphenidyl": {
+    "rxcui": "10811",
+    "atc": [
+      "N04AA"
+    ]
+  },
+  "timolol": {
+    "rxcui": "10600",
+    "atc": [
+      "C07AA",
+      "S01ED"
+    ]
+  },
+  "freeze-dried live attenuated hepatitis a vaccine": {
+    "rxcui": null,
+    "atc": []
+  },
+  "fusidic acid": {
+    "rxcui": "4608",
+    "atc": [
+      "D06AX",
+      "D09AA",
+      "J01XC",
+      "S01AA"
+    ]
+  },
+  "mirabegron": {
+    "rxcui": "1300786",
+    "atc": [
+      "G04BD"
+    ]
+  },
+  "benzonatate": {
+    "rxcui": "18993",
+    "atc": [
+      "R05DB"
+    ]
+  },
+  "buspirone": {
+    "rxcui": "1827",
+    "atc": [
+      "N05BE"
+    ]
+  },
+  "solifenacin": {
+    "rxcui": "322167",
+    "atc": [
+      "G04BD"
+    ]
+  },
+  "butorphanol": {
+    "rxcui": "1841",
+    "atc": [
+      "N02AF"
+    ]
+  },
+  "bimatoprost": {
+    "rxcui": "283810",
+    "atc": [
+      "S01EE"
+    ]
+  },
+  "vitamin b": {
+    "rxcui": "11251",
+    "atc": []
+  },
+  "cefotaxime": {
+    "rxcui": "2186",
+    "atc": [
+      "J01DD"
+    ]
+  },
+  "ibandronic acid": {
+    "rxcui": "115265",
+    "atc": [
+      "M05BA"
+    ]
+  },
+  "purified vi polysaccharide typhoid vaccine": {
+    "rxcui": null,
+    "atc": []
+  },
+  "probenecid": {
+    "rxcui": "8698",
+    "atc": [
+      "M04AC",
+      "M04AB"
+    ]
+  },
+  "cyanocobalamin": {
+    "rxcui": "11248",
+    "atc": [
+      "B03BA"
+    ]
+  },
+  "hepatitis b vaccine": {
+    "rxcui": "797752",
+    "atc": []
+  },
+  "balofloxacin": {
+    "rxcui": null,
+    "atc": []
+  },
+  "bacterial lysate": {
+    "rxcui": null,
+    "atc": []
+  },
+  "bisacodyl": {
+    "rxcui": "1596",
+    "atc": [
+      "A06AB",
+      "A06AG"
+    ]
+  },
+  "fluorometholone": {
+    "rxcui": "4491",
+    "atc": [
+      "C05AA",
+      "D07AB",
+      "D07XB",
+      "D10AA",
+      "S01BA",
+      "S01CB"
+    ]
+  },
+  "calcium leucovorin": {
+    "rxcui": "225852",
+    "atc": [
+      "V03AF"
+    ]
+  },
+  "penicillin g": {
+    "rxcui": "7980",
+    "atc": [
+      "J01CE",
+      "S01AA"
+    ]
+  },
+  "bromocriptine": {
+    "rxcui": "1760",
+    "atc": [
+      "G02CB",
+      "N04BC"
+    ]
+  },
+  "darbepoetin alfa": {
+    "rxcui": "283838",
+    "atc": [
+      "B03XA"
+    ]
+  },
+  "bleomycin": {
+    "rxcui": "1622",
+    "atc": [
+      "L01DC"
+    ]
+  },
+  "hyaluronic acid": {
+    "rxcui": "5463",
+    "atc": [
+      "D03AX",
+      "M09AX",
+      "R01AX",
+      "S01KA"
+    ]
+  },
+  "human gamma globulin": {
+    "rxcui": null,
+    "atc": []
+  },
+  "calcitonin": {
+    "rxcui": "1311287",
+    "atc": []
+  },
+  "bendamustine": {
+    "rxcui": "134547",
+    "atc": [
+      "L01AA"
+    ]
+  },
+  "dimercaprol": {
+    "rxcui": "3445",
+    "atc": [
+      "V03AB"
+    ]
+  },
+  "human rabies immunoglobulin": {
+    "rxcui": null,
+    "atc": []
+  },
+  "methotrexate": {
+    "rxcui": "6851",
+    "atc": [
+      "L01BA",
+      "L04AX"
+    ]
+  },
+  "niacinamide": {
+    "rxcui": "7405",
+    "atc": [
+      "A11HA"
+    ]
+  },
+  "onabotulinumtoxina": {
+    "rxcui": "860189",
+    "atc": []
+  },
+  "levobunolol": {
+    "rxcui": "1813",
+    "atc": [
+      "S01ED"
+    ]
+  },
+  "salmonella typhi vaccine": {
+    "rxcui": null,
+    "atc": []
+  },
+  "nitrofurantoin": {
+    "rxcui": "7454",
+    "atc": [
+      "J01XE"
+    ]
+  },
+  "biotin": {
+    "rxcui": "1588",
+    "atc": [
+      "A11HA"
+    ]
+  },
+  "buserelin": {
+    "rxcui": "1825",
+    "atc": [
+      "L02AE"
+    ]
+  },
+  "thiamine": {
+    "rxcui": "10454",
+    "atc": [
+      "A11DA"
+    ]
+  },
+  "d-panthenol": {
+    "rxcui": "22701",
+    "atc": [
+      "A11HA",
+      "D03AX",
+      "S01XA"
+    ]
+  },
+  "lomustine": {
+    "rxcui": "6466",
+    "atc": [
+      "L01AD"
+    ]
+  },
+  "idebenone": {
+    "rxcui": "51296",
+    "atc": [
+      "N06BX"
+    ]
+  },
+  "balsalazide": {
+    "rxcui": "18747",
+    "atc": [
+      "A07EC"
+    ]
+  },
+  "raloxifene": {
+    "rxcui": "72143",
+    "atc": [
+      "G03XC"
+    ]
+  },
+  "trypsin chymotrypsin": {
+    "rxcui": null,
+    "atc": []
+  },
+  "cefuroxime": {
+    "rxcui": "2194",
+    "atc": [
+      "J01DC",
+      "S01AA"
+    ]
+  },
+  "ciprofloxacin": {
+    "rxcui": "2551",
+    "atc": [
+      "J01MA",
+      "S01AE",
+      "S02AA",
+      "S03AA"
+    ]
+  },
+  "cefixime": {
+    "rxcui": "25033",
+    "atc": [
+      "J01DD"
+    ]
+  },
+  "cefpodoxime proxetil": {
+    "rxcui": "47835",
+    "atc": [
+      "J01DD"
+    ]
+  },
+  "clobetasol": {
+    "rxcui": "2590",
+    "atc": [
+      "D07AD"
+    ]
+  },
+  "itraconazole": {
+    "rxcui": "28031",
+    "atc": [
+      "J02AC"
+    ]
+  },
+  "clarithromycin": {
+    "rxcui": "21212",
+    "atc": [
+      "J01FA"
+    ]
+  },
+  "clonazepam": {
+    "rxcui": "2598",
+    "atc": [
+      "N03AE"
+    ]
+  },
+  "norethisterone": {
+    "rxcui": "7514",
+    "atc": [
+      "G03AA",
+      "G03AB",
+      "G03AC",
+      "G03DC"
+    ]
+  },
+  "clopidogrel": {
+    "rxcui": "32968",
+    "atc": [
+      "B01AC"
+    ]
+  },
+  "cabergoline": {
+    "rxcui": "47579",
+    "atc": [
+      "G02CB",
+      "N04BC"
+    ]
+  },
+  "sodium picosulfate": {
+    "rxcui": "33688",
+    "atc": [
+      "A06AB"
+    ]
+  },
+  "liquid paraffin": {
+    "rxcui": "6972",
+    "atc": [
+      "A06AA"
+    ]
+  },
+  "chlorzoxazone": {
+    "rxcui": "2410",
+    "atc": [
+      "M03BB"
+    ]
+  },
+  "aspirin": {
+    "rxcui": "1191",
+    "atc": [
+      "A01AD",
+      "B01AC",
+      "N02BA",
+      "N02AJ"
+    ]
+  },
+  "mebeverine": {
+    "rxcui": "29410",
+    "atc": [
+      "A03AA"
+    ]
+  },
+  "escitalopram oxalate": {
+    "rxcui": "353108",
+    "atc": [
+      "N06AB"
+    ]
+  },
+  "triprolidine": {
+    "rxcui": "10849",
+    "atc": [
+      "R06AX"
+    ]
+  },
+  "nicotinamide": {
+    "rxcui": "7405",
+    "atc": [
+      "A11HA"
+    ]
+  },
+  "hydrocortisone": {
+    "rxcui": "5492",
+    "atc": [
+      "D07AB",
+      "D07AC",
+      "A01AC",
+      "A07EA",
+      "C05AA",
+      "D07AA",
+      "D07XA",
+      "H02AB",
+      "S01BA",
+      "S01CB",
+      "S02BA"
+    ]
+  },
+  "terbinafine": {
+    "rxcui": "37801",
+    "atc": [
+      "D01AE",
+      "D01BA"
+    ]
+  },
+  "selenium": {
+    "rxcui": "9641",
+    "atc": []
+  },
+  "tadalafil": {
+    "rxcui": "358263",
+    "atc": [
+      "G04CB",
+      "C02KX",
+      "G04BE"
+    ]
+  },
+  "cinitapride": {
+    "rxcui": "21125",
+    "atc": [
+      "A03FA"
+    ]
+  },
+  "pantoprazole": {
+    "rxcui": "40790",
+    "atc": [
+      "A02BC"
+    ]
+  },
+  "levosulpiride": {
+    "rxcui": null,
+    "atc": []
+  },
+  "colistimethate sodium": {
+    "rxcui": "48305",
+    "atc": [
+      "A07AA",
+      "J01XB"
+    ]
+  },
+  "mycophenolate mofetil": {
+    "rxcui": "68149",
+    "atc": []
+  },
+  "levonorgestrel": {
+    "rxcui": "6373",
+    "atc": [
+      "G03AA",
+      "G03AB",
+      "G03AC",
+      "G03AD"
+    ]
+  },
+  "dimethicone": {
+    "rxcui": "324072",
+    "atc": [
+      "P03AX"
+    ]
+  },
+  "tamsulosin": {
+    "rxcui": "77492",
+    "atc": [
+      "G04CA"
+    ]
+  },
+  "phenolphthalein": {
+    "rxcui": "155122",
+    "atc": [
+      "A06AB"
+    ]
+  },
+  "cilnidipine": {
+    "rxcui": null,
+    "atc": []
+  },
+  "bromelain": {
+    "rxcui": "1752",
+    "atc": [
+      "D03BA",
+      "M09AB"
+    ]
+  },
+  "rutoside": {
+    "rxcui": "9500",
+    "atc": [
+      "C05CA"
+    ]
+  },
+  "clomiphene": {
+    "rxcui": "2596",
+    "atc": [
+      "G03GB"
+    ]
+  },
+  "indapamide": {
+    "rxcui": "5764",
+    "atc": [
+      "C03BA"
+    ]
+  },
+  "deflazacort": {
+    "rxcui": "22396",
+    "atc": [
+      "H02AB"
+    ]
+  },
+  "tranexamic acid": {
+    "rxcui": "10691",
+    "atc": [
+      "B02AA"
+    ]
+  },
+  "bicalutamide": {
+    "rxcui": "83008",
+    "atc": [
+      "L02BB"
+    ]
+  },
+  "pentosan polysulfate sodium": {
+    "rxcui": "134413",
+    "atc": [
+      "C05BA",
+      "G04BX"
+    ]
+  },
+  "cinnarizine": {
+    "rxcui": "2549",
+    "atc": [
+      "N07CA"
+    ]
+  },
+  "dinoprostone": {
+    "rxcui": "3478",
+    "atc": [
+      "G02AD"
+    ]
+  },
+  "chlorpromazine": {
+    "rxcui": "2403",
+    "atc": [
+      "N05AA"
+    ]
+  },
+  "cerebroprotein hydrolysate": {
+    "rxcui": null,
+    "atc": []
+  },
+  "citicoline": {
+    "rxcui": "997602",
+    "atc": [
+      "N06BX"
+    ]
+  },
+  "capecitabine": {
+    "rxcui": "194000",
+    "atc": [
+      "L01BC"
+    ]
+  },
+  "coenzyme q10": {
+    "rxcui": "21406",
+    "atc": [
+      "C01EB"
+    ]
+  },
+  "diazepam": {
+    "rxcui": "3322",
+    "atc": [
+      "N05BA"
+    ]
+  },
+  "ciclosporin": {
+    "rxcui": "3008",
+    "atc": [
+      "L04AD",
+      "S01XA"
+    ]
+  },
+  "colchicine": {
+    "rxcui": "2683",
+    "atc": [
+      "M04AC"
+    ]
+  },
+  "chlorthalidone": {
+    "rxcui": "2409",
+    "atc": [
+      "C03BA"
+    ]
+  },
+  "tamoxifen": {
+    "rxcui": "10324",
+    "atc": [
+      "L02BA"
+    ]
+  },
+  "magnesium bisglycinate": {
+    "rxcui": "476818",
+    "atc": []
+  },
+  "artemether": {
+    "rxcui": "18343",
+    "atc": [
+      "P01BE",
+      "P01BF"
+    ]
+  },
+  "lumefantrine": {
+    "rxcui": "847728",
+    "atc": [
+      "P01BF"
+    ]
+  },
+  "human papillomavirus bivalent vaccine, recombinant": {
+    "rxcui": null,
+    "atc": []
+  },
+  "zuclopenthixol": {
+    "rxcui": "114176",
+    "atc": [
+      "N05AF"
+    ]
+  },
+  "doxycycline": {
+    "rxcui": "3640",
+    "atc": [
+      "A01AB",
+      "J01AA"
+    ]
+  },
+  "otilonium bromide": {
+    "rxcui": "54216",
+    "atc": [
+      "A03AB"
+    ]
+  },
+  "enoxaparin": {
+    "rxcui": "67108",
+    "atc": [
+      "B01AB"
+    ]
+  },
+  "carboprost": {
+    "rxcui": "2051",
+    "atc": [
+      "G02AD"
+    ]
+  },
+  "cyclophosphamide": {
+    "rxcui": "3002",
+    "atc": [
+      "L01AA"
+    ]
+  },
+  "ringer's lactate": {
+    "rxcui": null,
+    "atc": []
+  },
+  "tetracycline": {
+    "rxcui": "10395",
+    "atc": [
+      "A02BD",
+      "A01AB",
+      "D06AA",
+      "J01AA",
+      "S01AA",
+      "S02AA",
+      "S03AA",
+      "J01RA"
+    ]
+  },
+  "heparin": {
+    "rxcui": "235473",
+    "atc": [
+      "B01AB",
+      "C05BA",
+      "S01XA"
+    ]
+  },
+  "calcitriol": {
+    "rxcui": "1894",
+    "atc": [
+      "A11CC",
+      "D05AX"
+    ]
+  },
+  "zinc": {
+    "rxcui": "11416",
+    "atc": []
+  },
+  "calcipotriol": {
+    "rxcui": "29365",
+    "atc": [
+      "D05AX"
+    ]
+  },
+  "prednisolone": {
+    "rxcui": "8638",
+    "atc": [
+      "A01AC",
+      "A07EA",
+      "C05AA",
+      "D07AA",
+      "D07XA",
+      "H02AB",
+      "R01AD",
+      "S01BA",
+      "S01CB",
+      "S02BA",
+      "S03BA"
+    ]
+  },
+  "clofazimine": {
+    "rxcui": "2592",
+    "atc": [
+      "J04BA"
+    ]
+  },
+  "lactitol": {
+    "rxcui": "28395",
+    "atc": [
+      "A06AD"
+    ]
+  },
+  "ispaghula": {
+    "rxcui": "82089",
+    "atc": []
+  },
+  "ketoconazole": {
+    "rxcui": "6135",
+    "atc": [
+      "H02CA",
+      "D01AC",
+      "G01AF",
+      "J02AB"
+    ]
+  },
+  "sodium chloride": {
+    "rxcui": "9863",
+    "atc": [
+      "A12CA",
+      "B05CB",
+      "B05XA"
+    ]
+  },
+  "dehydroepiandrosterone": {
+    "rxcui": "3143",
+    "atc": [
+      "A14AA",
+      "G03XX"
+    ]
+  },
+  "chromium chloride": {
+    "rxcui": "21009",
+    "atc": []
+  },
+  "copper": {
+    "rxcui": "2837",
+    "atc": []
+  },
+  "manganese": {
+    "rxcui": "6623",
+    "atc": []
+  },
+  "selenious acid": {
+    "rxcui": "36344",
+    "atc": []
+  },
+  "boric acid": {
+    "rxcui": "1700",
+    "atc": [
+      "S02AA",
+      "S01AX"
+    ]
+  },
+  "letrozole": {
+    "rxcui": "72965",
+    "atc": [
+      "L02BG"
+    ]
+  },
+  "poractant alfa": {
+    "rxcui": "236381",
+    "atc": []
+  },
+  "iohexol": {
+    "rxcui": "5956",
+    "atc": [
+      "V08AB"
+    ]
+  },
+  "vinblastine": {
+    "rxcui": "11198",
+    "atc": [
+      "L01CA"
+    ]
+  },
+  "vincristine": {
+    "rxcui": "11202",
+    "atc": [
+      "L01CA"
+    ]
+  },
+  "zinc carnosine": {
+    "rxcui": "2179843",
+    "atc": []
+  },
+  "cisatracurium": {
+    "rxcui": "319864",
+    "atc": [
+      "M03AC"
+    ]
+  },
+  "ticarcillin": {
+    "rxcui": "10591",
+    "atc": [
+      "J01CA"
+    ]
+  },
+  "centchroman": {
+    "rxcui": null,
+    "atc": []
+  },
+  "cyclopentolate": {
+    "rxcui": "3001",
+    "atc": [
+      "S01FA"
+    ]
+  },
+  "amylmetacresol": {
+    "rxcui": "236248",
+    "atc": []
+  },
+  "chlorambucil": {
+    "rxcui": "2346",
+    "atc": [
+      "L01AA"
+    ]
+  },
+  "coal tar": {
+    "rxcui": "2635",
+    "atc": []
+  },
+  "salicylic acid": {
+    "rxcui": "9525",
+    "atc": [
+      "N02BA",
+      "D01AE",
+      "S01BC"
+    ]
+  },
+  "sodium bicarbonate": {
+    "rxcui": "36676",
+    "atc": [
+      "B05CB",
+      "B05XA"
+    ]
+  },
+  "l-alanyl-l-glutamine": {
+    "rxcui": "1359422",
+    "atc": [
+      "B05XB"
+    ]
+  },
+  "doxapram": {
+    "rxcui": "3637",
+    "atc": [
+      "R07AB"
+    ]
+  },
+  "nintedanib": {
+    "rxcui": "1592737",
+    "atc": [
+      "L01EX"
+    ]
+  },
+  "cetilistat": {
+    "rxcui": null,
+    "atc": []
+  },
+  "calcium lactate": {
+    "rxcui": "47622",
+    "atc": [
+      "A12AA"
+    ]
+  },
+  "luvistin": {
+    "rxcui": null,
+    "atc": []
+  },
+  "chlorocresol": {
+    "rxcui": "20823",
+    "atc": []
+  },
+  "camostat": {
+    "rxcui": null,
+    "atc": []
+  },
+  "sulfasalazine": {
+    "rxcui": "9524",
+    "atc": [
+      "A07EC"
+    ]
+  },
+  "oxymetazoline": {
+    "rxcui": "7812",
+    "atc": [
+      "D11AX",
+      "R01AA",
+      "R01AB",
+      "S01GA"
+    ]
+  },
+  "magnesium carbonate": {
+    "rxcui": "29155",
+    "atc": [
+      "A02AD",
+      "V03AE",
+      "A02AA",
+      "A06AD"
+    ]
+  },
+  "procaine": {
+    "rxcui": "8701",
+    "atc": [
+      "C05AD",
+      "N01BA",
+      "S01HA"
+    ]
+  },
+  "sulfamethopyrazine": {
+    "rxcui": "10175",
+    "atc": [
+      "J01ED"
+    ]
+  },
+  "lenalidomide": {
+    "rxcui": "342369",
+    "atc": [
+      "L04AX"
+    ]
+  },
+  "mesna": {
+    "rxcui": "44",
+    "atc": [
+      "R05CB",
+      "V03AF"
+    ]
+  },
+  "ifosfamide": {
+    "rxcui": "5657",
+    "atc": [
+      "L01AA"
+    ]
+  },
+  "amifostine": {
+    "rxcui": "4126",
+    "atc": [
+      "V03AF"
+    ]
+  },
+  "dydrogesterone": {
+    "rxcui": "3706",
+    "atc": [
+      "G03DB"
+    ]
+  },
+  "ipratropium": {
+    "rxcui": "7213",
+    "atc": [
+      "R01AX",
+      "R03BB"
+    ]
+  },
+  "lactulose": {
+    "rxcui": "6218",
+    "atc": [
+      "A06AD"
+    ]
+  },
+  "doxylamine": {
+    "rxcui": "3642",
+    "atc": [
+      "R06AA"
+    ]
+  },
+  "piroxicam": {
+    "rxcui": "8356",
+    "atc": [
+      "M01AC",
+      "M02AA",
+      "S01BC"
+    ]
+  },
+  "theophylline": {
+    "rxcui": "10438",
+    "atc": [
+      "R03DA"
+    ]
+  },
+  "medroxyprogesterone": {
+    "rxcui": "6691",
+    "atc": [
+      "G03AA",
+      "G03AC",
+      "G03DA",
+      "L02AB"
+    ]
+  },
+  "acetazolamide": {
+    "rxcui": "167",
+    "atc": [
+      "S01EC"
+    ]
+  },
+  "tolnaftate": {
+    "rxcui": "10637",
+    "atc": [
+      "D01AE"
+    ]
+  },
+  "dithranol": {
+    "rxcui": "873",
+    "atc": [
+      "D05AC"
+    ]
+  },
+  "dapoxetine": {
+    "rxcui": null,
+    "atc": []
+  },
+  "trypsin": {
+    "rxcui": "10890",
+    "atc": [
+      "B06AA",
+      "D03BA"
+    ]
+  },
+  "gliclazide": {
+    "rxcui": "4816",
+    "atc": [
+      "A10BB"
+    ]
+  },
+  "dienogest": {
+    "rxcui": "22968",
+    "atc": [
+      "G03DB",
+      "G03AB"
+    ]
+  },
+  "teneligliptin": {
+    "rxcui": null,
+    "atc": []
+  },
+  "caffeine": {
+    "rxcui": "1886",
+    "atc": [
+      "V04CG",
+      "D11AX",
+      "N06BC"
+    ]
+  },
+  "duloxetine": {
+    "rxcui": "72625",
+    "atc": [
+      "N06AX"
+    ]
+  },
+  "dimenhydrinate": {
+    "rxcui": "3444",
+    "atc": [
+      "R06AA"
+    ]
+  },
+  "phenazone": {
+    "rxcui": "1001",
+    "atc": [
+      "N02BB",
+      "S02DA"
+    ]
+  },
+  "desvenlafaxine": {
+    "rxcui": "734064",
+    "atc": [
+      "N06AX"
+    ]
+  },
+  "divalproex": {
+    "rxcui": "11118",
+    "atc": [
+      "N03AG"
+    ]
+  },
+  "imipramine": {
+    "rxcui": "5691",
+    "atc": [
+      "N06AA"
+    ]
+  },
+  "cefadroxil": {
+    "rxcui": "2177",
+    "atc": [
+      "J01DB"
+    ]
+  },
+  "dexlansoprazole": {
+    "rxcui": "816346",
+    "atc": [
+      "A02BC"
+    ]
+  },
+  "meclizine": {
+    "rxcui": "6676",
+    "atc": [
+      "R06AE"
+    ]
+  },
+  "methylprednisolone": {
+    "rxcui": "6902",
+    "atc": [
+      "D07AC",
+      "D07AA",
+      "D10AA",
+      "H02AB"
+    ]
+  },
+  "dutasteride": {
+    "rxcui": "228790",
+    "atc": [
+      "G04CA",
+      "G04CB"
+    ]
+  },
+  "dorzolamide": {
+    "rxcui": "60207",
+    "atc": [
+      "S01EC"
+    ]
+  },
+  "faropenem": {
+    "rxcui": null,
+    "atc": []
+  },
+  "pyridostigmine": {
+    "rxcui": "9000",
+    "atc": [
+      "N07AA"
+    ]
+  },
+  "darifenacin": {
+    "rxcui": "136198",
+    "atc": [
+      "G04BD"
+    ]
+  },
+  "danazol": {
+    "rxcui": "3102",
+    "atc": [
+      "G03XA"
+    ]
+  },
+  "serratiopeptidase": {
+    "rxcui": "36434",
+    "atc": []
+  },
+  "dosulepin": {
+    "rxcui": "3634",
+    "atc": [
+      "N06AA"
+    ]
+  },
+  "allantoin": {
+    "rxcui": "508",
+    "atc": []
+  },
+  "triptorelin": {
+    "rxcui": "38782",
+    "atc": [
+      "L02AE"
+    ]
+  },
+  "docosahexaenoic acid": {
+    "rxcui": "144450",
+    "atc": []
+  },
+  "dalfampridine": {
+    "rxcui": "897018",
+    "atc": [
+      "N07XX"
+    ]
+  },
+  "levamisole": {
+    "rxcui": "6371",
+    "atc": [
+      "P02CE"
+    ]
+  },
+  "piperacillin": {
+    "rxcui": "8339",
+    "atc": [
+      "J01CA"
+    ]
+  },
+  "tazobactum": {
+    "rxcui": null,
+    "atc": []
+  },
+  "ornithine": {
+    "rxcui": "7704",
+    "atc": []
+  },
+  "tenofovir alafenamide": {
+    "rxcui": "1721603",
+    "atc": [
+      "J05AF",
+      "J05AR"
+    ]
+  },
+  "levocloperastine": {
+    "rxcui": null,
+    "atc": []
+  },
+  "difluprednate": {
+    "rxcui": "23043",
+    "atc": [
+      "D07AC",
+      "S01BA"
+    ]
+  },
+  "zidovudine": {
+    "rxcui": "11413",
+    "atc": [
+      "J05AF",
+      "J05AR"
+    ]
+  },
+  "nevirapine": {
+    "rxcui": "53654",
+    "atc": [
+      "J05AG",
+      "J05AR"
+    ]
+  },
+  "dimethyl": {
+    "rxcui": null,
+    "atc": []
+  },
+  "fentanyl": {
+    "rxcui": "4337",
+    "atc": [
+      "N01AH",
+      "N02AB"
+    ]
+  },
+  "benzydamine": {
+    "rxcui": "1425",
+    "atc": [
+      "A01AD",
+      "G02CC",
+      "M01AX",
+      "M02AA",
+      "R02AX"
+    ]
+  },
+  "chlorhexidine gluconate": {
+    "rxcui": "20791",
+    "atc": [
+      "A01AB",
+      "B05CA",
+      "D08AC",
+      "D09AA",
+      "R02AA",
+      "S01AX",
+      "S02AA",
+      "S03AA"
+    ]
+  },
+  "desogestrel": {
+    "rxcui": "22656",
+    "atc": [
+      "G03AC",
+      "G03AA",
+      "G03AB"
+    ]
+  },
+  "deferoxamine": {
+    "rxcui": "3131",
+    "atc": [
+      "V03AC"
+    ]
+  },
+  "hydroxyurea": {
+    "rxcui": "5552",
+    "atc": [
+      "L01XX"
+    ]
+  },
+  "tannic acid": {
+    "rxcui": "10328",
+    "atc": []
+  },
+  "zinc chloride": {
+    "rxcui": "39937",
+    "atc": [
+      "B05XA"
+    ]
+  },
+  "docetaxel": {
+    "rxcui": "72962",
+    "atc": [
+      "L01CD"
+    ]
+  },
+  "daunorubicin": {
+    "rxcui": "3109",
+    "atc": [
+      "L01XY",
+      "L01DB"
+    ]
+  },
+  "tapentadol": {
+    "rxcui": "787390",
+    "atc": [
+      "N02AX"
+    ]
+  },
+  "clostridium botulinum type a toxin-haemagglutinin complex": {
+    "rxcui": null,
+    "atc": []
+  },
+  "degarelix": {
+    "rxcui": "475230",
+    "atc": [
+      "L02BX"
+    ]
+  },
+  "morphine": {
+    "rxcui": "7052",
+    "atc": [
+      "N02AA"
+    ]
+  },
+  "univestin": {
+    "rxcui": null,
+    "atc": []
+  },
+  "orlistat": {
+    "rxcui": "37925",
+    "atc": [
+      "A08AB"
+    ]
+  },
+  "glycerin": {
+    "rxcui": "4910",
+    "atc": [
+      "A06AG",
+      "A06AX"
+    ]
+  },
+  "mannitol": {
+    "rxcui": "6628",
+    "atc": [
+      "A06AD",
+      "B05BC",
+      "B05CX",
+      "R05CB",
+      "V04CX"
+    ]
+  },
+  "adapting electrolyte solutions": {
+    "rxcui": null,
+    "atc": []
+  },
+  "lactobacillus sporogenes": {
+    "rxcui": "1310844",
+    "atc": []
+  },
+  "thiocolchicoside": {
+    "rxcui": "38085",
+    "atc": [
+      "M03BX"
+    ]
+  },
+  "quiniodochlor": {
+    "rxcui": null,
+    "atc": []
+  },
+  "phenytoin": {
+    "rxcui": "8183",
+    "atc": [
+      "N03AB"
+    ]
+  },
+  "sodium tauroglycocholate": {
+    "rxcui": null,
+    "atc": []
+  },
+  "clobetasone": {
+    "rxcui": "108074",
+    "atc": [
+      "D07AB",
+      "S01BA"
+    ]
+  },
+  "thyroxine": {
+    "rxcui": "10582",
+    "atc": [
+      "H03AA"
+    ]
+  },
+  "estriol": {
+    "rxcui": "4094",
+    "atc": [
+      "G03CA",
+      "G03CC"
+    ]
+  },
+  "valethamate": {
+    "rxcui": null,
+    "atc": []
+  },
+  "ezetimibe": {
+    "rxcui": "341248",
+    "atc": [
+      "C10BA",
+      "C10AX"
+    ]
+  },
+  "ferric carboxymaltose": {
+    "rxcui": "1433693",
+    "atc": []
+  },
+  "esomeprazole": {
+    "rxcui": "283742",
+    "atc": [
+      "A02BC",
+      "M01AE"
+    ]
+  },
+  "eberconazole": {
+    "rxcui": null,
+    "atc": []
+  },
+  "entecavir": {
+    "rxcui": "306266",
+    "atc": [
+      "J05AF"
+    ]
+  },
+  "pinaverium bromide": {
+    "rxcui": "54743",
+    "atc": [
+      "A03AX"
+    ]
+  },
+  "ethamsylate": {
+    "rxcui": "4112",
+    "atc": [
+      "B02BX"
+    ]
+  },
+  "pyridoxal-5-phasphate": {
+    "rxcui": null,
+    "atc": []
+  },
+  "megestrol": {
+    "rxcui": "6703",
+    "atc": [
+      "G03AC",
+      "G03DB",
+      "L02AB"
+    ]
+  },
+  "insulin lispro": {
+    "rxcui": "86009",
+    "atc": [
+      "A10AB",
+      "A10AC",
+      "A10AD"
+    ]
+  },
+  "insulin lispro protamine": {
+    "rxcui": "314684",
+    "atc": []
+  },
+  "arteether": {
+    "rxcui": null,
+    "atc": []
+  },
+  "griseofulvin": {
+    "rxcui": "5021",
+    "atc": [
+      "D01AA",
+      "D01BA"
+    ]
+  },
+  "human chorionic gonadotropin": {
+    "rxcui": "340705",
+    "atc": [
+      "G03GA"
+    ]
+  },
+  "trifluoperazine": {
+    "rxcui": "10800",
+    "atc": [
+      "N05AB"
+    ]
+  },
+  "trastuzumab": {
+    "rxcui": "224905",
+    "atc": [
+      "L01FD"
+    ]
+  },
+  "etanercept": {
+    "rxcui": "214555",
+    "atc": [
+      "L04AB"
+    ]
+  },
+  "vi capsular polysaccharide of salmonella typhi": {
+    "rxcui": null,
+    "atc": []
+  },
+  "benzoic acid": {
+    "rxcui": "18989",
+    "atc": []
+  },
+  "erlotinib": {
+    "rxcui": "337525",
+    "atc": [
+      "L01EB"
+    ]
+  },
+  "oxytocin": {
+    "rxcui": "7824",
+    "atc": [
+      "H01BB"
+    ]
+  },
+  "pyritinol": {
+    "rxcui": "9020",
+    "atc": [
+      "N06BX"
+    ]
+  },
+  "hydroxyethyl starch": {
+    "rxcui": "5531",
+    "atc": [
+      "B05AA"
+    ]
+  },
+  "diphtheria immune globulin": {
+    "rxcui": null,
+    "atc": []
+  },
+  "haemophilus type b conjugate vaccine": {
+    "rxcui": null,
+    "atc": []
+  },
+  "etoposide": {
+    "rxcui": "4179",
+    "atc": [
+      "L01CB"
+    ]
+  },
+  "terlipressin": {
+    "rxcui": "57048",
+    "atc": [
+      "H01BA"
+    ]
+  },
+  "ergotamine": {
+    "rxcui": "4025",
+    "atc": [
+      "N02CA"
+    ]
+  },
+  "n-butyl-2-cyanoacrylate": {
+    "rxcui": null,
+    "atc": []
+  },
+  "zinc monohydrate": {
+    "rxcui": null,
+    "atc": []
+  },
+  "vitamin e": {
+    "rxcui": "11256",
+    "atc": [
+      "A11HA"
+    ]
+  },
+  "methylergometrine": {
+    "rxcui": "6883",
+    "atc": [
+      "G02AB"
+    ]
+  },
+  "epinastine": {
+    "rxcui": "39684",
+    "atc": [
+      "R06AX",
+      "S01GX"
+    ]
+  },
+  "sargramostim": {
+    "rxcui": "69634",
+    "atc": [
+      "L03AA"
+    ]
+  },
+  "recombinant human epidermal growth factor": {
+    "rxcui": "1427157",
+    "atc": []
+  },
+  "mesterolone": {
+    "rxcui": "6781",
+    "atc": [
+      "G03BB"
+    ]
+  },
+  "etomidate": {
+    "rxcui": "4177",
+    "atc": [
+      "N01AX"
+    ]
+  },
+  "rocuronium": {
+    "rxcui": "68139",
+    "atc": [
+      "M03AC"
+    ]
+  },
+  "eletriptan": {
+    "rxcui": "231049",
+    "atc": [
+      "N02CC"
+    ]
+  },
+  "roflumilast": {
+    "rxcui": "1091836",
+    "atc": [
+      "D05AX",
+      "R03DX"
+    ]
+  },
+  "kanamycin": {
+    "rxcui": "6099",
+    "atc": [
+      "A07AA",
+      "J01GB",
+      "S01AA"
+    ]
+  },
+  "interferon alpha 2b": {
+    "rxcui": null,
+    "atc": []
+  },
+  "human hepatitis b immunoglobulin": {
+    "rxcui": "26744",
+    "atc": [
+      "J06BB"
+    ]
+  },
+  "febuxostat": {
+    "rxcui": "73689",
+    "atc": [
+      "M04AA"
+    ]
+  },
+  "finasteride": {
+    "rxcui": "25025",
+    "atc": [
+      "D11AX",
+      "G04CB"
+    ]
+  },
+  "metaxalone": {
+    "rxcui": "59078",
+    "atc": []
+  },
+  "dapagliflozin": {
+    "rxcui": "1488564",
+    "atc": [
+      "A10BD",
+      "A10BK"
+    ]
+  },
+  "fluoxetine": {
+    "rxcui": "4493",
+    "atc": [
+      "N06AB"
+    ]
+  },
+  "famotidine": {
+    "rxcui": "4278",
+    "atc": [
+      "A02BA"
+    ]
+  },
+  "fosfomycin": {
+    "rxcui": "4550",
+    "atc": [
+      "J01XX",
+      "S02AA"
+    ]
+  },
+  "flunarizine": {
+    "rxcui": "4459",
+    "atc": [
+      "N07CA"
+    ]
+  },
+  "pentazocine": {
+    "rxcui": "8001",
+    "atc": [
+      "N02AD"
+    ]
+  },
+  "artesunate": {
+    "rxcui": "18346",
+    "atc": [
+      "P01BE"
+    ]
+  },
+  "amorolfine": {
+    "rxcui": "17804",
+    "atc": [
+      "D01AE"
+    ]
+  },
+  "phenoxyethanol": {
+    "rxcui": "89552",
+    "atc": []
+  },
+  "flavoxate": {
+    "rxcui": "4440",
+    "atc": [
+      "G04BD"
+    ]
+  },
+  "cyclobenzaprine": {
+    "rxcui": "21949",
+    "atc": [
+      "M03BX"
+    ]
+  },
+  "insulin aspart": {
+    "rxcui": "51428",
+    "atc": [
+      "A10AB",
+      "A10AD"
+    ]
+  },
+  "sodium fusidate": {
+    "rxcui": "9874",
+    "atc": []
+  },
+  "fludrocortisone": {
+    "rxcui": "4452",
+    "atc": [
+      "H02AA"
+    ]
+  },
+  "tobramycin": {
+    "rxcui": "10627",
+    "atc": [
+      "J01GB",
+      "S01AA"
+    ]
+  },
+  "polyethylene glycol": {
+    "rxcui": "8516",
+    "atc": [
+      "A06AD"
+    ]
+  },
+  "propylene glycol": {
+    "rxcui": "34693",
+    "atc": []
+  },
+  "fenticonazole": {
+    "rxcui": "24876",
+    "atc": [
+      "D01AC",
+      "G01AF"
+    ]
+  },
+  "sodium fluoride": {
+    "rxcui": "9873",
+    "atc": [
+      "A01AA",
+      "A12CD"
+    ]
+  },
+  "fluorouracil": {
+    "rxcui": "4492",
+    "atc": [
+      "L01BC"
+    ]
+  },
+  "fluocinolone acetonide": {
+    "rxcui": "4461",
+    "atc": [
+      "C05AA",
+      "D07AC",
+      "S01BA",
+      "S02BA"
+    ]
+  },
+  "pyrimethamine": {
+    "rxcui": "9010",
+    "atc": [
+      "P01BD"
+    ]
+  },
+  "sulphadoxine": {
+    "rxcui": "10173",
+    "atc": []
+  },
+  "flurbiprofen": {
+    "rxcui": "4502",
+    "atc": [
+      "M01AE",
+      "M02AA",
+      "R02AX",
+      "S01BC"
+    ]
+  },
+  "famciclovir": {
+    "rxcui": "68099",
+    "atc": [
+      "J05AB",
+      "S01AD"
+    ]
+  },
+  "dalteparin": {
+    "rxcui": "67109",
+    "atc": [
+      "B01AB"
+    ]
+  },
+  "invert sugar": {
+    "rxcui": "27712",
+    "atc": [
+      "C05BB"
+    ]
+  },
+  "iron": {
+    "rxcui": "90176",
+    "atc": []
+  },
+  "pirfenidone": {
+    "rxcui": "1592254",
+    "atc": [
+      "L04AX"
+    ]
+  },
+  "recombinant follicle stimulating hormone": {
+    "rxcui": null,
+    "atc": []
+  },
+  "flumazenil": {
+    "rxcui": "4457",
+    "atc": [
+      "V03AB"
+    ]
+  },
+  "mefloquine": {
+    "rxcui": "6694",
+    "atc": [
+      "P01BC"
+    ]
+  },
+  "iron sucrose": {
+    "rxcui": "24909",
+    "atc": [
+      "B03AB"
+    ]
+  },
+  "lanthanum carbonate": {
+    "rxcui": "234416",
+    "atc": [
+      "V03AE"
+    ]
+  },
+  "norfloxacin": {
+    "rxcui": "7517",
+    "atc": [
+      "J01MA",
+      "S01AE"
+    ]
+  },
+  "propofol": {
+    "rxcui": "8782",
+    "atc": [
+      "N01AX"
+    ]
+  },
+  "fluorescein": {
+    "rxcui": "25138",
+    "atc": [
+      "S01JA"
+    ]
+  },
+  "fructo oligosaccharide": {
+    "rxcui": null,
+    "atc": []
+  },
+  "isoflurane": {
+    "rxcui": "6026",
+    "atc": [
+      "N01AB"
+    ]
+  },
+  "polycarbophil": {
+    "rxcui": null,
+    "atc": []
+  },
+  "sorbitol solution": {
+    "rxcui": "374575",
+    "atc": [
+      "A06AD",
+      "A06AG",
+      "B05CX",
+      "V04CC"
+    ]
+  },
+  "gabapentin": {
+    "rxcui": "25480",
+    "atc": [
+      "N02BF"
+    ]
+  },
+  "nortriptyline": {
+    "rxcui": "7531",
+    "atc": [
+      "N06AA"
+    ]
+  },
+  "itopride": {
+    "rxcui": null,
+    "atc": []
+  },
+  "vildagliptin": {
+    "rxcui": "596554",
+    "atc": [
+      "A10BH"
+    ]
+  },
+  "glipizide": {
+    "rxcui": "4821",
+    "atc": [
+      "A10BB"
+    ]
+  },
+  "voglibose": {
+    "rxcui": null,
+    "atc": []
+  },
+  "empagliflozin": {
+    "rxcui": "1545653",
+    "atc": [
+      "A10BK",
+      "A10BD"
+    ]
+  },
+  "human papillomavirus quadrivalent vaccine, recombinant": {
+    "rxcui": null,
+    "atc": []
+  },
+  "phenobarbitone": {
+    "rxcui": "8134",
+    "atc": [
+      "N03AA"
+    ]
+  },
+  "terpin hydrate": {
+    "rxcui": "89916",
+    "atc": []
+  },
+  "risedronate": {
+    "rxcui": "73056",
+    "atc": []
+  },
+  "allylestrenol": {
+    "rxcui": "525",
+    "atc": [
+      "G03DC"
+    ]
+  },
+  "silodosin": {
+    "rxcui": "720825",
+    "atc": [
+      "G04CA"
+    ]
+  },
+  "granisetron": {
+    "rxcui": "26237",
+    "atc": [
+      "A04AA"
+    ]
+  },
+  "gatifloxacin": {
+    "rxcui": "228476",
+    "atc": [
+      "J01MA",
+      "S01AE"
+    ]
+  },
+  "gefitinib": {
+    "rxcui": "328134",
+    "atc": [
+      "L01EB"
+    ]
+  },
+  "glutathione": {
+    "rxcui": "4890",
+    "atc": [
+      "V03AB"
+    ]
+  },
+  "imatinib mesylate": {
+    "rxcui": "284924",
+    "atc": [
+      "L01EA"
+    ]
+  },
+  "glucagon": {
+    "rxcui": "4832",
+    "atc": [
+      "H04AA"
+    ]
+  },
+  "ganciclovir": {
+    "rxcui": "4678",
+    "atc": [
+      "J05AB",
+      "S01AD"
+    ]
+  },
+  "ertapenem": {
+    "rxcui": "325642",
+    "atc": [
+      "J01DH"
+    ]
+  },
+  "somatostatin": {
+    "rxcui": "9939",
+    "atc": [
+      "H01CB"
+    ]
+  },
+  "calcium gluconate": {
+    "rxcui": "1908",
+    "atc": [
+      "A12AA",
+      "B05XA",
+      "D11AX"
+    ]
+  },
+  "temozolomide": {
+    "rxcui": "37776",
+    "atc": [
+      "L01AX"
+    ]
+  },
+  "l-glutamate": {
+    "rxcui": "70602",
+    "atc": [
+      "A09AB"
+    ]
+  },
+  "goserelin": {
+    "rxcui": "50610",
+    "atc": [
+      "L02AE"
+    ]
+  },
+  "sodium lactate": {
+    "rxcui": "56489",
+    "atc": []
+  },
+  "calcium chloride": {
+    "rxcui": "1901",
+    "atc": [
+      "A12AA",
+      "B05XA",
+      "G04BA"
+    ]
+  },
+  "granulocyte colony stimulating factor": {
+    "rxcui": null,
+    "atc": []
+  },
+  "ganirelix": {
+    "rxcui": "35825",
+    "atc": [
+      "H01CC"
+    ]
+  },
+  "saccharomyces boulardii": {
+    "rxcui": "236782",
+    "atc": [
+      "A07FA"
+    ]
+  },
+  "phytomenadione": {
+    "rxcui": "8308",
+    "atc": [
+      "B02BA"
+    ]
+  },
+  "sumatriptan": {
+    "rxcui": "37418",
+    "atc": [
+      "N02CC"
+    ]
+  },
+  "naproxen": {
+    "rxcui": "7258",
+    "atc": [
+      "M01AE",
+      "G02CC",
+      "M02AA",
+      "N02CC"
+    ]
+  },
+  "insulin isophane/nph": {
+    "rxcui": null,
+    "atc": []
+  },
+  "human insulin/soluble insulin": {
+    "rxcui": null,
+    "atc": []
+  },
+  "ademetionine": {
+    "rxcui": "9504",
+    "atc": [
+      "A16AA"
+    ]
+  },
+  "hyoscyamine": {
+    "rxcui": "153970",
+    "atc": [
+      "A03BA"
+    ]
+  },
+  "tolvaptan": {
+    "rxcui": "358257",
+    "atc": [
+      "C03XA"
+    ]
+  },
+  "mometasone": {
+    "rxcui": "108118",
+    "atc": [
+      "R03AK",
+      "D07AC",
+      "D07XC",
+      "R01AD",
+      "R03BA"
+    ]
+  },
+  "homatropine": {
+    "rxcui": "27084",
+    "atc": [
+      "S01FA",
+      "A03BB"
+    ]
+  },
+  "halobetasol": {
+    "rxcui": "41208",
+    "atc": [
+      "D07AC"
+    ]
+  },
+  "allium cepa": {
+    "rxcui": null,
+    "atc": []
+  },
+  "cyproterone": {
+    "rxcui": "3014",
+    "atc": [
+      "G03HA"
+    ]
+  },
+  "minoxidil": {
+    "rxcui": "6984",
+    "atc": [
+      "C02DC",
+      "D11AX"
+    ]
+  },
+  "tretinoin": {
+    "rxcui": "10753",
+    "atc": [
+      "D10AD",
+      "L01XF"
+    ]
+  },
+  "insulin isophane": {
+    "rxcui": "1605101",
+    "atc": []
+  },
+  "sofosbuvir": {
+    "rxcui": "1484911",
+    "atc": [
+      "J05AP"
+    ]
+  },
+  "velpatasvir": {
+    "rxcui": "1799206",
+    "atc": [
+      "J05AP"
+    ]
+  },
+  "tacrolimus": {
+    "rxcui": "42316",
+    "atc": [
+      "D11AH",
+      "L04AD"
+    ]
+  },
+  "ferrous ascorbate": {
+    "rxcui": "4356",
+    "atc": [
+      "B03AA"
+    ]
+  },
+  "fosfestrol": {
+    "rxcui": "25284",
+    "atc": [
+      "L02AA"
+    ]
+  },
+  "lansoprazole": {
+    "rxcui": "17128",
+    "atc": [
+      "A02BC"
+    ]
+  },
+  "valacyclovir": {
+    "rxcui": "73645",
+    "atc": [
+      "J05AB"
+    ]
+  },
+  "pegaspargase": {
+    "rxcui": "34132",
+    "atc": [
+      "L01XX"
+    ]
+  },
+  "halothane": {
+    "rxcui": "5095",
+    "atc": [
+      "N01AB"
+    ]
+  },
+  "carbomer": {
+    "rxcui": "235535",
+    "atc": []
+  },
+  "praziquantel": {
+    "rxcui": "8628",
+    "atc": [
+      "P02BA"
+    ]
+  },
+  "menadione": {
+    "rxcui": "6728",
+    "atc": [
+      "B02BA"
+    ]
+  },
+  "protamine": {
+    "rxcui": "8826",
+    "atc": [
+      "V03AB"
+    ]
+  },
+  "pegylated interferon alpha 2b": {
+    "rxcui": null,
+    "atc": []
+  },
+  "sitagliptin": {
+    "rxcui": "593411",
+    "atc": [
+      "A10BH",
+      "A10BD"
+    ]
+  },
+  "indomethacin": {
+    "rxcui": "5781",
+    "atc": [
+      "C01EB",
+      "M01AB",
+      "M02AA",
+      "S01BC"
+    ]
+  },
+  "isosorbide dinitrate": {
+    "rxcui": "6058",
+    "atc": [
+      "C01DA",
+      "C05AE"
+    ]
+  },
+  "hydralazine": {
+    "rxcui": "5470",
+    "atc": [
+      "C02DB"
+    ]
+  },
+  "isosorbide mononitrate": {
+    "rxcui": "28004",
+    "atc": [
+      "C01DA"
+    ]
+  },
+  "inactivated influenza vaccine": {
+    "rxcui": null,
+    "atc": []
+  },
+  "ramosetron": {
+    "rxcui": null,
+    "atc": []
+  },
+  "iron isomaltoside": {
+    "rxcui": "2274394",
+    "atc": []
+  },
+  "zolpidem": {
+    "rxcui": "39993",
+    "atc": [
+      "N05CF"
+    ]
+  },
+  "pidotimod": {
+    "rxcui": "40450",
+    "atc": [
+      "L03AX"
+    ]
+  },
+  "nepafenac": {
+    "rxcui": "298665",
+    "atc": [
+      "S01BC"
+    ]
+  },
+  "lymecycline": {
+    "rxcui": "6513",
+    "atc": [
+      "J01AA"
+    ]
+  },
+  "betaxolol": {
+    "rxcui": "1520",
+    "atc": [
+      "C07AB",
+      "S01ED"
+    ]
+  },
+  "infliximab": {
+    "rxcui": "191831",
+    "atc": [
+      "L04AB"
+    ]
+  },
+  "dolutegravir": {
+    "rxcui": "1433868",
+    "atc": [
+      "J05AJ",
+      "J05AR"
+    ]
+  },
+  "imipenem": {
+    "rxcui": "5690",
+    "atc": [
+      "J01DH"
+    ]
+  },
+  "cilastatin": {
+    "rxcui": "2540",
+    "atc": [
+      "J01DH"
+    ]
+  },
+  "ritodrine": {
+    "rxcui": "9392",
+    "atc": [
+      "G02CA"
+    ]
+  },
+  "anti rh d immunoglobulin": {
+    "rxcui": null,
+    "atc": []
+  },
+  "tegaserod": {
+    "rxcui": "139778",
+    "atc": [
+      "A06AX"
+    ]
+  },
+  "human premix": {
+    "rxcui": null,
+    "atc": []
+  },
+  "thalidomide": {
+    "rxcui": "10432",
+    "atc": [
+      "L04AX"
+    ]
+  },
+  "inactivated japanese encephalitis virus protein": {
+    "rxcui": null,
+    "atc": []
+  },
+  "ruxolitinib": {
+    "rxcui": "1193326",
+    "atc": [
+      "D11AH",
+      "L01EJ"
+    ]
+  },
+  "cabazitaxel": {
+    "rxcui": "996051",
+    "atc": [
+      "L01CD"
+    ]
+  },
+  "calcium polystyrene sulphonate": {
+    "rxcui": null,
+    "atc": []
+  },
+  "cetrimide": {
+    "rxcui": "288088",
+    "atc": [
+      "D08AJ",
+      "D11AC"
+    ]
+  },
+  "vitamin k": {
+    "rxcui": "11258",
+    "atc": []
+  },
+  "ketotifen": {
+    "rxcui": "6146",
+    "atc": [
+      "R06AX",
+      "S01GX"
+    ]
+  },
+  "pembrolizumab": {
+    "rxcui": "1547545",
+    "atc": [
+      "L01FF"
+    ]
+  },
+  "triamcinolone": {
+    "rxcui": "10759",
+    "atc": [
+      "A01AC",
+      "C05AA",
+      "D07AB",
+      "D07XB",
+      "H02AB",
+      "R01AD",
+      "R03BA",
+      "S01BA"
+    ]
+  },
+  "ketoprofen": {
+    "rxcui": "6142",
+    "atc": [
+      "M01AE",
+      "M02AA"
+    ]
+  },
+  "ribociclib": {
+    "rxcui": "1873916",
+    "atc": [
+      "L01EF"
+    ]
+  },
+  "deferiprone": {
+    "rxcui": "11645",
+    "atc": [
+      "V03AC"
+    ]
+  },
+  "penicillin v": {
+    "rxcui": "7984",
+    "atc": [
+      "J01CE"
+    ]
+  },
+  "phenylpropanolamine": {
+    "rxcui": "8175",
+    "atc": [
+      "R01BA"
+    ]
+  },
+  "carbazochrome": {
+    "rxcui": "2011",
+    "atc": [
+      "B02BX"
+    ]
+  },
+  "vecuronium": {
+    "rxcui": "71535",
+    "atc": [
+      "M03AC"
+    ]
+  },
+  "levetiracetam": {
+    "rxcui": "114477",
+    "atc": [
+      "N03AX"
+    ]
+  },
+  "linezolid": {
+    "rxcui": "190376",
+    "atc": [
+      "J01XX"
+    ]
+  },
+  "diphenoxylate": {
+    "rxcui": "3500",
+    "atc": [
+      "A07DA"
+    ]
+  },
+  "luliconazole": {
+    "rxcui": "1482680",
+    "atc": [
+      "D01AC"
+    ]
+  },
+  "chloroquine": {
+    "rxcui": "2393",
+    "atc": [
+      "P01BB",
+      "P01BA"
+    ]
+  },
+  "lincomycin": {
+    "rxcui": "6398",
+    "atc": [
+      "J01FF"
+    ]
+  },
+  "loteprednol etabonate": {
+    "rxcui": "52177",
+    "atc": []
+  },
+  "lithium carbonate": {
+    "rxcui": "42351",
+    "atc": []
+  },
+  "furazolidone": {
+    "rxcui": "4601",
+    "atc": [
+      "G01AX"
+    ]
+  },
+  "glucosamine potassium chloride": {
+    "rxcui": null,
+    "atc": []
+  },
+  "amlexanox": {
+    "rxcui": "46307",
+    "atc": [
+      "A01AD",
+      "R03DX"
+    ]
+  },
+  "buclizine": {
+    "rxcui": "59636",
+    "atc": [
+      "R06AE"
+    ]
+  },
+  "oxychloro complex": {
+    "rxcui": null,
+    "atc": []
+  },
+  "lactic acid": {
+    "rxcui": "28393",
+    "atc": [
+      "G01AD"
+    ]
+  },
+  "urea": {
+    "rxcui": "11002",
+    "atc": [
+      "B05BC",
+      "D02AE",
+      "V04CX"
+    ]
+  },
+  "latanoprost": {
+    "rxcui": "43611",
+    "atc": [
+      "S01EE"
+    ]
+  },
+  "lubiprostone": {
+    "rxcui": "623033",
+    "atc": [
+      "A06AX"
+    ]
+  },
+  "insulin detemir": {
+    "rxcui": "139825",
+    "atc": [
+      "A10AE"
+    ]
+  },
+  "menotrophin": {
+    "rxcui": null,
+    "atc": []
+  },
+  "leuprolide": {
+    "rxcui": "42375",
+    "atc": [
+      "L02AE"
+    ]
+  },
+  "urofollitropin": {
+    "rxcui": "134404",
+    "atc": [
+      "G03GA"
+    ]
+  },
+  "lurasidone": {
+    "rxcui": "1040028",
+    "atc": [
+      "N05AE"
+    ]
+  },
+  "tibolone": {
+    "rxcui": "38260",
+    "atc": [
+      "G03CX"
+    ]
+  },
+  "chondroitin": {
+    "rxcui": null,
+    "atc": []
+  },
+  "lisinopril": {
+    "rxcui": "29046",
+    "atc": [
+      "C09AA"
+    ]
+  },
+  "levodopa": {
+    "rxcui": "6375",
+    "atc": [
+      "N04BA"
+    ]
+  },
+  "carbidopa": {
+    "rxcui": "2019",
+    "atc": []
+  },
+  "lafutidine": {
+    "rxcui": null,
+    "atc": []
+  },
+  "lenvatinib": {
+    "rxcui": "1603296",
+    "atc": [
+      "L01EX"
+    ]
+  },
+  "oxaceprol": {
+    "rxcui": "28068",
+    "atc": [
+      "D11AX",
+      "M01AX"
+    ]
+  },
+  "benzoxonium chloride": {
+    "rxcui": "46949",
+    "atc": [
+      "A01AB",
+      "D08AJ"
+    ]
+  },
+  "atenolol": {
+    "rxcui": "1202",
+    "atc": [
+      "C07AB",
+      "C07FB"
+    ]
+  },
+  "travoprost": {
+    "rxcui": "283809",
+    "atc": [
+      "S01EE"
+    ]
+  },
+  "moxifloxacin": {
+    "rxcui": "139462",
+    "atc": [
+      "J01MA",
+      "S01AE"
+    ]
+  },
+  "tegafur": {
+    "rxcui": "4582",
+    "atc": [
+      "L01BC"
+    ]
+  },
+  "uracil": {
+    "rxcui": "10995",
+    "atc": []
+  },
+  "lapatinib": {
+    "rxcui": "480167",
+    "atc": [
+      "L01EH"
+    ]
+  },
+  "molgramostim": {
+    "rxcui": "70161",
+    "atc": [
+      "L03AA"
+    ]
+  },
+  "iopamidol": {
+    "rxcui": "5966",
+    "atc": [
+      "V08AB"
+    ]
+  },
+  "ceftriaxone": {
+    "rxcui": "2193",
+    "atc": [
+      "J01DD"
+    ]
+  },
+  "cefoperazone": {
+    "rxcui": "2184",
+    "atc": [
+      "J01DD"
+    ]
+  },
+  "sulbactam": {
+    "rxcui": "10167",
+    "atc": [
+      "J01CR",
+      "J01CG"
+    ]
+  },
+  "mirtazapine": {
+    "rxcui": "15996",
+    "atc": [
+      "N06AX"
+    ]
+  },
+  "modafinil": {
+    "rxcui": "30125",
+    "atc": [
+      "N06BA"
+    ]
+  },
+  "tolperisone": {
+    "rxcui": "10639",
+    "atc": [
+      "M02AX",
+      "M03BX"
+    ]
+  },
+  "vitamin b2": {
+    "rxcui": "9346",
+    "atc": [
+      "A11HA",
+      "S01XA"
+    ]
+  },
+  "pantothenic acid": {
+    "rxcui": "7891",
+    "atc": []
+  },
+  "meropenem": {
+    "rxcui": "29561",
+    "atc": [
+      "J01DH"
+    ]
+  },
+  "mebendazole": {
+    "rxcui": "6672",
+    "atc": [
+      "P02CA"
+    ]
+  },
+  "mesalazine": {
+    "rxcui": "52582",
+    "atc": [
+      "A07EC"
+    ]
+  },
+  "primaquine": {
+    "rxcui": "8687",
+    "atc": [
+      "P01BA"
+    ]
+  },
+  "hydroxyprogesterone": {
+    "rxcui": "5542",
+    "atc": [
+      "G03DA"
+    ]
+  },
+  "bromfenac": {
+    "rxcui": "19737",
+    "atc": [
+      "S01BC"
+    ]
+  },
+  "eperisone": {
+    "rxcui": null,
+    "atc": []
+  },
+  "midazolam": {
+    "rxcui": "6960",
+    "atc": [
+      "N05CD"
+    ]
+  },
+  "stanozolol": {
+    "rxcui": "10032",
+    "atc": [
+      "A14AA"
+    ]
+  },
+  "iguratimod": {
+    "rxcui": null,
+    "atc": []
+  },
+  "meloxicam": {
+    "rxcui": "41493",
+    "atc": [
+      "N01BB",
+      "M01AC"
+    ]
+  },
+  "minocycline": {
+    "rxcui": "6980",
+    "atc": [
+      "A01AB",
+      "D10AF",
+      "J01AA"
+    ]
+  },
+  "mycophenolate sodium": {
+    "rxcui": "408142",
+    "atc": []
+  },
+  "meningococcal vaccine": {
+    "rxcui": null,
+    "atc": []
+  },
+  "methimazole": {
+    "rxcui": "6835",
+    "atc": [
+      "H03BB"
+    ]
+  },
+  "measles vaccine": {
+    "rxcui": null,
+    "atc": []
+  },
+  "mumps virus vaccine": {
+    "rxcui": null,
+    "atc": []
+  },
+  "rubella vaccine": {
+    "rxcui": null,
+    "atc": []
+  },
+  "neostigmine": {
+    "rxcui": "7315",
+    "atc": [
+      "N07AA",
+      "S01EB"
+    ]
+  },
+  "rituximab": {
+    "rxcui": "121191",
+    "atc": [
+      "L01FA"
+    ]
+  },
+  "benserazide": {
+    "rxcui": "1374",
+    "atc": []
+  },
+  "mitomycin": {
+    "rxcui": "632",
+    "atc": [
+      "L01DC"
+    ]
+  },
+  "sodium aminosalicylate": {
+    "rxcui": "89753",
+    "atc": [
+      "J04AA"
+    ]
+  },
+  "phenylalanine": {
+    "rxcui": "8156",
+    "atc": []
+  },
+  "dextran 40": {
+    "rxcui": "3272",
+    "atc": []
+  },
+  "low dextrans": {
+    "rxcui": null,
+    "atc": []
+  },
+  "plerixafor": {
+    "rxcui": "733003",
+    "atc": [
+      "L03AX"
+    ]
+  },
+  "pseudoephedrine": {
+    "rxcui": "8896",
+    "atc": [
+      "R01BA"
+    ]
+  },
+  "suxamethonium": {
+    "rxcui": "10154",
+    "atc": [
+      "M03AB"
+    ]
+  },
+  "pegaptanib": {
+    "rxcui": "498509",
+    "atc": [
+      "S01LA"
+    ]
+  },
+  "mitoxantrone": {
+    "rxcui": "7005",
+    "atc": [
+      "L01DB"
+    ]
+  },
+  "nimesulide": {
+    "rxcui": "53694",
+    "atc": [
+      "M01AX",
+      "M02AA"
+    ]
+  },
+  "taurine": {
+    "rxcui": "10337",
+    "atc": []
+  },
+  "nitrazepam": {
+    "rxcui": "7440",
+    "atc": [
+      "N05CD"
+    ]
+  },
+  "bacitracin": {
+    "rxcui": "1291",
+    "atc": [
+      "D06AX",
+      "J01XX",
+      "R02AB",
+      "S01AA"
+    ]
+  },
+  "polymyxin b": {
+    "rxcui": "8536",
+    "atc": [
+      "A07AA",
+      "J01XB",
+      "S01AA",
+      "S02AA",
+      "S03AA"
+    ]
+  },
+  "insulin aspart protamine": {
+    "rxcui": "352385",
+    "atc": []
+  },
+  "nadifloxacin": {
+    "rxcui": null,
+    "atc": []
+  },
+  "rosuvastatin": {
+    "rxcui": "301542",
+    "atc": [
+      "C10BA",
+      "C10AA"
+    ]
+  },
+  "nebivolol": {
+    "rxcui": "31555",
+    "atc": [
+      "C09DX",
+      "C07AB"
+    ]
+  },
+  "pyrantel pamoate": {
+    "rxcui": "8985",
+    "atc": [
+      "P02CC"
+    ]
+  },
+  "myo-inositol": {
+    "rxcui": "5833",
+    "atc": [
+      "C04AC",
+      "A11HA"
+    ]
+  },
+  "olmesartan medoxomil": {
+    "rxcui": "118463",
+    "atc": [
+      "C09CA"
+    ]
+  },
+  "prilocaine": {
+    "rxcui": "8686",
+    "atc": [
+      "N01BB"
+    ]
+  },
+  "nicotinic acid": {
+    "rxcui": "7393",
+    "atc": [
+      "C10BA",
+      "C04AC",
+      "C10AD"
+    ]
+  },
+  "nalbuphine": {
+    "rxcui": "7238",
+    "atc": [
+      "N02AF"
+    ]
+  },
+  "pramoxine": {
+    "rxcui": "34347",
+    "atc": [
+      "C05AD",
+      "D04AB"
+    ]
+  },
+  "liver extract": {
+    "rxcui": "6459",
+    "atc": []
+  },
+  "netilmicin": {
+    "rxcui": "7337",
+    "atc": [
+      "J01GB",
+      "S01AA"
+    ]
+  },
+  "naloxone": {
+    "rxcui": "7242",
+    "atc": [
+      "N02AX",
+      "N02AA",
+      "N02AD",
+      "A06AH",
+      "V03AB"
+    ]
+  },
+  "imiquimod": {
+    "rxcui": "59943",
+    "atc": [
+      "D06BB"
+    ]
+  },
+  "nicotine": {
+    "rxcui": "7407",
+    "atc": [
+      "N07BA"
+    ]
+  },
+  "nimorazole": {
+    "rxcui": "7427",
+    "atc": [
+      "P01AB"
+    ]
+  },
+  "nartograstim": {
+    "rxcui": null,
+    "atc": []
+  },
+  "pancuronium": {
+    "rxcui": "7883",
+    "atc": [
+      "M03AC"
+    ]
+  },
+  "calcium pantothenate": {
+    "rxcui": "1918",
+    "atc": [
+      "A11HA",
+      "D03AX"
+    ]
+  },
+  "cefepime": {
+    "rxcui": "20481",
+    "atc": [
+      "J01DE"
+    ]
+  },
+  "haemophilus influenzae type b capsular polysaccharide": {
+    "rxcui": null,
+    "atc": []
+  },
+  "thiomersal": {
+    "rxcui": "10472",
+    "atc": [
+      "D08AK"
+    ]
+  },
+  "linagliptin": {
+    "rxcui": "1100699",
+    "atc": [
+      "A10BH",
+      "A10BD"
+    ]
+  },
+  "dibucaine": {
+    "rxcui": "3339",
+    "atc": [
+      "C05AD",
+      "D04AB",
+      "N01BB",
+      "S01HA",
+      "S02DA"
+    ]
+  },
+  "oxcarbazepine": {
+    "rxcui": "32624",
+    "atc": [
+      "N03AF"
+    ]
+  },
+  "olanzapine": {
+    "rxcui": "61381",
+    "atc": [
+      "N05AH"
+    ]
+  },
+  "sertaconazole": {
+    "rxcui": "36435",
+    "atc": [
+      "D01AC",
+      "G01AF"
+    ]
+  },
+  "bacillus calmette-guerin strain": {
+    "rxcui": null,
+    "atc": []
+  },
+  "denosumab": {
+    "rxcui": "993449",
+    "atc": [
+      "M05BX"
+    ]
+  },
+  "acetic acid": {
+    "rxcui": "168",
+    "atc": [
+      "G01AD",
+      "S02AA"
+    ]
+  },
+  "oxybutynin": {
+    "rxcui": "32675",
+    "atc": [
+      "G04BD"
+    ]
+  },
+  "astaxanthin": {
+    "rxcui": "18451",
+    "atc": []
+  },
+  "enclomiphene": {
+    "rxcui": null,
+    "atc": []
+  },
+  "nivolumab": {
+    "rxcui": "1597876",
+    "atc": [
+      "L01FF",
+      "L01FY"
+    ]
+  },
+  "baricitinib": {
+    "rxcui": "2047232",
+    "atc": [
+      "L04AF"
+    ]
+  },
+  "chromium": {
+    "rxcui": "2496",
+    "atc": []
+  },
+  "tetrahydrozoline": {
+    "rxcui": "37935",
+    "atc": [
+      "R01AA",
+      "R01AB",
+      "S01GA"
+    ]
+  },
+  "polio vaccine": {
+    "rxcui": null,
+    "atc": []
+  },
+  "metoclopramide": {
+    "rxcui": "6915",
+    "atc": [
+      "A03FA"
+    ]
+  },
+  "triclofos": {
+    "rxcui": "38610",
+    "atc": [
+      "N05CM"
+    ]
+  },
+  "placenta extracts": {
+    "rxcui": null,
+    "atc": []
+  },
+  "phenazopyridine": {
+    "rxcui": "8120",
+    "atc": [
+      "G04BX"
+    ]
+  },
+  "paroxetine": {
+    "rxcui": "32937",
+    "atc": [
+      "N06AB"
+    ]
+  },
+  "cefalexin": {
+    "rxcui": "2231",
+    "atc": [
+      "J01DB"
+    ]
+  },
+  "benzathine penicillin g": {
+    "rxcui": "7982",
+    "atc": [
+      "J01CE",
+      "S01AA"
+    ]
+  },
+  "pneumococcal 13 valent conjugate vaccine": {
+    "rxcui": null,
+    "atc": []
+  },
+  "pneumococcal polysaccharide vaccine": {
+    "rxcui": null,
+    "atc": []
+  },
+  "pramipexole": {
+    "rxcui": "746741",
+    "atc": [
+      "N04BC"
+    ]
+  },
+  "prasugrel": {
+    "rxcui": "613391",
+    "atc": [
+      "B01AC"
+    ]
+  },
+  "conjugated estrogens": {
+    "rxcui": "4099",
+    "atc": [
+      "G03CC",
+      "G03CA"
+    ]
+  },
+  "prulifloxacin": {
+    "rxcui": null,
+    "atc": []
+  },
+  "propyl thiouracil": {
+    "rxcui": null,
+    "atc": []
+  },
+  "cinacalcet": {
+    "rxcui": "407990",
+    "atc": [
+      "H05BX"
+    ]
+  },
+  "pilocarpine": {
+    "rxcui": "8328",
+    "atc": [
+      "N07AX",
+      "S01EB"
+    ]
+  },
+  "tribasic calcium": {
+    "rxcui": null,
+    "atc": []
+  },
+  "citrus bioflavonoid": {
+    "rxcui": null,
+    "atc": []
+  },
+  "pamabrom": {
+    "rxcui": "54365",
+    "atc": []
+  },
+  "becaplermin": {
+    "rxcui": "115238",
+    "atc": [
+      "A01AD",
+      "D03AX"
+    ]
+  },
+  "dextropropoxyphene": {
+    "rxcui": "8785",
+    "atc": [
+      "N02AC"
+    ]
+  },
+  "papaverine": {
+    "rxcui": "7895",
+    "atc": [
+      "A03AD",
+      "G04BE"
+    ]
+  },
+  "pethidine": {
+    "rxcui": "6754",
+    "atc": [
+      "N02AB"
+    ]
+  },
+  "cetalkonium chloride": {
+    "rxcui": "47907",
+    "atc": []
+  },
+  "evening primrose oil": {
+    "rxcui": "203219",
+    "atc": []
+  },
+  "fenfluramine": {
+    "rxcui": "4328",
+    "atc": [
+      "A08AA",
+      "N03AX"
+    ]
+  },
+  "pegylated interferon alpha 2a": {
+    "rxcui": "120608",
+    "atc": [
+      "L03AB"
+    ]
+  },
+  "quetiapine": {
+    "rxcui": "51272",
+    "atc": [
+      "N05AH"
+    ]
+  },
+  "rifaximin": {
+    "rxcui": "35619",
+    "atc": [
+      "A07AA",
+      "D06AX"
+    ]
+  },
+  "levodropropizine": {
+    "rxcui": "52014",
+    "atc": [
+      "R05DB"
+    ]
+  },
+  "roxithromycin": {
+    "rxcui": "9478",
+    "atc": [
+      "J01FA"
+    ]
+  },
+  "rebamipide": {
+    "rxcui": null,
+    "atc": []
+  },
+  "insulin degludec": {
+    "rxcui": "1670007",
+    "atc": [
+      "A10AE"
+    ]
+  },
+  "eltrombopag": {
+    "rxcui": "711942",
+    "atc": [
+      "B02BX"
+    ]
+  },
+  "tetrabenazine": {
+    "rxcui": "10390",
+    "atc": [
+      "N07XX"
+    ]
+  },
+  "romiplostim": {
+    "rxcui": "805452",
+    "atc": [
+      "B02BX"
+    ]
+  },
+  "risperidone": {
+    "rxcui": "35636",
+    "atc": [
+      "N05AX"
+    ]
+  },
+  "rizatriptan": {
+    "rxcui": "88014",
+    "atc": [
+      "N02CC"
+    ]
+  },
+  "riluzole": {
+    "rxcui": "35623",
+    "atc": [
+      "N07XX"
+    ]
+  },
+  "tolterodine": {
+    "rxcui": "119565",
+    "atc": [
+      "G04BD"
+    ]
+  },
+  "rasagiline": {
+    "rxcui": "134748",
+    "atc": [
+      "N04BD"
+    ]
+  },
+  "magaldrate": {
+    "rxcui": "29151",
+    "atc": [
+      "A02AD"
+    ]
+  },
+  "ropinirole": {
+    "rxcui": "72302",
+    "atc": [
+      "N04BC"
+    ]
+  },
+  "rivastigmine": {
+    "rxcui": "183379",
+    "atc": [
+      "N06DA"
+    ]
+  },
+  "rotavirus vaccine": {
+    "rxcui": null,
+    "atc": []
+  },
+  "methocarbamol": {
+    "rxcui": "6845",
+    "atc": [
+      "M03BA"
+    ]
+  },
+  "quinine": {
+    "rxcui": "9071",
+    "atc": [
+      "P01BC"
+    ]
+  },
+  "zinc oxide": {
+    "rxcui": "11423",
+    "atc": []
+  },
+  "ribavirin": {
+    "rxcui": "9344",
+    "atc": [
+      "J05AP"
+    ]
+  },
+  "fibrinogen": {
+    "rxcui": "4385",
+    "atc": [
+      "B02BB",
+      "V09GB"
+    ]
+  },
+  "thrombin": {
+    "rxcui": "10528",
+    "atc": [
+      "B02BC",
+      "B02BD"
+    ]
+  },
+  "menadione sodium bisulfite": {
+    "rxcui": "52551",
+    "atc": [
+      "B02BA"
+    ]
+  },
+  "rasburicase": {
+    "rxcui": "283821",
+    "atc": [
+      "V03AF"
+    ]
+  },
+  "framycetin": {
+    "rxcui": "4556",
+    "atc": [
+      "D09AA",
+      "R01AX",
+      "S01AA"
+    ]
+  },
+  "salmeterol": {
+    "rxcui": "36117",
+    "atc": [
+      "R03AK",
+      "R03AC"
+    ]
+  },
+  "satranidazole": {
+    "rxcui": null,
+    "atc": []
+  },
+  "haloperidol": {
+    "rxcui": "5093",
+    "atc": [
+      "N05AD"
+    ]
+  },
+  "haloperidol decanoate": {
+    "rxcui": "26420",
+    "atc": [
+      "N05AD"
+    ]
+  },
+  "canagliflozin": {
+    "rxcui": "1373458",
+    "atc": [
+      "A10BK",
+      "A10BD"
+    ]
+  },
+  "docusate": {
+    "rxcui": "82003",
+    "atc": [
+      "A06AA"
+    ]
+  },
+  "calcium dobesilate": {
+    "rxcui": "1904",
+    "atc": [
+      "C05BX"
+    ]
+  },
+  "amisulpride": {
+    "rxcui": "46303",
+    "atc": [
+      "N05AL"
+    ]
+  },
+  "magnesium trisilicate": {
+    "rxcui": "29170",
+    "atc": []
+  },
+  "clozapine": {
+    "rxcui": "2626",
+    "atc": [
+      "N05AH"
+    ]
+  },
+  "remogliflozin etabonate": {
+    "rxcui": null,
+    "atc": []
+  },
+  "arterolane": {
+    "rxcui": null,
+    "atc": []
+  },
+  "piperaquine": {
+    "rxcui": null,
+    "atc": []
+  },
+  "tizanidine": {
+    "rxcui": "57258",
+    "atc": [
+      "M03BX"
+    ]
+  },
+  "isopropamide": {
+    "rxcui": "89784",
+    "atc": [
+      "A03AB"
+    ]
+  },
+  "entacapone": {
+    "rxcui": "60307",
+    "atc": [
+      "N04BX"
+    ]
+  },
+  "succinyl choline chloride": {
+    "rxcui": null,
+    "atc": []
+  },
+  "selegiline": {
+    "rxcui": "9639",
+    "atc": [
+      "N04BD"
+    ]
+  },
+  "sorafenib": {
+    "rxcui": "495881",
+    "atc": [
+      "L01EX"
+    ]
+  },
+  "ethylmorphine": {
+    "rxcui": "4166",
+    "atc": [
+      "R05DA",
+      "S01XA"
+    ]
+  },
+  "co-trimoxazole": {
+    "rxcui": null,
+    "atc": []
+  },
+  "rutin": {
+    "rxcui": "9500",
+    "atc": [
+      "C05CA"
+    ]
+  },
+  "vitamin d": {
+    "rxcui": "11253",
+    "atc": []
+  },
+  "sulfadiazine": {
+    "rxcui": "10171",
+    "atc": [
+      "J01EE",
+      "J01EC"
+    ]
+  },
+  "stannous fluoride": {
+    "rxcui": "10030",
+    "atc": [
+      "A01AA"
+    ]
+  },
+  "dasatinib": {
+    "rxcui": "475342",
+    "atc": [
+      "L01EA"
+    ]
+  },
+  "colfosceril palmitate": {
+    "rxcui": "69782",
+    "atc": [
+      "R07AA"
+    ]
+  },
+  "yellow fever virus": {
+    "rxcui": null,
+    "atc": []
+  },
+  "tocoferol": {
+    "rxcui": "1236136",
+    "atc": []
+  },
+  "sodium stibogluconate": {
+    "rxcui": "8010",
+    "atc": [
+      "P01CB"
+    ]
+  },
+  "xylitol": {
+    "rxcui": "11377",
+    "atc": []
+  },
+  "sevoflurane": {
+    "rxcui": "36453",
+    "atc": [
+      "N01AB"
+    ]
+  },
+  "saline": {
+    "rxcui": null,
+    "atc": []
+  },
+  "strontium ranelate": {
+    "rxcui": null,
+    "atc": []
+  },
+  "benzyl nicotinate": {
+    "rxcui": "31767",
+    "atc": [
+      "C04AC",
+      "C10AD"
+    ]
+  },
+  "carbamazepine": {
+    "rxcui": "2002",
+    "atc": [
+      "N03AF"
+    ]
+  },
+  "topiramate": {
+    "rxcui": "38404",
+    "atc": [
+      "A08AA",
+      "N03AX"
+    ]
+  },
+  "teicoplanin": {
+    "rxcui": "57021",
+    "atc": [
+      "J01XA"
+    ]
+  },
+  "tiotropium": {
+    "rxcui": "69120",
+    "atc": [
+      "R03BB"
+    ]
+  },
+  "caroverine": {
+    "rxcui": null,
+    "atc": []
+  },
+  "hydroxocobalamin": {
+    "rxcui": "5514",
+    "atc": [
+      "B03BA",
+      "V03AB"
+    ]
+  },
+  "tigecycline": {
+    "rxcui": "384455",
+    "atc": [
+      "J01AA"
+    ]
+  },
+  "collagen peptide": {
+    "rxcui": null,
+    "atc": []
+  },
+  "sodium hyaluronate": {
+    "rxcui": "42892",
+    "atc": []
+  },
+  "emtricitabine": {
+    "rxcui": "276237",
+    "atc": [
+      "J05AR",
+      "J05AF"
+    ]
+  },
+  "piribedil": {
+    "rxcui": "8353",
+    "atc": [
+      "N04BC"
+    ]
+  },
+  "thioridazine": {
+    "rxcui": "10502",
+    "atc": [
+      "N05AC"
+    ]
+  },
+  "atosiban": {
+    "rxcui": "59639",
+    "atc": [
+      "G02CX"
+    ]
+  },
+  "tetanus immunoglobulin": {
+    "rxcui": "1727875",
+    "atc": [
+      "J06BB"
+    ]
+  },
+  "oxytetracycline": {
+    "rxcui": "7821",
+    "atc": [
+      "A01AB",
+      "D06AA",
+      "G01AA",
+      "J01AA",
+      "S01AA"
+    ]
+  },
+  "vitamin b3": {
+    "rxcui": "7405",
+    "atc": [
+      "A11HA"
+    ]
+  },
+  "testosterone propionate": {
+    "rxcui": "10382",
+    "atc": [
+      "G03BA"
+    ]
+  },
+  "stavudine": {
+    "rxcui": "59763",
+    "atc": [
+      "J05AF",
+      "J05AR"
+    ]
+  },
+  "dehydroemetine": {
+    "rxcui": "3142",
+    "atc": [
+      "P01AX"
+    ]
+  },
+  "thymosin alpha": {
+    "rxcui": null,
+    "atc": []
+  },
+  "meglumine diatrizoate": {
+    "rxcui": null,
+    "atc": []
+  },
+  "sodium diatrizoate": {
+    "rxcui": null,
+    "atc": []
+  },
+  "ulinastatin": {
+    "rxcui": null,
+    "atc": []
+  },
+  "iopromide": {
+    "rxcui": "27781",
+    "atc": [
+      "V08AB"
+    ]
+  },
+  "live freeze dried lactic acid bacteria and bifidobacteria": {
+    "rxcui": null,
+    "atc": []
+  },
+  "vancomycin": {
+    "rxcui": "11124",
+    "atc": [
+      "A07AA",
+      "J01XA",
+      "S01AA"
+    ]
+  },
+  "valganciclovir": {
+    "rxcui": "275891",
+    "atc": [
+      "J05AB"
+    ]
+  },
+  "voriconazole": {
+    "rxcui": "121243",
+    "atc": [
+      "J02AC"
+    ]
+  },
+  "pazopanib": {
+    "rxcui": "714438",
+    "atc": [
+      "L01EX"
+    ]
+  },
+  "varicella vaccine attenuated": {
+    "rxcui": null,
+    "atc": []
+  },
+  "sodium feredetate": {
+    "rxcui": "105673",
+    "atc": [
+      "B03AB"
+    ]
+  },
+  "valsartan": {
+    "rxcui": "69749",
+    "atc": [
+      "C09DX",
+      "C09CA",
+      "C09DB"
+    ]
+  },
+  "colistin": {
+    "rxcui": "2709",
+    "atc": [
+      "A07AA",
+      "J01XB"
+    ]
+  },
+  "liver fraction 2 derived from fresh liver 01": {
+    "rxcui": null,
+    "atc": []
+  },
+  "pepsin": {
+    "rxcui": "8016",
+    "atc": [
+      "A09AA"
+    ]
+  },
+  "diastase": {
+    "rxcui": "560",
+    "atc": []
+  },
+  "safinamide": {
+    "rxcui": "1922448",
+    "atc": [
+      "N04BD"
+    ]
+  },
+  "tofacitinib": {
+    "rxcui": "1357536",
+    "atc": [
+      "L04AF"
+    ]
+  },
+  "exemestane": {
+    "rxcui": "258494",
+    "atc": [
+      "L02BG"
+    ]
+  },
+  "allopurinol": {
+    "rxcui": "519",
+    "atc": [
+      "M04AA"
+    ]
+  },
+  "cefditoren": {
+    "rxcui": "83682",
+    "atc": [
+      "J01DD"
+    ]
+  },
+  "oxiconazole": {
+    "rxcui": "32638",
+    "atc": [
+      "D01AC",
+      "G01AF"
+    ]
+  },
+  "garenoxacin": {
+    "rxcui": null,
+    "atc": []
+  },
+  "zolmitriptan": {
+    "rxcui": "135775",
+    "atc": [
+      "N02CC"
+    ]
+  },
+  "clobazam": {
+    "rxcui": "21241",
+    "atc": [
+      "N05BA"
+    ]
+  },
+  "idarubicin": {
+    "rxcui": "5650",
+    "atc": [
+      "L01DB"
+    ]
+  }
+}
