@@ -1,0 +1,15 @@
+file:///C:/Users/SOHAN/Desktop/medscan/server/tools/agentTools.mjs:2
+import { search } from 'duckduckgo-search';
+         ^^^^^^
+SyntaxError: Named export 'search' not found. The requested module 'duckduckgo-search' is a CommonJS module, which may not support all module.exports as named exports.
+CommonJS modules can always be imported via the default export, for example using:
+
+import pkg from 'duckduckgo-search';
+const { search } = pkg;
+
+    at ModuleJob._instantiate (node:internal/modules/esm/module_job:180:21)
+    at async ModuleJob.run (node:internal/modules/esm/module_job:263:5)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+
+Node.js v22.14.0

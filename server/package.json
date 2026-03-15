@@ -10,8 +10,20 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@langchain/community": "^1.1.15",
+    "@langchain/core": "^1.1.24",
+    "@langchain/ollama": "^1.2.2",
+    "axios": "^1.13.5",
+    "cors": "^2.8.6",
     "csv-parser": "^3.2.0",
+    "duck-duck-scrape": "^2.2.7",
+    "duckduckgo-search": "^1.0.7",
     "express": "^5.2.1",
-    "fast-levenshtein": "^3.0.0"
+    "fast-levenshtein": "^3.0.0",
+    "fs": "^0.0.1-security",
+    "googlethis": "^1.8.0",
+    "gpt4all": "^4.0.0",
+    "langchain": "^1.2.24",
+    "zod": "^4.3.6"
   }
 }

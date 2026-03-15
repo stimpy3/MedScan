@@ -1,3 +1,4 @@
+import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
 import React, { useCallback, useEffect, useState } from "react";
 import { KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
@@ -44,11 +45,17 @@ export default function OcrBottomSheet({ onFindSimilar, ocrText }: Props) {
         />
 
         <TouchableOpacity
-          style={styles.button}
           onPress={handleFindSimilar}
           activeOpacity={0.7}
         >
+          <LinearGradient
+            colors={["#0066ff", "#1c77ff", "#0066ff"]}
+            start={{ x: 0.3, y: 0.2 }}
+            end={{ x: 0.7, y: 0.8 }}
+            style={styles.button}
+          >
           <Text style={styles.buttonText}>Find Similar Medicines</Text>
+          </LinearGradient>
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
@@ -92,9 +99,9 @@ const styles = StyleSheet.create({
   },
   textInput: {
     height: 180,
-    borderWidth: 1,
-    borderColor: '#D1D5DB',
-    borderRadius: 8,
+    borderWidth: 2,
+    borderColor: '#0066ff18',
+    borderRadius: 16,
     padding: 16,
     fontSize: 16,
     backgroundColor: '#fff',
@@ -105,7 +112,7 @@ const styles = StyleSheet.create({
     marginTop: 24,
     backgroundColor: '#0066ff',
     paddingVertical: 16,
-    borderRadius: 8,
+    borderRadius: 16,
   },
   buttonText: {
     color: '#fff',

@@ -141,17 +141,17 @@ export default function CameraScreen() {
             onPress={() => setShowCamera(true)}
             style={{
               position: "absolute",
-              top: "50%",
+              bottom: "10%",
               left: "50%",
-              transform: [{ translateX: -50 }, { translateY: -50 }],
-              backgroundColor: "white",
+              transform: [{ translateX: -50 }],
+              backgroundColor: "#30303050",
               paddingHorizontal: 20,
               paddingVertical: 10,
               borderRadius: 25,
               zIndex: 100,
             }}
           >
-            <Text style={{ color: "black", fontSize: 16, fontWeight: "600" }}>
+            <Text style={{ color: "white", fontSize: 16, fontWeight: "600" }}>
               Start Scan
             </Text>
           </TouchableOpacity>
@@ -198,9 +198,9 @@ export default function CameraScreen() {
           >
             <TouchableOpacity
               onPress={() => setTorch(!torch)}
-              className="w-16 h-16 bg-white rounded-full items-center justify-center"
+              className="w-16 h-16 bg-[#30303085] text-white rounded-full items-center justify-center"
             >
-              {torch ? <FlashlightOff /> : <Flashlight />}
+              {torch ? <FlashlightOff color="white"/> : <Flashlight color="white"/>}
             </TouchableOpacity>
 
             {/* Capture Button with Extra Ring */}
@@ -211,8 +211,8 @@ export default function CameraScreen() {
               />
             </View>
 
-            <TouchableOpacity className="w-16 h-16 bg-white rounded-full items-center justify-center">
-              <ImageUp />
+            <TouchableOpacity className="w-16 h-16 bg-[#30303085] rounded-full items-center justify-center">
+              <ImageUp color="white"/>
             </TouchableOpacity>
           </LinearGradient>
         )}

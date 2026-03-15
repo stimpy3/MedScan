@@ -1,50 +1,223 @@
-# Welcome to your Expo app 👋
+# How Your App Finds Similar Medicines
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+## Overview
 
-## Get started
+This document describes how the system converts a user medicine query into normalized ingredients, maps medicines using ATC domains, and ranks substitutes using a weighted confidence score.
 
-1. Install dependencies
+Similarity is graded (0–1.0). The goal is to answer:
 
-   ```bash
-   npm install
-   ```
+“How safe is this as a substitute?”
 
-2. Start the app
+—not merely “is this similar.”
 
-   ```bash
-   npx expo start
-   ```
+---
 
-In the output, you'll find options to open the app in a
+## 1. User Input → RxNorm Matching
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+When a user searches for a medicine, the app receives raw ingredient text.
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+Examples:
 
-## Get a fresh project
+Ambroxol  
+Paracetamol + Ibuprofen  
 
-When you're ready, run:
+Each ingredient is normalized using `ingredientNormalization.json`.
 
-```bash
-npm run reset-project
-```
+Handled by `normalizeIngredient()`:
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+- Convert to lowercase  
+- Remove dosage info (anything in parentheses like 500mg)  
+- Map brand names to generics via RxNorm normalization  
+- Remove duplicate ingredients using Sets  
 
-## Learn more
+Result:
 
-To learn more about developing your project with Expo, look at the following resources:
+["ambroxol"]
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+or
 
-## Join the community
+["paracetamol", "ibuprofen"]
 
-Join our community of developers creating universal apps.
+---
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## 2. Ingredient Extraction and Grouping
+
+The CSV contains raw `salt_composition` values such as:
+
+Ambroxol 30mg + Bromhexine 8mg
+
+Processing:
+
+- `extractIngredients()` splits by + or ,
+- Dosages are removed
+- If an ingredient itself is a combination (defined in `ingredientCodes.json`), it is expanded into components
+
+At load time, an `ingredientIndex` is built:
+
+normalized ingredient → all medicine indices containing it
+
+Result:
+
+All medicines containing ambroxol (30mg, 75mg, or combinations) are grouped together.
+
+---
+
+## 3. ATC Codes: Classification and Similarity
+
+`ingredientCodes.json` stores ATC codes for each ingredient.
+
+Example:
+
+Ambroxol → R05CB06
+
+For each medicine:
+
+`getDomainsForIngredients()` gathers ALL ATC codes from its ingredients.
+
+Single ingredient → one ATC  
+Multiple ingredients → multiple ATCs  
+
+ATC hierarchy:
+
+Level 1: Anatomical class (R = Respiratory)  
+Level 2: Therapeutic subgroup (R05 = Cough/Cold)  
+Level 3+: Chemical substance (R05CB06)  
+
+Shared ATC prefixes determine therapeutic similarity.
+
+---
+
+## 4. Confidence Scoring
+
+Final confidence:
+
+Confidence =
+(Ingredient Score × 0.4) +
+(Domain Score × 0.35) +
+(Extra Ingredient Penalty × 0.25)
+
+### Ingredient Match (40%)
+
+- 1.0 if ALL query ingredients are present
+- Medicines missing any query ingredient are excluded
+
+### ATC Domain Match (35%)
+
+shared_domains / total_query_domains
+
+Example:
+
+Query has 2 ATCs  
+Medicine shares 1  
+
+Score = 0.5
+
+### Extra Ingredient Penalty (25%)
+
+No extras → 1.0  
+
+With extras:
+
+max(0.5, 1 - (extra_count × 0.1))
+
+10% penalty per extra ingredient, minimum 50%.
+
+Encourages closest formulation.
+
+---
+
+## Safety Filter
+
+Dangerous ATC classes are capped at 0.3 confidence:
+
+J01 – Antibiotics  
+H02 – Steroids  
+M01 – NSAIDs  
+
+Prevents unsafe substitutions from ranking highly.
+
+---
+
+## 5. Similarity Types
+
+Each result is classified:
+
+EXACT – Same ingredients, same count  
+COMBINATION – Query ingredients plus extras  
+THERAPEUTIC – Same ATC domain, different ingredient  
+PARTIAL – Some ingredients match  
+UNSAFE – Filtered or very low confidence  
+
+Rules:
+
+- Must contain ALL query ingredients
+- Dangerous ATCs capped
+- THERAPEUTIC only allowed when query has ATC codes
+
+---
+
+## 6. Complete Flow
+
+User searches: Ambroxol
+
+Normalize → ["ambroxol"]
+
+Ingredient index lookup
+
+Query ATC domains → [R05CB06]
+
+For each candidate:
+
+- Verify ingredient match
+- Extract ingredients
+- Collect ATC domains
+- Compute ingredient score
+- Compute domain score
+- Apply extra ingredient penalty
+- Apply safety caps
+
+Results sorted by:
+
+1. EXACT matches
+2. Highest confidence
+3. Cheapest price
+
+Final output:
+
+Ranked safe alternatives.
+
+---
+
+## Definition of Similarity
+
+A medicine is similar if it:
+
+- Contains ALL original active ingredients
+- Shares therapeutic ATC domains
+- Has minimal extra ingredients
+- Passes safety rules
+
+Similarity is continuous (0–1.0), not binary.
+
+The system answers:
+
+“How safe is this as a substitute?”
+
+not:
+
+“Is this identical?”
+
+---
+
+## Summary
+
+The pipeline combines:
+
+- RxNorm normalization
+- Ingredient indexing
+- ATC classification
+- Weighted scoring
+- Safety caps
+
+to deliver ranked, clinically safer alternatives while suppressing risky replacements.
+

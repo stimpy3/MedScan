@@ -1,4 +1,5 @@
 // services/atcExplain.js
+
 const ATC_MAP = require("../data/atcMap.json");
 
 function explainATC(atcCode) {
