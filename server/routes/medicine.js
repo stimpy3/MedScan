@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { getSimilarMedicines } = require("../services/medicineSearch.js");
+const { getSimilarMedicines } = require("../services/medicineSearch.service.js");
 
 router.post("/find-similar", async (req, res) => {
   try {
