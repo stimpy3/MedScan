@@ -1,8 +1,8 @@
 // components/ScheduleFormCard.jsx
 import * as Haptics from 'expo-haptics';
-import { Bell, Calendar, Clock, Pill } from 'lucide-react-native';
+import { Bell, Calendar, Clock, FileText, Pill } from 'lucide-react-native';
 import { useRef, useState } from 'react';
-import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import HardShadow from './HardShadow';
 
 const C = {
@@ -10,6 +10,7 @@ const C = {
   surface: '#ffffff',
   border:  '#2a2a2a',
   blue:    '#2198a8',
+  purple:  '#6b5390',
   dark:    '#2a2a2a',
   meta:    '#8a7850',
 };
@@ -20,6 +21,14 @@ const SHADOW = {
   shadowOpacity: 1,
   shadowRadius: 0,
   elevation: 6,
+};
+
+const BTN_SHADOW = {
+  shadowColor: '#2a2a2a',
+  shadowOffset: { width: 2, height: 2 },
+  shadowOpacity: 1,
+  shadowRadius: 0,
+  elevation: 3,
 };
 
 const DAY_FULL = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
@@ -88,7 +97,7 @@ function DrumColumn({ values, selected, onChange, width = 58 }) {
               onPress={() => { positionTo(i, true); commit(i); }}
               style={{ height: ITEM_H, justifyContent: 'center', alignItems: 'center' }}
             >
-              <Text style={{ fontSize: active ? 22 : 16, fontWeight: active ? '900' : '500', color: active ? C.blue : '#c4c4c4' }}>
+              <Text style={{ fontSize: active ? 22 : 16, fontWeight: active ? '900' : '500', color: active ? C.purple : '#c9c2b0' }}>
                 {v}
               </Text>
             </TouchableOpacity>
@@ -125,10 +134,12 @@ const SectionLabel = ({ icon: Icon, children }) => (
 );
 
 export default function ScheduleFormCard({ medicineName, onSubmit }) {
+  const [name, setName] = useState(medicineName || '');
   const [medicineType, setMedicineType] = useState('Pills');
   const [dose, setDose] = useState('1');
   const [selectedDays, setSelectedDays] = useState([0, 2, 4]);
   const [instruction, setInstruction] = useState('After eat');
+  const [notes, setNotes] = useState('');
   const [notificationEnabled, setNotificationEnabled] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -145,10 +156,12 @@ export default function ScheduleFormCard({ medicineName, onSubmit }) {
   };
 
   const handleSubmit = async () => {
+    const finalName = (medicineName || name).trim();
+    if (!finalName) { alert('Please enter a medicine name'); return; }
     if (selectedDays.length === 0) { alert('Please select at least one day'); return; }
     setIsSubmitting(true);
     try {
-      await onSubmit({ medicineName, medicineType, dose, days: selectedDays, time: to24h(hour, minute, period), instruction, notificationEnabled });
+      await onSubmit({ medicineName: finalName, medicineType, dose, days: selectedDays, time: to24h(hour, minute, period), instruction, notes: notes.trim(), notificationEnabled });
     } catch (err) {
       console.error('Error submitting schedule:', err);
       alert('Failed to save schedule');
@@ -163,10 +176,20 @@ export default function ScheduleFormCard({ medicineName, onSubmit }) {
 
         {/* Header */}
         <View style={{ marginBottom: 22 }}>
-          <View style={{ backgroundColor: C.blue, alignSelf: 'flex-start', paddingHorizontal: 10, paddingVertical: 4, borderRadius: 4, borderWidth: 1.5, borderColor: C.border, marginBottom: 8 }}>
+          <View style={{ backgroundColor: C.purple, alignSelf: 'flex-start', paddingHorizontal: 10, paddingVertical: 4, borderRadius: 4, borderWidth: 1.5, borderColor: C.border, marginBottom: 8 }}>
             <Text style={{ fontSize: 11, fontWeight: '800', color: '#ffffff', letterSpacing: 1.5, textTransform: 'uppercase' }}>New Schedule</Text>
           </View>
-          <Text style={{ fontSize: 21, fontWeight: '900', color: C.dark }}>{medicineName}</Text>
+          {medicineName ? (
+            <Text style={{ fontSize: 21, fontWeight: '900', color: C.dark }}>{medicineName}</Text>
+          ) : (
+            <TextInput
+              value={name}
+              onChangeText={setName}
+              placeholder="Medicine name"
+              placeholderTextColor="#b8b0a0"
+              style={{ fontSize: 18, fontWeight: '900', color: C.dark, backgroundColor: C.surface, borderWidth: 1.5, borderColor: C.border, borderRadius: 4, paddingHorizontal: 12, paddingVertical: 10 }}
+            />
+          )}
         </View>
 
         {/* Medicine Type */}
@@ -180,9 +203,9 @@ export default function ScheduleFormCard({ medicineName, onSubmit }) {
                   key={type}
                   activeOpacity={0.8}
                   onPress={() => { tick(); setMedicineType(type); }}
-                  style={{ flex: 1, paddingVertical: 11, borderRadius: 4, alignItems: 'center', borderWidth: 1.5, borderColor: C.border, backgroundColor: on ? C.blue : C.bg }}
+                  style={{ flex: 1, paddingVertical: 11, borderRadius: 4, alignItems: 'center', borderWidth: 1.5, borderColor: C.border, backgroundColor: on ? C.blue : C.surface, ...(on ? BTN_SHADOW : {}) }}
                 >
-                  <Text style={{ fontSize: 13, fontWeight: '800', color: on ? '#ffffff' : '#6b7280' }}>{type}</Text>
+                  <Text style={{ fontSize: 13, fontWeight: '800', color: on ? '#ffffff' : C.meta }}>{type}</Text>
                 </TouchableOpacity>
               );
             })}
@@ -200,9 +223,9 @@ export default function ScheduleFormCard({ medicineName, onSubmit }) {
                   key={d}
                   activeOpacity={0.8}
                   onPress={() => { tick(); setDose(d); }}
-                  style={{ flex: 1, paddingVertical: 12, borderRadius: 4, alignItems: 'center', borderWidth: 1.5, borderColor: C.border, backgroundColor: on ? C.blue : C.bg }}
+                  style={{ flex: 1, paddingVertical: 12, borderRadius: 4, alignItems: 'center', borderWidth: 1.5, borderColor: C.border, backgroundColor: on ? C.blue : C.surface, ...(on ? BTN_SHADOW : {}) }}
                 >
-                  <Text style={{ fontSize: 15, fontWeight: '900', color: on ? '#ffffff' : '#6b7280' }}>{d}</Text>
+                  <Text style={{ fontSize: 15, fontWeight: '900', color: on ? '#ffffff' : C.meta }}>{d}</Text>
                 </TouchableOpacity>
               );
             })}
@@ -220,9 +243,9 @@ export default function ScheduleFormCard({ medicineName, onSubmit }) {
                   key={day}
                   activeOpacity={0.8}
                   onPress={() => toggleDay(idx)}
-                  style={{ flex: 1, height: 44, borderRadius: 4, alignItems: 'center', justifyContent: 'center', borderWidth: 1.5, borderColor: C.border, backgroundColor: on ? C.blue : C.bg }}
+                  style={{ flex: 1, height: 44, borderRadius: 4, alignItems: 'center', justifyContent: 'center', borderWidth: 1.5, borderColor: C.border, backgroundColor: on ? C.purple : C.surface, ...(on ? BTN_SHADOW : {}) }}
                 >
-                  <Text style={{ fontSize: 11, fontWeight: '800', color: on ? '#ffffff' : '#9aa0a0' }}>{day[0]}</Text>
+                  <Text style={{ fontSize: 11, fontWeight: '800', color: on ? '#ffffff' : C.meta }}>{day[0]}</Text>
                 </TouchableOpacity>
               );
             })}
@@ -234,10 +257,10 @@ export default function ScheduleFormCard({ medicineName, onSubmit }) {
           <SectionLabel icon={Clock}>Time</SectionLabel>
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
             <View style={{ flex: 1, height: PICKER_H, borderRadius: 4, overflow: 'hidden', backgroundColor: C.surface, borderWidth: 1.5, borderColor: C.border, justifyContent: 'center' }}>
-              <View pointerEvents="none" style={{ position: 'absolute', left: 14, right: 14, top: PAD, height: ITEM_H, backgroundColor: 'rgba(33,152,168,0.15)', borderRadius: 4 }} />
+              <View pointerEvents="none" style={{ position: 'absolute', left: 14, right: 14, top: PAD, height: ITEM_H, backgroundColor: 'rgba(107,83,144,0.12)', borderRadius: 4 }} />
               <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
                 <DrumColumn values={HOURS} selected={hour} onChange={setHour} />
-                <Text style={{ fontSize: 22, fontWeight: '900', color: C.blue, paddingHorizontal: 2 }}>:</Text>
+                <Text style={{ fontSize: 22, fontWeight: '900', color: C.purple, paddingHorizontal: 2 }}>:</Text>
                 <DrumColumn values={MINUTES} selected={minute} onChange={setMinute} />
               </View>
             </View>
@@ -250,9 +273,9 @@ export default function ScheduleFormCard({ medicineName, onSubmit }) {
                     key={p}
                     activeOpacity={0.8}
                     onPress={() => { tick(); setPeriod(p); }}
-                    style={{ width: 56, flex: 1, borderRadius: 4, alignItems: 'center', justifyContent: 'center', borderWidth: 1.5, borderColor: C.border, backgroundColor: on ? C.blue : C.bg }}
+                    style={{ width: 56, flex: 1, borderRadius: 4, alignItems: 'center', justifyContent: 'center', borderWidth: 1.5, borderColor: C.border, backgroundColor: on ? C.purple : C.surface, ...(on ? BTN_SHADOW : {}) }}
                   >
-                    <Text style={{ fontSize: 14, fontWeight: '900', color: on ? '#fff' : '#9aa0a0' }}>{p}</Text>
+                    <Text style={{ fontSize: 14, fontWeight: '900', color: on ? '#fff' : C.meta }}>{p}</Text>
                   </TouchableOpacity>
                 );
               })}
@@ -271,13 +294,26 @@ export default function ScheduleFormCard({ medicineName, onSubmit }) {
                   key={instr}
                   activeOpacity={0.8}
                   onPress={() => { tick(); setInstruction(instr); }}
-                  style={{ paddingHorizontal: 14, paddingVertical: 9, borderRadius: 4, borderWidth: 1.5, borderColor: C.border, backgroundColor: on ? C.blue : C.bg }}
+                  style={{ paddingHorizontal: 14, paddingVertical: 9, borderRadius: 4, borderWidth: 1.5, borderColor: C.border, backgroundColor: on ? C.blue : C.surface, ...(on ? BTN_SHADOW : {}) }}
                 >
-                  <Text style={{ fontSize: 12, fontWeight: '800', color: on ? '#fff' : '#6b7280' }}>{instr}</Text>
+                  <Text style={{ fontSize: 12, fontWeight: '800', color: on ? '#fff' : C.meta }}>{instr}</Text>
                 </TouchableOpacity>
               );
             })}
           </View>
+        </View>
+
+        {/* Notes */}
+        <View style={{ marginBottom: 22 }}>
+          <SectionLabel icon={FileText}>Notes</SectionLabel>
+          <TextInput
+            value={notes}
+            onChangeText={setNotes}
+            placeholder="Optional — e.g. take with a full glass of water"
+            placeholderTextColor="#b8b0a0"
+            multiline
+            style={{ minHeight: 72, textAlignVertical: 'top', fontSize: 13, fontWeight: '600', color: C.dark, backgroundColor: C.surface, borderWidth: 1.5, borderColor: C.border, borderRadius: 4, paddingHorizontal: 12, paddingVertical: 10 }}
+          />
         </View>
 
         {/* Notification Toggle */}
@@ -289,9 +325,9 @@ export default function ScheduleFormCard({ medicineName, onSubmit }) {
           <TouchableOpacity
             activeOpacity={0.9}
             onPress={() => { tick(); setNotificationEnabled(v => !v); }}
-            style={{ width: 50, height: 28, borderRadius: 14, backgroundColor: notificationEnabled ? C.blue : '#cfcfcf', justifyContent: 'center', borderWidth: 1.5, borderColor: C.border }}
+            style={{ width: 50, height: 28, borderRadius: 14, backgroundColor: notificationEnabled ? C.blue : '#d8d0bc', justifyContent: 'center', borderWidth: 1.5, borderColor: C.border }}
           >
-            <View style={{ width: 24, height: 24, borderRadius: 12, backgroundColor: '#fff', alignSelf: notificationEnabled ? 'flex-end' : 'flex-start', marginHorizontal: 2 }} />
+            <View style={{ width: 24, height: 24, borderRadius: 12, backgroundColor: '#fff', borderWidth: 1.5, borderColor: C.border, alignSelf: notificationEnabled ? 'flex-end' : 'flex-start', marginHorizontal: 2 }} />
           </TouchableOpacity>
         </View>
 

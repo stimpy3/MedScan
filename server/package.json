@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -10,23 +11,15 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@langchain/community": "^1.1.15",
-    "@langchain/core": "^1.1.48",
-    "@langchain/groq": "^1.2.1",
-    "@langchain/ollama": "^1.2.2",
     "axios": "^1.13.5",
+    "bcryptjs": "^2.4.3",
     "cors": "^2.8.6",
     "csv-parser": "^3.2.0",
     "dotenv": "^17.4.2",
-    "duck-duck-scrape": "^2.2.7",
-    "duckduckgo-search": "^1.0.7",
     "express": "^5.2.1",
     "fast-levenshtein": "^3.0.0",
     "flexsearch": "^0.8.212",
-    "fs": "^0.0.1-security",
-    "googlethis": "^1.8.0",
-    "gpt4all": "^4.0.0",
-    "langchain": "^1.2.24",
-    "zod": "^4.3.6"
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.9.0"
   }
 }

@@ -1,5 +1,5 @@
 // server/handlers/explain_medicine.handler.js
-const { getMedicineExplanationCard } = require("../services/explainMedicine.service");
+const { getMedicineExplanationCard, answerMedicineField } = require("../services/explainMedicine.service");
 
 module.exports = {
   intent: "explain_medicine",
@@ -14,7 +14,22 @@ module.exports = {
       ? ctx.medicines.find(m => m.id === ctx.focusedMedicine.id) || ctx.medicines[0]
       : ctx.medicines[0];
 
-    const cardData = await getMedicineExplanationCard(target.name);
+    // User asked about ONE aspect (side effects / price / …) → short chat answer, no card.
+    if (ctx.subField) {
+      const { reply } = await answerMedicineField(target.name, ctx.subField);
+      return {
+        reply,               // no cardData → renders as a plain chat bubble
+        primaryMedicine: target,
+        extraSuggestions: [{
+          intent: "explain_medicine",
+          label: "View full details",
+          text: `Show full details of ${target.name}`,
+          action: { type: "card_explain", medicine: { id: target.id, name: target.name } }
+        }]
+      };
+    }
+
+    const cardData = await getMedicineExplanationCard(target.name, ctx.safetyContext);
     return {
       reply: `Here is the explanation for ${cardData.name}.`,
       cardData,

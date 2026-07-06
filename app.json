@@ -45,7 +45,16 @@
             "backgroundColor": "#000000"
           }
         }
-      ]
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow $(PRODUCT_NAME) to access your photos to scan a medicine or prescription.",
+          "cameraPermission": "Allow $(PRODUCT_NAME) to use the camera to scan a medicine or prescription."
+        }
+      ],
+      "expo-font",
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true,

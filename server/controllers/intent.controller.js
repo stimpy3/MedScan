@@ -1,9 +1,170 @@
 // server/controllers/intent.controller.js
 const { classifyIntent, checkIntentDrift } = require("../services/intent.service");
-const { extractMedicines, resolveComparePair } = require("../services/medicineExtraction.service");
+const { extractMedicines, resolveComparePair, resolveImageMedicines } = require("../services/medicineExtraction.service");
 const { getSession, updateSession } = require("../services/session.service");
 const { generateSuggestions } = require("../services/suggestions.service");
 const registry = require("../handlers/registry");
+
+// The four things the assistant can do — offered when an image arrives with no stated goal.
+const INTENT_OPTIONS = [
+  { intent: "explain_medicine", label: "Explain" },
+  { intent: "compare_medicines", label: "Compare" },
+  { intent: "find_alternatives", label: "Find alternatives" },
+  { intent: "schedule_medicine", label: "Schedule" },
+  { intent: "check_availability", label: "Check availability" },
+];
+
+// ── Shared tail: check prerequisites, then run the handler (or ask for what's missing) ──────────
+// Used by the normal classify path AND the image intent-pick path so both behave identically:
+// compare-needs-2 / pick-2-of-many / "which medicine?" disambiguation / missing-prompt / run.
+async function finalize({ res, sessionId, session, currentIntent, intentConfident, namedMedicineThisTurn, intentSwitched }) {
+  const handler = registry[currentIntent];
+  if (!handler) {
+    return res.json({
+      intent: currentIntent,
+      confident: intentConfident,
+      reply: "I'm not sure how to help with that. Try asking me to explain a medicine, find alternatives, compare two medicines, or set up a schedule.",
+      status: "missing_info",
+      medicines: session.prerequisites.medicines
+    });
+  }
+  const requiredMedicines = handler.prerequisites?.medicines ?? 1;
+
+  // For compare: if accumulated medicines > 2, ask user to pick 2.
+  if (currentIntent === "compare_medicines" && session.prerequisites.medicines.length > 2) {
+    console.log(`[IntentController] ${session.prerequisites.medicines.length} medicine candidates — asking user to pick 2`);
+    updateSession(sessionId, {
+      stage: "awaiting_compare_contender",
+      pendingOptions: session.prerequisites.medicines,
+      compareAnchor: null
+    });
+    console.log("========================================\n");
+    return res.json({
+      intent: "compare_medicines",
+      confident: intentConfident,
+      reply: "Which two medicines would you like to compare?",
+      status: "awaiting_contender",
+      compareOptions: session.prerequisites.medicines,
+      medicines: session.prerequisites.medicines
+    });
+  }
+
+  console.log(`[IntentController] Medicines (${session.prerequisites.medicines.length}): ${session.prerequisites.medicines.map(m => m.name).join(", ")}`);
+
+  const ctx = {
+    medicines: session.prerequisites.medicines,
+    focusedMedicine: session.focusedMedicine || null,
+    frequency: session.prerequisites.frequency,
+    dosage: session.prerequisites.dosage,
+    pincode: session.prerequisites.pincode || null,
+    subField: session.explainSubField || null, // explain_medicine only; other handlers ignore it
+    safetyContext: session.safetyContext || null
+  };
+
+  const nowSatisfied = ctx.medicines.length >= requiredMedicines;
+
+  if (!nowSatisfied) {
+    // For compare with exactly 1 medicine: remember it and ask for the 2nd specifically.
+    if (currentIntent === "compare_medicines" && ctx.medicines.length === 1) {
+      updateSession(sessionId, {
+        stage: "awaiting_compare_medicine_2",
+        compareExtracted: ctx.medicines
+      });
+      const reply = `What do you want to compare **${ctx.medicines[0].name}** against?`;
+      console.log(`[IntentController] Compare needs 2nd medicine → "${reply}"`);
+      console.log("========================================\n");
+      return res.json({
+        intent: currentIntent,
+        confident: intentConfident,
+        reply,
+        status: "missing_info",
+        medicines: ctx.medicines
+      });
+    }
+
+    const reply = handler.missingPrompt(ctx);
+    updateSession(sessionId, { stage: "awaiting_prerequisites" });
+    console.log(`[IntentController] Missing prerequisites → "${reply}"`);
+    console.log("========================================\n");
+    return res.json({
+      intent: currentIntent,
+      confident: intentConfident,
+      reply,
+      status: "missing_info",
+      medicines: ctx.medicines
+    });
+  }
+
+  // Pincode prerequisite: ask if the handler requires it and it's not in session.
+  if (handler.prerequisites?.pincode && !ctx.pincode) {
+    const reply = handler.pincodePrompt ? handler.pincodePrompt(ctx) : "What's your pincode?";
+    updateSession(sessionId, { stage: "awaiting_pincode" });
+    console.log(`[IntentController] Missing pincode → "${reply}"`);
+    console.log("========================================\n");
+    return res.json({
+      intent: currentIntent,
+      confident: intentConfident,
+      reply,
+      status: "missing_info",
+      medicines: ctx.medicines
+    });
+  }
+
+  // Vague request: an intent switch without naming a medicine, when several are known → let them choose.
+  if (!namedMedicineThisTurn && intentSwitched && requiredMedicines === 1 && ctx.medicines.length > 1) {
+    const options = ctx.medicines.map(m => ({ id: m.id, name: m.name }));
+    console.log(`[IntentController] Vague intent switch with ${options.length} known medicines — asking which one`);
+    updateSession(sessionId, { stage: "awaiting_medicine", pendingOptions: options });
+    console.log("========================================\n");
+    return res.json({
+      intent: currentIntent,
+      confident: intentConfident,
+      reply: handler.missingPrompt(ctx) || "Which medicine?",
+      status: "ambiguous",
+      medicines: ctx.medicines,
+      medicineOptions: options
+    });
+  }
+
+  // Run the handler.
+  const result = await handler.run(ctx);
+  const { reply, primaryMedicine, lastAlternatives, extraSuggestions, ...responsePayload } = result;
+
+  if (primaryMedicine) {
+    updateSession(sessionId, { focusedMedicine: primaryMedicine });
+  }
+  const newAlternatives = lastAlternatives || [];
+  updateSession(sessionId, {
+    stage: "completed",
+    lastAlternatives: newAlternatives,
+    lastAlternativesAnchor: newAlternatives.length ? (primaryMedicine || null) : null
+  });
+
+  let suggestions;
+  if (handler.generatesSuggestions) {
+    suggestions = await generateSuggestions({
+      lastIntent: currentIntent,
+      activeMedicines: ctx.medicines,
+      focusedMedicine: primaryMedicine || ctx.focusedMedicine || null,
+      lastAlternatives: lastAlternatives || []
+    });
+  }
+  // Handler-provided bubbles (e.g. "View full details" after a targeted answer) come first.
+  if (extraSuggestions?.length) suggestions = [...extraSuggestions, ...(suggestions || [])];
+
+  console.log(`[IntentController] Completed intent "${currentIntent}"`);
+  console.log("========================================\n");
+
+  return res.json({
+    intent: currentIntent,
+    confident: intentConfident,
+    reply,
+    medicines: ctx.medicines,
+    ...responsePayload,
+    suggestions,
+    status: "success"
+  });
+}
 
 // ── Compare slot-flow helper ──────────────────────────────────────────────────
 // Drives the "compare from scratch" flow with grounded slot resolution. Given the message,
@@ -125,23 +286,28 @@ async function resolveCompareFlow({ sessionId, session, message, intentConfident
 async function handleClassify(req, res) {
   console.log("\n🔵 [IntentController] REQUEST RECEIVED");
   try {
-    const { sessionId, message, history, action } = req.body;
+    const { sessionId, message, history, action, ocr, safetyContext } = req.body;
     console.log("\n========================================");
     console.log("[IntentController] incoming request", {
       sessionId,
       message,
       historyLength: Array.isArray(history) ? history.length : 0,
-      action: action?.type || "none"
+      action: action?.type || "none",
+      ocr: ocr ? `${ocr.documentType} (${(ocr.medicines || []).length} med)` : "none",
+      safetyContext: safetyContext ? "present" : "none"
     });
 
-    if (!message && !action) {
-      return res.status(400).json({ error: "message or action is required" });
+    if (!message && !action && !ocr) {
+      return res.status(400).json({ error: "message, action, or ocr is required" });
     }
     if (message && typeof message !== "string") {
       return res.status(400).json({ error: "message must be a string" });
     }
 
     const session = getSession(sessionId);
+    // Always overwrite (never merge) so clearing/switching the active profile client-side
+    // clears it here too. Never persisted beyond the in-memory session.
+    updateSession(sessionId, { safetyContext: safetyContext || null });
 
     // ── Step -1: Explicit UI action dispatch ─────────────────────────────────
     // Card/bubble clicks carry deterministic intent — bypass drift pipeline entirely.
@@ -158,7 +324,8 @@ async function handleClassify(req, res) {
         activeIntent: "explain_medicine",
         prerequisites: session.prerequisites,
         stage: null,
-        pendingOptions: []
+        pendingOptions: [],
+        explainSubField: null // explicit card view is always the FULL card
       });
 
       const handler = registry["explain_medicine"];
@@ -168,7 +335,8 @@ async function handleClassify(req, res) {
         medicines: [med],
         focusedMedicine: med,
         frequency: null,
-        dosage: null
+        dosage: null,
+        safetyContext: session.safetyContext || null
       };
       const result = await handler.run(ctx);
       const { reply, primaryMedicine, lastAlternatives, ...responsePayload } = result;
@@ -264,7 +432,7 @@ async function handleClassify(req, res) {
       const handler = registry["compare_medicines"];
       if (!handler) return res.status(500).json({ error: "No compare_medicines handler" });
 
-      const ctx = { medicines: [medA, medB], focusedMedicine: medA, frequency: null, dosage: null };
+      const ctx = { medicines: [medA, medB], focusedMedicine: medA, frequency: null, dosage: null, safetyContext: session.safetyContext || null };
       const result = await handler.run(ctx);
       const { reply, primaryMedicine, lastAlternatives, ...responsePayload } = result;
       if (primaryMedicine) updateSession(sessionId, { focusedMedicine: primaryMedicine });
@@ -290,6 +458,127 @@ async function handleClassify(req, res) {
         suggestions,
         status: "success"
       });
+    }
+
+    if (action?.type === "intent_pick") {
+      // User chose what to do after uploading an image (the 4-intent chooser).
+      const intent = action.intent;
+      if (!intent || !registry[intent]) {
+        return res.status(400).json({ error: "intent_pick action requires a valid intent" });
+      }
+      updateSession(sessionId, { activeIntent: intent, stage: null, explainSubField: null });
+
+      // Pull in the medicines we grounded from the image on the chooser turn.
+      const staged = session.imageMedicines || { grounded: [], ambiguous: [] };
+      const pool = session.prerequisites.medicines;
+      for (const m of staged.grounded) {
+        if (!pool.some(p => p.id === m.id)) pool.push(m);
+      }
+      session.prerequisites.medicines = pool;
+      updateSession(sessionId, { prerequisites: session.prerequisites, imageMedicines: null });
+
+      // A detected name still needs disambiguation → resolve it before running.
+      if (staged.ambiguous?.length) {
+        const amb = staged.ambiguous[0];
+        updateSession(sessionId, {
+          stage: "awaiting_medicine",
+          pendingOptions: amb.options,
+          compareExtracted: intent === "compare_medicines" ? pool.slice() : []
+        });
+        console.log(`[IntentController] Intent picked "${intent}" → clarifying "${amb.query}"`);
+        console.log("========================================\n");
+        return res.json({
+          intent,
+          confident: true,
+          reply: `Which "${amb.query}" did you mean?`,
+          status: "ambiguous",
+          medicines: pool,
+          medicineOptions: amb.options
+        });
+      }
+
+      console.log(`[IntentController] Intent picked "${intent}" → finalizing with ${pool.length} medicine(s)`);
+      return await finalize({
+        res, sessionId, session,
+        currentIntent: intent,
+        intentConfident: true,
+        namedMedicineThisTurn: false, // let the "which one?" picker fire if >1 for a single-medicine intent
+        intentSwitched: true
+      });
+    }
+
+    // ── Step -0.5: Image (OCR) ingestion ─────────────────────────────────────
+    // An uploaded image arrives as { ocr: { documentType, medicines, rawText } }, possibly with no
+    // message. Ground its medicines into the prerequisite pool, stash the raw text as context, then
+    // either ask what to do (no goal yet) or fall through to the normal flow with the pool pre-filled.
+    if (ocr) {
+      const resolved = await resolveImageMedicines(ocr.medicines || []);
+      updateSession(sessionId, {
+        imageContext: {
+          medicines: ocr.medicines || [], // structured JSON — primary context
+          rawText: ocr.rawText || "",      // raw OCR text — secondary context
+          documentType: ocr.documentType || "unrelated"
+        }
+      });
+
+      const totalFound = resolved.grounded.length + resolved.ambiguous.length;
+      if (ocr.documentType === "unrelated" || totalFound === 0) {
+        console.log("[IntentController] Image had no recognizable medicine");
+        console.log("========================================\n");
+        return res.json({
+          intent: session.activeIntent || null,
+          confident: false,
+          reply: "I couldn't find a medicine in that image. You can type the name, or try a clearer photo of the label or prescription.",
+          status: "no_medicine",
+          medicines: session.prerequisites.medicines
+        });
+      }
+
+      // Add confidently-grounded medicines to the pool now.
+      const pool = session.prerequisites.medicines;
+      for (const m of resolved.grounded) {
+        if (!pool.some(p => p.id === m.id)) pool.push(m);
+      }
+      session.prerequisites.medicines = pool;
+      updateSession(sessionId, { prerequisites: session.prerequisites });
+
+      // No accompanying text and no goal in progress → ask which of the four intents.
+      if (!message && (!session.activeIntent || session.stage === "completed" || session.stage == null)) {
+        updateSession(sessionId, { imageMedicines: resolved, stage: "awaiting_intent" });
+        const found = [...resolved.grounded.map(m => m.name), ...resolved.ambiguous.map(a => a.query)];
+        const namesText = found.length ? found.join(" and ") : "a medicine";
+        console.log(`[IntentController] Image → asking intent (found: ${namesText})`);
+        console.log("========================================\n");
+        return res.json({
+          intent: null,
+          confident: false,
+          reply: `I found ${namesText} in your image. What would you like to do?`,
+          status: "choose_intent",
+          intentOptions: INTENT_OPTIONS,
+          medicines: pool
+        });
+      }
+
+      // There IS text (or an in-progress intent). If a detected name is ambiguous, clarify it first.
+      if (resolved.ambiguous.length) {
+        const amb = resolved.ambiguous[0];
+        updateSession(sessionId, {
+          stage: "awaiting_medicine",
+          pendingOptions: amb.options,
+          compareExtracted: session.activeIntent === "compare_medicines" ? pool.slice() : []
+        });
+        console.log(`[IntentController] Image + text → clarifying "${amb.query}"`);
+        console.log("========================================\n");
+        return res.json({
+          intent: session.activeIntent || null,
+          confident: false,
+          reply: `Which "${amb.query}" did you mean?`,
+          status: "ambiguous",
+          medicines: pool,
+          medicineOptions: amb.options
+        });
+      }
+      // else: fall through to normal classification using `message`, pool pre-filled.
     }
 
     // ── Step 0: Clarification selection lock ──────────────────────────────────
@@ -363,6 +652,19 @@ async function handleClassify(req, res) {
       }
     }
 
+    // Sub-case C-pre: user is providing their pincode
+    if (!selectionResolved && session.stage === "awaiting_pincode") {
+      const pincodeMatch = (message || "").match(/\b\d{6}\b/);
+      if (pincodeMatch) {
+        const pincode = pincodeMatch[0];
+        session.prerequisites.pincode = pincode;
+        updateSession(sessionId, { stage: null, prerequisites: session.prerequisites });
+        selectionResolved = true;
+        console.log(`[IntentController] Pincode resolved → ${pincode}`);
+      }
+      // If no 6-digit number found, fall through — finalize will ask again
+    }
+
     // Sub-case C: user is providing the 2nd medicine for a fresh compare
     if (!selectionResolved && session.stage === "awaiting_compare_medicine_2") {
       try {
@@ -413,32 +715,40 @@ async function handleClassify(req, res) {
       // Keep the active intent — user only disambiguated medicine/contender choice.
       console.log(`[IntentController] Selection locked — keeping intent "${currentIntent}", skipping drift`);
     } else if (action?.type === "bubble") {
-      // Bubble click carries the intent directly — skip drift.
+      // Bubble click carries the intent directly — skip drift. Bubbles are whole-intent
+      // actions, so any stale targeted sub-field state must not hijack them.
       currentIntent = action.intent;
+      updateSession(sessionId, { explainSubField: null });
       console.log(`[IntentController] Bubble click → intent "${currentIntent}" (skip drift)`);
     } else if (currentIntent && session.stage === "completed") {
       // The current intent has been answered. Only now may the user drift to a different
       // intent — judge whether this new message continues or switches.
-      const driftAction = await checkIntentDrift(currentIntent, message);
-      console.log(`[IntentController] Drift check: ${driftAction}`);
+      const drift = await checkIntentDrift(currentIntent, message);
+      console.log(`[IntentController] Drift check: ${drift.action} (subField: ${drift.subField})`);
 
-      if (driftAction === "switch" || driftAction === "unclear") {
-        const classifyHistory = driftAction === "switch" ? [] : history;
+      if (drift.action === "switch" || drift.action === "unclear") {
+        const classifyHistory = drift.action === "switch" ? [] : history;
         const result = await classifyIntent(message, classifyHistory);
         currentIntent = result.intent;
         intentConfident = result.confident;
-        console.log(`[IntentController] Reclassified → "${currentIntent}" (confident: ${intentConfident})`);
+        updateSession(sessionId, { explainSubField: currentIntent === "explain_medicine" ? result.subField : null });
+        console.log(`[IntentController] Reclassified → "${currentIntent}" (confident: ${intentConfident}, subField: ${result.subField})`);
+      } else {
+        // "continue" → keep current intent; the follow-up message re-derives the sub-field
+        // (e.g. "and its side effects?" → side_effects, "tell me everything" → null).
+        updateSession(sessionId, { explainSubField: drift.subField ?? null });
       }
-      // "continue" → keep current intent
     } else if (currentIntent) {
       // Active intent that hasn't been answered yet (an awaiting_* stage). This message is
       // the answer to what we asked — keep the intent and let extraction pull the medicine.
-      // Don't drift-check the answer away.
+      // Don't drift-check the answer away. (explainSubField also survives untouched, so
+      // "price of almox" → "which one?" → pick still answers just the price.)
       console.log(`[IntentController] Intent "${currentIntent}" still awaiting answer (stage: ${session.stage}) — keeping it, skipping drift`);
     } else {
       const result = await classifyIntent(message, history);
       currentIntent = result.intent;
       intentConfident = result.confident;
+      updateSession(sessionId, { explainSubField: currentIntent === "explain_medicine" ? result.subField : null });
     }
 
     // ── Step 2: Intent switch housekeeping ───────────────────────────────────
@@ -466,9 +776,8 @@ async function handleClassify(req, res) {
     }
 
     // ── Step 4: Extract medicines ────────────────────────────────────────────
-    const requiredMedicines = handler.prerequisites?.medicines ?? 1;
     // Whether the user explicitly named a medicine in THIS message. Drives the focus change
-    // and the "vague request" fallback below.
+    // and the "vague request" fallback below (consumed by finalize()).
     let namedMedicineThisTurn = false;
 
     // A suggestion bubble was generated FOR the medicine currently in focus, so it already refers to
@@ -559,131 +868,23 @@ async function handleClassify(req, res) {
       console.log("[IntentController] Selection already locked — skipping extraction");
     }
 
-    // For compare: if accumulated medicines > 2, ask user to pick 2.
-    if (currentIntent === "compare_medicines" && session.prerequisites.medicines.length > 2) {
-      console.log(`[IntentController] ${session.prerequisites.medicines.length} medicine candidates — asking user to pick 2`);
-      updateSession(sessionId, {
-        stage: "awaiting_compare_contender",
-        pendingOptions: session.prerequisites.medicines,
-        compareAnchor: null
-      });
-      console.log("========================================\n");
-      return res.json({
-        intent: "compare_medicines",
-        confident: intentConfident,
-        reply: "Which two medicines would you like to compare?",
-        status: "awaiting_contender",
-        compareOptions: session.prerequisites.medicines,
-        medicines: session.prerequisites.medicines
-      });
-    }
-
-    console.log(`[IntentController] Medicines (${session.prerequisites.medicines.length}): ${session.prerequisites.medicines.map(m => m.name).join(", ")}`);
-
-    // ── Step 5: Check prerequisites or run handler ───────────────────────────
-    const ctx = {
-      medicines: session.prerequisites.medicines,
-      focusedMedicine: session.focusedMedicine || null,
-      frequency: session.prerequisites.frequency,
-      dosage: session.prerequisites.dosage
-    };
-
-    const nowSatisfied = ctx.medicines.length >= requiredMedicines;
-
-    if (!nowSatisfied) {
-      // For compare with exactly 1 medicine: remember it and ask for the 2nd specifically.
-      if (currentIntent === "compare_medicines" && ctx.medicines.length === 1) {
-        updateSession(sessionId, {
-          stage: "awaiting_compare_medicine_2",
-          compareExtracted: ctx.medicines
-        });
-        const reply = `What do you want to compare **${ctx.medicines[0].name}** against?`;
-        console.log(`[IntentController] Compare needs 2nd medicine → "${reply}"`);
-        console.log("========================================\n");
-        return res.json({
-          intent: currentIntent,
-          confident: intentConfident,
-          reply,
-          status: "missing_info",
-          medicines: ctx.medicines
-        });
+    // ── Step 4.5: Extract pincode if message contains one ───────────────────
+    if (currentIntent === "check_availability" && !session.prerequisites.pincode && message) {
+      const pincodeMatch = message.match(/\b\d{6}\b/);
+      if (pincodeMatch) {
+        session.prerequisites.pincode = pincodeMatch[0];
+        updateSession(sessionId, { prerequisites: session.prerequisites });
+        console.log(`[IntentController] Pincode extracted inline → ${pincodeMatch[0]}`);
       }
-
-      const reply = handler.missingPrompt(ctx);
-      updateSession(sessionId, { stage: "awaiting_prerequisites" });
-      console.log(`[IntentController] Missing prerequisites → "${reply}"`);
-      console.log("========================================\n");
-      return res.json({
-        intent: currentIntent,
-        confident: intentConfident,
-        reply,
-        status: "missing_info",
-        medicines: ctx.medicines
-      });
     }
 
-    // ── Step 5b: Vague request on an intent switch ───────────────────────────
-    // The user switched intents without naming a medicine (e.g. "schedule my medicine").
-    // If several medicines are known, don't assume the last focus — let them choose. A
-    // same-intent follow-up ("its side effects") falls through and reuses the focus.
-    if (
-      !namedMedicineThisTurn &&
-      intentSwitched &&
-      requiredMedicines === 1 &&
-      ctx.medicines.length > 1
-    ) {
-      const options = ctx.medicines.map(m => ({ id: m.id, name: m.name }));
-      console.log(`[IntentController] Vague intent switch with ${options.length} known medicines — asking which one`);
-      updateSession(sessionId, { stage: "awaiting_medicine", pendingOptions: options });
-      console.log("========================================\n");
-      return res.json({
-        intent: currentIntent,
-        confident: intentConfident,
-        reply: handler.missingPrompt(ctx) || "Which medicine?",
-        status: "ambiguous",
-        medicines: ctx.medicines,
-        medicineOptions: options
-      });
-    }
-
-    // ── Step 6: Run the handler ───────────────────────────────────────────────
-    const result = await handler.run(ctx);
-    const { reply, primaryMedicine, lastAlternatives, ...responsePayload } = result;
-
-    if (primaryMedicine) {
-      updateSession(sessionId, { focusedMedicine: primaryMedicine });
-    }
-    const newAlternatives = lastAlternatives || [];
-    updateSession(sessionId, {
-      stage: "completed",
-      lastAlternatives: newAlternatives,
-      // Remember which medicine these alternatives belong to so a later card "Compare"
-      // can anchor on it even after a View-Details detour. Clear it when there are none.
-      lastAlternativesAnchor: newAlternatives.length ? (primaryMedicine || null) : null
-    });
-
-    // ── Step 7: Generate follow-up suggestions ────────────────────────────────
-    let suggestions;
-    if (handler.generatesSuggestions) {
-      suggestions = await generateSuggestions({
-        lastIntent: currentIntent,
-        activeMedicines: ctx.medicines,
-        focusedMedicine: primaryMedicine || ctx.focusedMedicine || null,
-        lastAlternatives: lastAlternatives || []
-      });
-    }
-
-    console.log(`[IntentController] Completed intent "${currentIntent}"`);
-    console.log("========================================\n");
-
-    return res.json({
-      intent: currentIntent,
-      confident: intentConfident,
-      reply,
-      medicines: ctx.medicines,
-      ...responsePayload,
-      suggestions,
-      status: "success"
+    // ── Step 5–7: Check prerequisites, run the handler, emit suggestions ─────
+    return await finalize({
+      res, sessionId, session,
+      currentIntent,
+      intentConfident,
+      namedMedicineThisTurn,
+      intentSwitched
     });
 
   } catch (err) {

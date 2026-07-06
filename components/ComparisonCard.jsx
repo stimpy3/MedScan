@@ -1,7 +1,8 @@
 // components/ComparisonCard.jsx
-import { Check, Lightbulb } from "lucide-react-native";
+import { Check, Globe, Lightbulb, TriangleAlert } from "lucide-react-native";
 import { Text, View } from "react-native";
 import HardShadow from './HardShadow';
+import SafetyWarnings from './SafetyWarnings';
 
 const C = {
   bg:      "#ede8d8",
@@ -25,8 +26,16 @@ const SHADOW = {
   elevation: 6,
 };
 
-function MedColumn({ med, isCheaper, priceDeltaPct, align }) {
+// Colors for the per-medicine caution-count badge, keyed by the medicine's worst severity.
+const CAUTION_BADGE = {
+  high:   { bg: "#ffe0e0", fg: "#e53e3e" },
+  medium: { bg: "#ede8d8", fg: "#9f9065" },
+  low:    { bg: "#ffffff", fg: "#2198a8" },
+};
+
+function MedColumn({ med, isCheaper, priceDeltaPct, align, cautions }) {
   const accent = align === "left" ? C.blue : C.purple;
+  const badge = cautions?.count ? CAUTION_BADGE[cautions.severity] || CAUTION_BADGE.low : null;
   return (
     <View style={{ flex: 1, alignItems: align === "left" ? "flex-start" : "flex-end" }}>
       <Text
@@ -47,6 +56,15 @@ function MedColumn({ med, isCheaper, priceDeltaPct, align }) {
       {isCheaper && priceDeltaPct ? (
         <View style={{ backgroundColor: C.greenBg, paddingHorizontal: 8, paddingVertical: 3, borderRadius: 4, marginTop: 5, borderWidth: 1.5, borderColor: C.border, alignSelf: align === "left" ? "flex-start" : "flex-end" }}>
           <Text style={{ fontSize: 9, fontWeight: "900", color: C.green }}>BEST PRICE · -{priceDeltaPct}%</Text>
+        </View>
+      ) : null}
+
+      {badge ? (
+        <View style={{ flexDirection: "row", alignItems: "center", gap: 4, backgroundColor: badge.bg, paddingHorizontal: 8, paddingVertical: 3, borderRadius: 4, marginTop: 5, borderWidth: 1.5, borderColor: C.border, alignSelf: align === "left" ? "flex-start" : "flex-end" }}>
+          <TriangleAlert size={10} color={badge.fg} strokeWidth={3} />
+          <Text style={{ fontSize: 9, fontWeight: "900", color: badge.fg }}>
+            {cautions.count} CAUTION{cautions.count > 1 ? "S" : ""}
+          </Text>
         </View>
       ) : null}
     </View>
@@ -72,11 +90,26 @@ function DiffRow({ row, zebra }) {
   );
 }
 
+// Worst severity present in a warning list — drives the caution badge color.
+function maxSeverity(warnings) {
+  if (warnings.some(w => w.severity === "high")) return "high";
+  if (warnings.some(w => w.severity === "medium")) return "medium";
+  return "low";
+}
+
 export default function ComparisonCard({ data }) {
   if (!data || !Array.isArray(data.medicines) || data.medicines.length < 2) return null;
 
-  const { medicines, cheaper, priceDeltaPct, differences = [], similarities = [], verdict } = data;
+  const { medicines, cheaper, priceDeltaPct, differences = [], similarities = [], verdict, sources = [], safety } = data;
   const [a, b] = medicines;
+
+  // Personalized safety (absent/unchecked → all of this stays null and nothing safety renders).
+  const perMedicine = safety?.checked ? safety.perMedicine || [] : [];
+  const cautionsFor = (i) => {
+    const warnings = perMedicine[i]?.warnings || [];
+    return warnings.length ? { count: warnings.length, severity: maxSeverity(warnings) } : null;
+  };
+  const anySafetyWarnings = perMedicine.some(pm => (pm.warnings || []).length > 0);
 
   return (
     <HardShadow style={{ width: "100%", marginVertical: 10 }}>
@@ -88,13 +121,13 @@ export default function ComparisonCard({ data }) {
 
       {/* VS Header strip */}
       <View style={{ backgroundColor: C.surface, borderRadius: 4, borderWidth: 1.5, borderColor: C.border, paddingVertical: 16, paddingHorizontal: 14, flexDirection: "row", alignItems: "flex-start", marginBottom: 18 }}>
-        <MedColumn med={a} isCheaper={cheaper === "A"} priceDeltaPct={priceDeltaPct} align="left" />
+        <MedColumn med={a} isCheaper={cheaper === "A"} priceDeltaPct={priceDeltaPct} align="left" cautions={cautionsFor(0)} />
 
         <View style={{ alignItems: "center", justifyContent: "center", paddingHorizontal: 10, paddingTop: 4 }}>
           <Text style={{ color: C.ochre, fontSize: 22, fontWeight: "900", letterSpacing: 0.5 }}>VS</Text>
         </View>
 
-        <MedColumn med={b} isCheaper={cheaper === "B"} priceDeltaPct={priceDeltaPct} align="right" />
+        <MedColumn med={b} isCheaper={cheaper === "B"} priceDeltaPct={priceDeltaPct} align="right" cautions={cautionsFor(1)} />
       </View>
 
       {differences.length > 0 ? (
@@ -143,6 +176,42 @@ export default function ComparisonCard({ data }) {
         <View style={{ flexDirection: "row", backgroundColor: C.surface, borderLeftWidth: 3, borderLeftColor: C.blue, borderRadius: 4, padding: 13, marginTop: 14, alignItems: "flex-start", borderWidth: 1.5, borderColor: C.border }}>
           <Lightbulb size={18} color={C.blue} style={{ marginRight: 10, marginTop: 1, flexShrink: 0 }} />
           <Text style={{ flex: 1, fontSize: 13, color: C.dark, fontWeight: "600", lineHeight: 19 }}>{verdict}</Text>
+        </View>
+      ) : null}
+
+      {/* Personalized safety — one subsection per medicine, or a single clean row when neither
+          raised anything. Hidden entirely when the check never ran (no profile). */}
+      {safety?.checked ? (
+        <View style={{ marginTop: 16 }}>
+          {anySafetyWarnings ? (
+            <>
+              {perMedicine.map((pm, i) => (
+                (pm.warnings || []).length > 0 ? (
+                  <SafetyWarnings
+                    key={i}
+                    compact
+                    title={`For Your Profile · ${pm.name}`}
+                    safety={{ checked: true, warnings: pm.warnings, note: pm.note }}
+                  />
+                ) : null
+              ))}
+            </>
+          ) : (
+            <SafetyWarnings compact title="For Your Profile" safety={{ checked: true, warnings: [], note: null }} />
+          )}
+          <Text style={{ fontSize: 10, color: C.meta, lineHeight: 14 }}>
+            AI check based on the profile you entered — not medical advice. Confirm with a doctor or pharmacist.
+          </Text>
+        </View>
+      ) : null}
+
+      {/* Transparency note: shown only when missing data was filled from the web */}
+      {Array.isArray(sources) && sources.length > 0 ? (
+        <View style={{ flexDirection: "row", alignItems: "center", marginTop: 12, gap: 6 }}>
+          <Globe size={12} color={C.meta} />
+          <Text style={{ fontSize: 10, fontWeight: "800", color: C.meta, letterSpacing: 0.5 }}>
+            SOURCES CHECKED · TATA 1MG ({sources.length} PAGE{sources.length > 1 ? "S" : ""})
+          </Text>
         </View>
       ) : null}
     </View>

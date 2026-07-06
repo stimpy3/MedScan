@@ -39,7 +39,7 @@ module.exports = {
         reply: `I need two different medicines to compare. Which medicine would you like to compare ${medA?.name || "it"} with?`
       };
     }
-    const comparisonData = await getComparison(medA.name, medB.name);
+    const comparisonData = await getComparison(medA.name, medB.name, ctx.safetyContext || null);
 
     return {
       reply: `Here is the comparison for ${medA.name} and ${medB.name}.`,

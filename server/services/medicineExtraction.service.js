@@ -3,7 +3,7 @@ const path = require("path");
 const csv = require("csv-parser");
 const { Document } = require("flexsearch");
 const levenshtein = require("fast-levenshtein");
-const { chatCompletionJson } = require("./groq.service");
+const { chatCompletionJson, chatCompletionJsonSmart } = require("./groq.service");
 const { SYSTEM_PROMPT } = require("../prompts/medicineExtraction.prompt");
 const { COMPARE_VALIDATE_SYSTEM_PROMPT } = require("../prompts/compareValidate.prompt");
 const { cleanLlmJsonResponse } = require("../utils/helpers");
@@ -480,7 +480,10 @@ async function validateMentions(message, slots) {
     { role: "user", content: `User message: "${message}"\n\nDetected mentions:\n${slots.map((s, i) => `${i + 1}. phrase: "${s.query}" → matched medicine: "${s.topName}"`).join("\n")}\n\nReturn a verdict for every numbered mention, echoing its index.` }
   ];
   try {
-    const responseText = await chatCompletionJson(llmPrompt);
+    // SMART tier: this is a grammatical-role judgment call ("meant"/verb vs "codex"/name) with a
+    // documented history of subtle mistakes on smaller models — worth the rate-limit cost, and it
+    // only runs once per compare-from-scratch resolution, not on every message.
+    const responseText = await chatCompletionJsonSmart(llmPrompt);
     const result = JSON.parse(cleanLlmJsonResponse(responseText));
     const arr = Array.isArray(result.results) ? result.results : [];
     const byIndex = new Map();
@@ -505,4 +508,43 @@ async function validateMentions(message, slots) {
   }
 }
 
-module.exports = { initMedicineService, extractMedicines, resolveComparePair };
+// ── Image (OCR) medicine resolver ─────────────────────────────────────────────
+// Grounds the structured medicines Gemini read off a label/prescription against our dataset.
+// Each detected name (+ its dosage, which helps pick the right variant) is retrieved and scored
+// with the SAME machinery as typed text, then run through decideSlot. No LLM validation needed —
+// these came from the vision model's structured extraction, not free conversational text.
+// Returns { grounded: [{id,name}], ambiguous: [{query, options}], unresolved: [name,...] }.
+async function resolveImageMedicines(ocrMedicines) {
+  const grounded = [];
+  const ambiguous = [];
+  const unresolved = [];
+
+  for (const item of (ocrMedicines || [])) {
+    const rawName = (item?.name || "").trim();
+    if (!rawName) continue;
+
+    const query = [rawName, item?.dosage].filter(Boolean).join(" ");
+    const ngrams = buildNgrams(query);
+    const candidateMap = new Map();
+    flexSearchPass(ngrams, candidateMap);
+    trigramPass(ngrams, candidateMap);
+    const pool = Array.from(candidateMap.values());
+    if (pool.length === 0) { unresolved.push(rawName); continue; }
+
+    const cleanQuery = buildCleanQuery(query);
+    const scored = pool
+      .map(c => ({ id: c.id, name: c.name, similarity: getSimilarity(cleanQuery, c.name) }))
+      .filter(c => c.similarity >= RELEVANCE_FLOOR)
+      .sort((a, b) => b.similarity - a.similarity);
+    if (scored.length === 0) { unresolved.push(rawName); continue; }
+
+    const decision = decideSlot(scored);
+    if (decision.status === "confident") grounded.push(decision.medicine);
+    else ambiguous.push({ query: rawName, options: decision.options });
+  }
+
+  console.log(`[ImageResolve] grounded=[${grounded.map(m => m.name).join(", ") || "none"}] ambiguous=[${ambiguous.map(a => a.query).join(", ") || "none"}] unresolved=[${unresolved.join(", ") || "none"}]`);
+  return { grounded, ambiguous, unresolved };
+}
+
+module.exports = { initMedicineService, extractMedicines, resolveComparePair, resolveImageMedicines, getSimilarity };

@@ -1,8 +1,9 @@
 // components/MedicineCard.jsx
-import { ChevronDown, ChevronUp } from "lucide-react-native";
+import { ChevronDown, ChevronUp, Globe } from "lucide-react-native";
 import { useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import HardShadow from './HardShadow';
+import SafetyWarnings from './SafetyWarnings';
 
 const C = {
   bg:      "#ede8d8",
@@ -27,7 +28,7 @@ export default function MedicineCard({ data }) {
   const [expandedSection, setExpandedSection] = useState("overview");
   if (!data) return null;
 
-  const { name, type = "Allopathy", category = "Medication", short_desc, price, pack_size, overview, composition, side_effects, manufacturer } = data;
+  const { name, type = "Allopathy", category = "Medication", short_desc, price, pack_size, overview, composition, side_effects, manufacturer, sources, safety } = data;
 
   const toggle = (id) => setExpandedSection(prev => (prev === id ? null : id));
 
@@ -93,10 +94,22 @@ export default function MedicineCard({ data }) {
         <Text style={{ fontSize: 13, fontWeight: "800", color: C.dark }}>{pack_size || "Standard"}</Text>
       </View>
 
+      <SafetyWarnings safety={safety} />
+
       <AccordionItem id="overview"     title="Overview"      content={overview} />
       <AccordionItem id="composition"  title="Composition"   content={composition} />
       <AccordionItem id="side_effects" title="Side Effects"  content={side_effects} />
       <AccordionItem id="manufacturer" title="Manufacturer"  content={manufacturer} />
+
+      {/* Transparency note: shown only when missing data was filled from the web */}
+      {Array.isArray(sources) && sources.length > 0 ? (
+        <View style={{ flexDirection: "row", alignItems: "center", marginTop: 6, gap: 6 }}>
+          <Globe size={12} color={C.meta} />
+          <Text style={{ fontSize: 10, fontWeight: "800", color: C.meta, letterSpacing: 0.5 }}>
+            SOURCES CHECKED · TATA 1MG ({sources.length} PAGE{sources.length > 1 ? "S" : ""})
+          </Text>
+        </View>
+      ) : null}
     </View>
     </HardShadow>
   );

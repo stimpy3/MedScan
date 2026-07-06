@@ -1,16 +1,20 @@
-import Constants from 'expo-constants';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { ArrowLeft, Send } from 'lucide-react-native';
+import { ArrowLeft } from 'lucide-react-native';
 import { useEffect, useRef, useState } from 'react';
-import { Keyboard, KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Keyboard, KeyboardAvoidingView, Platform, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import AlternativesCarousel from '../../components/AlternativesCarousel';
+import AvailabilityCard from '../../components/AvailabilityCard';
+import ChatInputBar from '../../components/ChatInputBar';
 import CompareClarifyCard from '../../components/CompareClarifyCard';
 import ComparisonCard from '../../components/ComparisonCard';
 import HardShadow from '../../components/HardShadow';
+import IntentOptionsCard from '../../components/IntentOptionsCard';
 import MedicineCard from '../../components/MedicineCard';
 import MedicineOptionsCard from '../../components/MedicineOptionsCard';
 import ScheduleFormCard from '../../components/ScheduleFormCard';
+import { getApiBaseUrl } from '../services/ocrService';
 import { addSchedule } from '../services/scheduleService';
+import { buildSafetyContext, getActiveProfile } from '../services/profileService';
 
 const C = {
   bg:      '#faf9f5',
@@ -30,32 +34,9 @@ const SHADOW = {
   elevation: 6,
 };
 
-const getApiBaseUrl = () => {
-  const envUrl = process.env.EXPO_PUBLIC_API_URL?.trim();
-  if (envUrl) {
-    if (Platform.OS !== 'web' && /localhost|127\.0\.0\.1/.test(envUrl)) {
-      console.log('[ChatPage] ignoring localhost env on native', { envUrl });
-    } else {
-      console.log('[ChatPage] using env api url', { envUrl });
-      return envUrl;
-    }
-  }
-
-  if (Platform.OS === 'web') return 'http://localhost:3000';
-  if (Platform.OS === 'android') {
-    console.log('[ChatPage] using android fallback api url');
-    return 'http://10.0.2.2:3000';
-  }
-
-  const hostUri = Constants.expoConfig?.hostUri || '';
-  const host = hostUri.split(':')[0] || 'localhost';
-  console.log('[ChatPage] using expo host fallback api url', { host });
-  return `http://${host}:3000`;
-};
-
 export default function ChatPage() {
   const router = useRouter();
-  const { initialMessage } = useLocalSearchParams();
+  const { initialMessage, initialOcr } = useLocalSearchParams();
 
   const [inputText, setInputText] = useState('');
   const [messages, setMessages] = useState([]);
@@ -65,17 +46,28 @@ export default function ChatPage() {
   const sessionIdRef = useRef(Date.now().toString() + Math.random().toString(36).substring(2));
   const scrollViewRef = useRef(null);
   const initialTriggered = useRef(false);
+  // Snapshotted once per chat session (a chat is short-lived, so a per-mount read is enough);
+  // refreshed after in-chat schedule adds so newly-scheduled meds count as "current medicines".
+  const safetyContextRef = useRef(null);
+
+  useEffect(() => {
+    buildSafetyContext().then(ctx => { safetyContextRef.current = ctx; }).catch(() => {});
+  }, []);
 
   useEffect(() => {
     scrollViewRef.current?.scrollToEnd({ animated: true });
   }, [messages]);
 
   useEffect(() => {
-    if (initialMessage && !initialTriggered.current) {
+    if ((initialMessage || initialOcr) && !initialTriggered.current) {
       initialTriggered.current = true;
-      sendMessage(initialMessage);
+      let ocr = null;
+      if (initialOcr) {
+        try { ocr = JSON.parse(initialOcr); } catch (e) { console.log('[ChatPage] bad initialOcr param', e); }
+      }
+      sendMessage(initialMessage || '', null, ocr);
     }
-  }, [initialMessage]);
+  }, [initialMessage, initialOcr]);
 
   const [keyboardHeight, setKeyboardHeight] = useState(0);
   useEffect(() => {
@@ -84,22 +76,24 @@ export default function ChatPage() {
     return () => { showSub.remove(); hideSub.remove(); };
   }, []);
 
-  const sendMessage = async (textToSubmit, action = null) => {
+  const sendMessage = async (textToSubmit, action = null, ocr = null) => {
     const apiText = (textToSubmit || "").trim();
-    if (!apiText && !action) return;
+    if (!apiText && !action && !ocr) return;
 
     let displayText = apiText;
     if (!displayText) {
       if (action?.type === "card_explain") displayText = `Explain ${action.medicine?.name}`;
       else if (action?.type === "card_compare") displayText = `Compare ${action.clickedMedicine?.name}`;
       else if (action?.type === "compare_pick") displayText = `Compare ${action.a?.name} vs ${action.b?.name}`;
+      else if (action?.type === "intent_pick") displayText = action.intentLabel || "Continue";
+      else if (ocr) displayText = "📷 Scanned image";
     }
     if (!displayText) return;
 
     const userMsg = { id: `u_${Date.now()}_${Math.random().toString(36).slice(2)}`, text: displayText, sender: 'user' };
     setMessages((prev) => {
       const updated = [...prev, userMsg];
-      callClassifier(apiText, prev, action);
+      callClassifier(apiText, prev, action, ocr);
       return updated;
     });
 
@@ -107,7 +101,7 @@ export default function ChatPage() {
     setTimeout(() => scrollViewRef.current?.scrollToEnd({ animated: true }), 100);
   };
 
-  const callClassifier = async (text, historyBeforeMessage, action = null) => {
+  const callClassifier = async (text, historyBeforeMessage, action = null, ocr = null) => {
     try {
       const apiUrl = `${getApiBaseUrl()}/api/intent/classify`;
       const response = await fetch(apiUrl, {
@@ -117,7 +111,9 @@ export default function ChatPage() {
           sessionId: sessionIdRef.current,
           message: text,
           history: historyBeforeMessage.map(m => ({ text: m.text, sender: m.sender })),
-          ...(action ? { action } : {})
+          ...(action ? { action } : {}),
+          ...(ocr ? { ocr } : {}),
+          ...(safetyContextRef.current ? { safetyContext: safetyContextRef.current } : {})
         })
       });
 
@@ -135,9 +131,11 @@ export default function ChatPage() {
         cardData: data.cardData,
         alternativesData: data.alternativesData,
         comparisonData: data.comparisonData,
+        availabilityData: data.availabilityData,
         medicineOptions: data.medicineOptions,
         compareOptions: data.compareOptions,
         compareClarify: data.compareClarify,
+        intentOptions: data.intentOptions,
         scheduleFormData: data.scheduleFormData,
         suggestions: data.suggestions
       };
@@ -162,8 +160,8 @@ export default function ChatPage() {
     }
   };
 
-  const handleSend = () => {
-    sendMessage(inputText);
+  const handleSend = (ocr = null) => {
+    sendMessage(inputText, null, ocr);
     setInputText('');
   };
 
@@ -216,7 +214,11 @@ export default function ChatPage() {
                         medicineName={item.scheduleFormData.medicineName}
                         onSubmit={async (formData) => {
                           try {
-                            await addSchedule(formData);
+                            const activeProfile = await getActiveProfile();
+                            await addSchedule(formData, activeProfile?.id || null);
+                            // A newly scheduled medicine is now a "current medicine" for safety
+                            // checks — refresh the snapshot so the rest of this chat sees it.
+                            buildSafetyContext().then(ctx => { safetyContextRef.current = ctx; }).catch(() => {});
                             router.push('/pages/remindersPage');
                           } catch (err) {
                             console.error('Error saving schedule:', err);
@@ -235,6 +237,13 @@ export default function ChatPage() {
                         </View>
                       ) : null}
                       <CompareClarifyCard data={item.compareClarify} onSelect={sendMessage} />
+                    </View>
+                  );
+                }
+                if (item.intentOptions) {
+                  return (
+                    <View key={item.id} style={{ width: '100%' }}>
+                      <IntentOptionsCard question={item.text} options={item.intentOptions} onSelect={sendMessage} />
                     </View>
                   );
                 }
@@ -326,7 +335,7 @@ export default function ChatPage() {
                   {messages[messages.length - 1].suggestions.map((sug, idx) => (
                     <HardShadow key={idx} offset={2}>
                       <TouchableOpacity
-                        onPress={() => sendMessage(sug.text, { type: "bubble", intent: sug.intent })}
+                        onPress={() => sendMessage(sug.text, sug.action ? sug.action : { type: "bubble", intent: sug.intent })}
                         activeOpacity={0.7}
                         style={{ backgroundColor: idx % 2 === 0 ? C.blue : C.purple, borderWidth: 1.5, borderColor: C.border, borderRadius: 4, paddingHorizontal: 14, paddingVertical: 9 }}
                       >
@@ -345,26 +354,12 @@ export default function ChatPage() {
             keyboardVerticalOffset={Platform.OS === 'ios' ? 20 : 0}
             style={{ position: 'absolute', left: 0, right: 0, bottom: keyboardHeight ? keyboardHeight + 24 : 24, zIndex: 1000, elevation: 10 }}
           >
-            <HardShadow>
-              <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: '#ffffff', borderWidth: 1.5, borderColor: C.border, borderRadius: 4, paddingHorizontal: 16, paddingVertical: 10 }}>
-                <TextInput
-                  style={{ flex: 1, color: C.dark, fontSize: 16, fontWeight: '600' }}
-                  placeholder="Type prompt..."
-                  placeholderTextColor="#aaaaaa"
-                  value={inputText}
-                  onChangeText={setInputText}
-                  onSubmitEditing={handleSend}
-                />
-                <HardShadow offset={2} style={{ marginLeft: 10 }}>
-                  <TouchableOpacity
-                    style={{ padding: 8, backgroundColor: C.purple, borderWidth: 1.5, borderColor: C.border, borderRadius: 4 }}
-                    onPress={handleSend}
-                  >
-                    <Send size={18} color="#fff" />
-                  </TouchableOpacity>
-                </HardShadow>
-              </View>
-            </HardShadow>
+            <ChatInputBar
+              value={inputText}
+              onChangeText={setInputText}
+              onSend={handleSend}
+              placeholder="Type prompt..."
+            />
           </KeyboardAvoidingView>
         </View>
       </View>

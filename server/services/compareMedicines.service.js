@@ -1,7 +1,9 @@
 // server/services/compareMedicines.service.js
 const { COMPARE_MEDICINES_SYSTEM_PROMPT } = require("../prompts/compareMedicines.prompt");
-const { chatCompletionJson } = require("./groq.service");
+const { chatCompletionJsonSmart } = require("./groq.service");
 const { searchMedicineByName, extractIngredients, getDomainsForIngredients } = require("./medicineSearch.service");
+const { lazyEnrichFields } = require("./lazyEnrichment.service");
+const { runSafetyCheck } = require("./safetyCheck.service");
 const { cleanLlmJsonResponse } = require("../utils/helpers");
 
 function titleCase(str) {
@@ -30,6 +32,7 @@ function buildColumn(key, requestedName) {
       salt_composition: med.salt_composition || "",
       medicine_desc: med.medicine_desc || "",
       side_effects: med.side_effects || "",
+      drug_interactions: med.drug_interactions || "",
       ingredients,
       domains: getDomainsForIngredients(ingredients)
     };
@@ -45,9 +48,39 @@ function buildColumn(key, requestedName) {
     salt_composition: "",
     medicine_desc: "",
     side_effects: "",
+    drug_interactions: "",
     ingredients: [],
     domains: []
   };
+}
+
+// Lazily fill a column's missing fields from verified 1mg data (fills ONLY empty fields).
+// If the composition got filled, recompute ingredients/domains so the "what they share"
+// grounding benefits from the web data too. includeSafety additionally requests the
+// structured safety fields (only when the requester has a health profile to check against).
+async function enrichColumnFromWeb(col, includeSafety = false) {
+  try {
+    const web = await lazyEnrichFields(col.name, col, { includeSafety });
+    if (web?.found) {
+      let saltFilled = false;
+      for (const f of ["salt_composition", "medicine_desc", "side_effects"]) {
+        if (!String(col[f] || "").trim() && web.fields[f]) {
+          col[f] = web.fields[f];
+          if (f === "salt_composition") saltFilled = true;
+        }
+      }
+      if (!col.safety_advice && web.fields.safety_advice) col.safety_advice = web.fields.safety_advice;
+      if (!(col.drug_interactions || "").length && web.fields.drug_interactions) col.drug_interactions = web.fields.drug_interactions;
+      if (saltFilled) {
+        col.ingredients = extractIngredients(col.salt_composition);
+        col.domains = getDomainsForIngredients(col.ingredients);
+      }
+      col.sources = web.sources || [];
+    }
+  } catch (error) {
+    console.error(`[CompareMedicinesService] Lazy enrichment failed for "${col.name}":`, error.message);
+  }
+  return col;
 }
 
 function formatPrice(value) {
@@ -77,11 +110,31 @@ function fallbackQualitative(a, b) {
   };
 }
 
-async function getComparison(nameA, nameB) {
+async function getComparison(nameA, nameB, safetyContext = null) {
   console.log(`[CompareMedicinesService] Comparing "${nameA}" vs "${nameB}"`);
 
   const a = buildColumn("A", nameA);
   const b = buildColumn("B", nameB);
+
+  // On-demand web fill for whatever the CSV is missing, both columns in parallel.
+  const includeSafety = !!safetyContext;
+  await Promise.all([enrichColumnFromWeb(a, includeSafety), enrichColumnFromWeb(b, includeSafety)]);
+
+  // Personalized safety check — BOTH medicines in one Cerebras call, kicked off here so it
+  // overlaps with the Groq comparison call below. Resolves to the "off" shape without a profile.
+  const safetyPromise = includeSafety
+    ? runSafetyCheck({
+        medicines: [a, b].map(col => ({
+          name: col.name,
+          composition: col.salt_composition,
+          description: col.medicine_desc,
+          side_effects: col.side_effects,
+          safety_advice: col.safety_advice,
+          drug_interactions: col.drug_interactions
+        })),
+        safetyContext
+      }).catch(() => ({ checked: false, results: [] }))
+    : Promise.resolve({ checked: false, results: [] });
 
   // Deterministic shared signals (the trustworthy grounding for "similarities"). Same use case ⇔
   // they share an active ingredient OR an ATC therapeutic class (compared at level 2 — the first 3
@@ -122,7 +175,11 @@ async function getComparison(nameA, nameB) {
       { role: "system", content: COMPARE_MEDICINES_SYSTEM_PROMPT },
       { role: "user", content: `Compare these two medicines and return the JSON:\n\n${JSON.stringify(llmInput, null, 2)}` }
     ];
-    const responseText = await chatCompletionJson(messages);
+    // SMART tier: this synthesizes the use/composition/side-effects summaries and the verdict —
+    // has a documented history of fabricating shared similarities beyond the grounded signals
+    // (see [[compare-medicines-feature]]). Safety-relevant (medical comparison) and only runs
+    // once per compare request, so the rate-limit cost is worth it.
+    const responseText = await chatCompletionJsonSmart(messages);
     qualitative = JSON.parse(cleanLlmJsonResponse(responseText));
   } catch (error) {
     console.error("[CompareMedicinesService] LLM error, using fallback:", error.message);
@@ -163,6 +220,16 @@ async function getComparison(nameA, nameB) {
     ? (qualitative.verdict || "Both are treatment options — consult a doctor or pharmacist before switching.")
     : "These are used for different conditions and aren't interchangeable — check with a doctor or pharmacist.";
 
+  // Safety results arrive per input medicine in the same order they were passed ([a, b]).
+  const safetyRaw = await safetyPromise;
+  const perMedicine = safetyRaw.checked
+    ? [a, b].map((col, i) => ({
+        name: col.name,
+        warnings: safetyRaw.results[i]?.warnings || [],
+        note: safetyRaw.results[i]?.personalNote || null
+      }))
+    : [];
+
   return {
     medicines: [
       { key: "A", name: a.name, type: a.type, price: formatPrice(a.priceValue), manufacturer: a.manufacturer },
@@ -173,7 +240,9 @@ async function getComparison(nameA, nameB) {
     differences,
     similarities,
     sharesUseCase,
-    verdict
+    verdict,
+    safety: { checked: safetyRaw.checked, perMedicine },
+    sources: [...new Set([...(a.sources || []), ...(b.sources || [])])]
   };
 }
 

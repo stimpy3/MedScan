@@ -1,11 +1,13 @@
-import { useRouter } from "expo-router";
-import { ArrowLeftRight, Calendar, Clock, FileText, Pill, Send } from "lucide-react-native";
-import { useEffect, useRef, useState } from "react";
-import { Keyboard, KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { useRouter, useFocusEffect } from "expo-router";
+import { ArrowLeftRight, Calendar, Clock, FileText, Pill, UserRound } from "lucide-react-native";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { Keyboard, KeyboardAvoidingView, Platform, Text, TouchableOpacity, View } from "react-native";
 import Animated, { Easing, useAnimatedStyle, useSharedValue, withDelay, withSpring, withTiming } from "react-native-reanimated";
 
 import { SplitText } from "../../animations";
+import ChatInputBar from "../../components/ChatInputBar";
 import HardShadow from "../../components/HardShadow";
+import { getActiveProfile } from "../services/profileService";
 
 const C = {
   bg:      '#faf9f5',
@@ -36,7 +38,12 @@ const BTN_SHADOW = {
 export default function Home() {
   const [keyboardHeight, setKeyboardHeight] = useState(0);
   const [inputText, setInputText] = useState("");
+  const [activeProfileLabel, setActiveProfileLabel] = useState("Me");
   const router = useRouter();
+
+  useFocusEffect(useCallback(() => {
+    getActiveProfile().then(p => { if (p) setActiveProfileLabel(p.label); });
+  }, []));
 
   // Input bar animation (translateY + scaleX)
   const inputY = useSharedValue(80);
@@ -66,11 +73,18 @@ export default function Home() {
     router.push({ pathname: '/pages/chatPage', params: { initialMessage: query } });
   };
 
-  const handleSend = () => {
+  const handleSend = (ocr = null) => {
     const text = inputText.trim();
-    if (!text) return;
+    if (!text && !ocr) return;
     setInputText("");
-    router.push({ pathname: '/pages/chatPage', params: { initialMessage: text } });
+    // Hand off to the chat page, carrying any typed text and/or the scanned image's OCR result.
+    router.push({
+      pathname: '/pages/chatPage',
+      params: {
+        ...(text ? { initialMessage: text } : {}),
+        ...(ocr ? { initialOcr: JSON.stringify(ocr) } : {})
+      }
+    });
   };
 
   const cards = [
@@ -83,6 +97,17 @@ export default function Home() {
   return (
     <View style={{ flex: 1, backgroundColor: C.bg }}>
       <View style={{ flex: 1, paddingHorizontal: 20, paddingTop: 52, paddingBottom: 100 }}>
+
+        {/* Profile button */}
+        <HardShadow offset={2} style={{ position: 'absolute', top: 52, left: 20 }}>
+          <TouchableOpacity
+            style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: '#6b5390', borderWidth: 1.5, borderColor: C.border, borderRadius: 4, paddingHorizontal: 14, paddingVertical: 10 }}
+            onPress={() => router.push('/pages/profilePage')}
+          >
+            <UserRound size={15} color="#ffffff" />
+            <Text style={{ color: '#ffffff', fontWeight: '800', marginLeft: 6, fontSize: 13 }}>{activeProfileLabel}</Text>
+          </TouchableOpacity>
+        </HardShadow>
 
         {/* My Reminders button */}
         <HardShadow offset={2} style={{ position: 'absolute', top: 52, right: 20 }}>
@@ -159,26 +184,14 @@ export default function Home() {
         keyboardVerticalOffset={Platform.OS === 'ios' ? 20 : 0}
         style={{ position: 'absolute', left: 20, right: 20, bottom: keyboardHeight ? keyboardHeight + 24 : 28, zIndex: 1000, elevation: 10 }}
       >
-        <HardShadow>
-          <Animated.View style={[inputStyle, { flexDirection: 'row', alignItems: 'center', backgroundColor: '#ffffff', borderWidth: 1.5, borderColor: C.border, borderRadius: 4, paddingHorizontal: 16, paddingVertical: 10 }]}>
-            <TextInput
-              style={{ flex: 1, color: C.dark, fontSize: 16, fontWeight: '600' }}
-              placeholder="Ask anything about medicines..."
-              placeholderTextColor="#aaaaaa"
-              value={inputText}
-              onChangeText={setInputText}
-              onSubmitEditing={handleSend}
-            />
-            <HardShadow offset={2} style={{ marginLeft: 10 }}>
-              <TouchableOpacity
-                style={{ padding: 8, backgroundColor: '#6b5390', borderWidth: 1.5, borderColor: C.border, borderRadius: 4 }}
-                onPress={handleSend}
-              >
-                <Send size={18} color="#fff" />
-              </TouchableOpacity>
-            </HardShadow>
-          </Animated.View>
-        </HardShadow>
+        <Animated.View style={inputStyle}>
+          <ChatInputBar
+            value={inputText}
+            onChangeText={setInputText}
+            onSend={handleSend}
+            placeholder="Ask anything about medicines..."
+          />
+        </Animated.View>
       </KeyboardAvoidingView>
     </View>
   );

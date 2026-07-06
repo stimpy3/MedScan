@@ -6,7 +6,8 @@ const handlers = [
   require("./explain_medicine.handler"),
   require("./find_alternatives.handler"),
   require("./compare_medicines.handler"),
-  require("./schedule_medicine.handler")
+  require("./schedule_medicine.handler"),
+  require("./check_availability.handler")
 ];
 
 module.exports = Object.fromEntries(handlers.map(h => [h.intent, h]));

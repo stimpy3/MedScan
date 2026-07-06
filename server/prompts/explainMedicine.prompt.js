@@ -14,6 +14,8 @@ Return a JSON object in the following format:
   "manufacturer": "A brief 1-2 sentence description of who manufactures this medicine (if available) and their general reputation or type of medicines they focus on. If the manufacturer is unknown, provide a general 1-sentence note about taking quality-assured medicines."
 }
 
-Ensure all values are simple strings, no nested objects or arrays. Keep the tone empathetic, professional, and clear. Do not use complex medical jargon without briefly explaining it. Ensure the output is strictly valid JSON matching this schema.`;
+Ensure all values are simple strings, no nested objects or arrays. Keep the tone empathetic, professional, and clear. Do not use complex medical jargon without briefly explaining it. Ensure the output is strictly valid JSON matching this schema.
+
+IMPORTANT: If a provided field's value says no verified information was found, plainly state in that section that this information is not available — do NOT invent details or fill it from outside knowledge.`;
 
 module.exports = { EXPLAIN_MEDICINE_SYSTEM_PROMPT };

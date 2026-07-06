@@ -43,3 +43,7 @@ app-example
 # generated native folders
 /ios
 /android
+
+# server build/enrichment artifacts (regenerated; not needed at runtime)
+server/data/medicines.enriched.csv
+server/data/enrichment.results.ndjson
