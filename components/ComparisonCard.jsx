@@ -1,5 +1,5 @@
 // components/ComparisonCard.jsx
-import { Check, Globe, Lightbulb, TriangleAlert } from "lucide-react-native";
+import { Check, Globe, Lightbulb, Pill, Scale, TriangleAlert } from "lucide-react-native";
 import { Text, View } from "react-native";
 import HardShadow from './HardShadow';
 import SafetyWarnings from './SafetyWarnings';
@@ -115,16 +115,25 @@ export default function ComparisonCard({ data }) {
     <HardShadow style={{ width: "100%", marginVertical: 10 }}>
     <View style={{ backgroundColor: C.bg, borderRadius: 4, padding: 20, borderWidth: 1.5, borderColor: C.border }}>
 
-      <Text style={{ fontSize: 10, fontWeight: "800", color: C.meta, letterSpacing: 1.2, textTransform: "uppercase", marginBottom: 14, textAlign: "center" }}>
-        Side-by-side comparison
-      </Text>
+      {/* Micro-label: blue icon square — "compare" is blue everywhere in the app */}
+      <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginBottom: 14 }}>
+        <View style={{ width: 28, height: 28, borderRadius: 4, borderWidth: 1.5, borderColor: C.border, backgroundColor: C.blue, alignItems: "center", justifyContent: "center" }}>
+          <Scale size={14} color="#ffffff" strokeWidth={2.5} />
+        </View>
+        <Text style={{ fontSize: 10, fontWeight: "800", color: C.meta, letterSpacing: 1.2, textTransform: "uppercase" }}>
+          Side-by-side comparison
+        </Text>
+      </View>
 
       {/* VS Header strip */}
       <View style={{ backgroundColor: C.surface, borderRadius: 4, borderWidth: 1.5, borderColor: C.border, paddingVertical: 16, paddingHorizontal: 14, flexDirection: "row", alignItems: "flex-start", marginBottom: 18 }}>
         <MedColumn med={a} isCheaper={cheaper === "A"} priceDeltaPct={priceDeltaPct} align="left" cautions={cautionsFor(0)} />
 
-        <View style={{ alignItems: "center", justifyContent: "center", paddingHorizontal: 10, paddingTop: 4 }}>
-          <Text style={{ color: C.ochre, fontSize: 22, fontWeight: "900", letterSpacing: 0.5 }}>VS</Text>
+        <View style={{ alignItems: "center", justifyContent: "center", paddingHorizontal: 8, paddingTop: 6 }}>
+          {/* rotated sticker badge, matching the app's badge language */}
+          <View style={{ transform: [{ rotate: "-4deg" }], backgroundColor: C.ochre, borderWidth: 1.5, borderColor: C.border, borderRadius: 4, paddingHorizontal: 8, paddingVertical: 4, shadowColor: '#2a2a2a', shadowOffset: { width: 2, height: 2 }, shadowOpacity: 1, shadowRadius: 0, elevation: 3 }}>
+            <Text style={{ color: "#ffffff", fontSize: 14, fontWeight: "900", letterSpacing: 0.5 }}>VS</Text>
+          </View>
         </View>
 
         <MedColumn med={b} isCheaper={cheaper === "B"} priceDeltaPct={priceDeltaPct} align="right" cautions={cautionsFor(1)} />
@@ -149,7 +158,12 @@ export default function ComparisonCard({ data }) {
             </View>
           </View>
 
-          <Text style={{ fontSize: 13, fontWeight: "900", color: C.dark, marginBottom: 10 }}>Key Differences</Text>
+          <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginBottom: 10 }}>
+            <View style={{ width: 22, height: 22, borderRadius: 4, borderWidth: 1.5, borderColor: C.border, backgroundColor: C.purple, alignItems: "center", justifyContent: "center" }}>
+              <Pill size={12} color="#ffffff" strokeWidth={2.5} />
+            </View>
+            <Text style={{ fontSize: 13, fontWeight: "900", color: C.dark }}>Key Differences</Text>
+          </View>
           {differences.map((row, idx) => (
             <DiffRow key={idx} row={row} zebra={idx % 2 === 0} />
           ))}
@@ -158,7 +172,12 @@ export default function ComparisonCard({ data }) {
 
       {similarities.length > 0 ? (
         <View style={{ marginTop: 6 }}>
-          <Text style={{ fontSize: 13, fontWeight: "900", color: C.dark, marginBottom: 10 }}>What They Share</Text>
+          <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginBottom: 10 }}>
+            <View style={{ width: 22, height: 22, borderRadius: 4, borderWidth: 1.5, borderColor: C.border, backgroundColor: C.blue, alignItems: "center", justifyContent: "center" }}>
+              <Check size={12} color="#ffffff" strokeWidth={3} />
+            </View>
+            <Text style={{ fontSize: 13, fontWeight: "900", color: C.dark }}>What They Share</Text>
+          </View>
           <View style={{ backgroundColor: C.surface, borderRadius: 4, padding: 14, borderWidth: 1.5, borderColor: C.border }}>
             {similarities.map((sim, idx) => (
               <View key={idx} style={{ flexDirection: "row", alignItems: "flex-start", marginBottom: idx === similarities.length - 1 ? 0 : 10 }}>

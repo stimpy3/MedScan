@@ -4,8 +4,22 @@ const express = require("express");
 const Schedule = require("../models/schedule.model");
 const Profile = require("../models/profile.model");
 const { requireAuth } = require("../middleware/auth.middleware");
+const { findDuplicateGroups } = require("../services/atcRules.service");
 
 const router = express.Router();
+
+// PUBLIC + stateless — registered BEFORE requireAuth on purpose: guest mode keeps schedules in
+// AsyncStorage only, so the client sends the names it has. Two uses: creation-time check
+// ([candidate, ...existing] — client filters to groups containing the candidate) and the
+// reminders-page banner (all of a profile's schedule names).
+router.post("/check-duplicate", (req, res) => {
+  const names = (Array.isArray(req.body?.medicines) ? req.body.medicines : [])
+    .map(s => String(s || "").trim()).filter(Boolean);
+  if (names.length < 2) return res.json({ checked: true, groups: [], unresolved: [] });
+  const { groups, unresolved } = findDuplicateGroups(names);
+  res.json({ checked: true, groups, unresolved });
+});
+
 router.use(requireAuth);
 
 const SCHEDULE_FIELDS = ["medicineName", "medicineType", "dose", "days", "time", "instruction", "notes", "notificationEnabled"];

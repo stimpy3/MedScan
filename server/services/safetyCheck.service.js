@@ -17,6 +17,7 @@
 const { chatCompletionJson } = require("./cerebras.service");
 const { SAFETY_CHECK_SYSTEM_PROMPT } = require("../prompts/safetyCheck.prompt");
 const { searchMedicineByName, extractIngredients } = require("./medicineSearch.service");
+const { runAtcRules } = require("./atcRules.service");
 const { cleanLlmJsonResponse } = require("../utils/helpers");
 
 // Matches explainMedicine.service's NOT_FOUND_TEXT fill (not imported — would create a require
@@ -243,14 +244,17 @@ async function runSafetyCheck({ medicines, safetyContext, timeoutMs = 8000 }) {
       return hit;
     }
 
-    // Layer 1 — deterministic (always runs, costs nothing).
-    const results = medicines.map(med => {
+    // Layer 1 — deterministic (always runs, costs nothing): 1mg verdicts + interaction lists,
+    // plus structured ATC class rules (NSAID×kidney, duplicate therapy, CNS×alcohol, ...).
+    const atc = runAtcRules({ medicines, profile, currentMedicines });
+    const results = medicines.map((med, i) => {
       const targetSalts = extractIngredients(textOf(med.composition));
       return {
         name: med.name,
         warnings: [
           ...adviceWarnings(med, profile),
-          ...interactionWarnings(med, currentMedicines, targetSalts)
+          ...interactionWarnings(med, currentMedicines, targetSalts),
+          ...(atc.results[i]?.warnings || [])
         ],
         personalNote: null
       };
@@ -267,9 +271,11 @@ async function runSafetyCheck({ medicines, safetyContext, timeoutMs = 8000 }) {
           if (!forMed) continue;
           const compositionVerified = !!textOf(medicines[i].composition);
           // Kidney/liver conditions are already covered deterministically — drop LLM duplicates.
+          // Same for any condition an ATC rule already fired on (its terms regexes are collected).
           const dupCondition = new Set(results[i].warnings.filter(w => w.type === "condition").map(w => w.basis));
           const validated = validateLlmWarnings(forMed.warnings, profile, compositionVerified)
-            .filter(w => !(w.type === "condition" && /kidney|renal|liver|hepatic/i.test(w.basis) && dupCondition.size));
+            .filter(w => !(w.type === "condition" && /kidney|renal|liver|hepatic/i.test(w.basis) && dupCondition.size))
+            .filter(w => !(w.type === "condition" && atc.firedConditionRegexes.some(rx => rx.test(w.basis) || rx.test(w.message))));
           results[i].warnings.push(...validated);
           const note = String(forMed.personalNote || "").trim();
           if (note) results[i].personalNote = truncate(note, 300);

@@ -2,6 +2,7 @@
 const { COMPARE_MEDICINES_SYSTEM_PROMPT } = require("../prompts/compareMedicines.prompt");
 const { chatCompletionJsonSmart } = require("./groq.service");
 const { searchMedicineByName, extractIngredients, getDomainsForIngredients } = require("./medicineSearch.service");
+const { classLabel } = require("./atcExplain.service");
 const { lazyEnrichFields } = require("./lazyEnrichment.service");
 const { runSafetyCheck } = require("./safetyCheck.service");
 const { cleanLlmJsonResponse } = require("../utils/helpers");
@@ -142,7 +143,8 @@ async function getComparison(nameA, nameB, safetyContext = null) {
   const sharedIngredients = a.ingredients.filter(ing => b.ingredients.includes(ing));
   const atcClass = code => String(code || "").slice(0, 3);
   const aClasses = new Set(a.domains.map(atcClass).filter(Boolean));
-  const sharesTherapeuticClass = b.domains.some(d => aClasses.has(atcClass(d)));
+  const sharedClassCodes = b.domains.filter(d => aClasses.has(atcClass(d)));
+  const sharesTherapeuticClass = sharedClassCodes.length > 0;
   const sameForm = !!a.type && a.type === b.type;
   // Drives whether the card shows "What They Share" at all. Only true when there is real grounded
   // overlap — never on the LLM's say-so, so we don't claim e.g. an antibiotic and a cough syrup
@@ -212,7 +214,10 @@ async function getComparison(nameA, nameB, safetyContext = null) {
   const similarities = [];
   if (sharesUseCase) {
     if (sharedIngredients.length) similarities.push(`Both contain ${sharedIngredients.map(titleCase).join(", ")}`);
-    if (sharesTherapeuticClass) similarities.push("Belong to the same therapeutic class");
+    if (sharesTherapeuticClass) {
+      const label = classLabel(sharedClassCodes);
+      similarities.push(label ? `Belong to the same therapeutic class (${label})` : "Belong to the same therapeutic class");
+    }
     if (sameForm) similarities.push(`Both are ${a.type.toLowerCase()} medicines`);
   }
 

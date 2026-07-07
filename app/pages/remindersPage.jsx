@@ -4,11 +4,14 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { Dimensions, KeyboardAvoidingView, Modal, Platform, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { getAllSchedules, getSchedulesForDate, deleteSchedule, addSchedule } from '../services/scheduleService';
 import { getProfilesState } from '../services/profileService';
+import { checkDuplicateGroups, checkBeforeSchedule } from '../services/duplicateCheckService';
 import HardShadow from '../../components/HardShadow';
 import ScheduleFormCard from '../../components/ScheduleFormCard';
+import SafetyWarnings from '../../components/SafetyWarnings';
+import { RemindersSkeleton } from '../../components/Skeletons';
 
 const C = {
-  bg:      '#ffffff',
+  bg:      '#f7f4ec',   // warm paper — same family as home and profiles
   surface: '#ede8d8',
   border:  '#2a2a2a',
   blue:    '#2198a8',
@@ -74,10 +77,12 @@ export default function RemindersPage() {
   const [currentMonthOffset, setCurrentMonthOffset] = useState(0);
   const [showAddForm, setShowAddForm] = useState(false);
   const [selectedSchedule, setSelectedSchedule] = useState(null);
+  const [loading, setLoading] = useState(true); // first load only — refocus refreshes stay silent
   // Family mode: which member's reminders are on screen. Defaults to the active profile;
   // the ref mirrors the state so async loads never read a stale filter.
   const [profiles, setProfiles] = useState([]);
   const [filterProfileId, setFilterProfileId] = useState(null);
+  const [duplicateGroups, setDuplicateGroups] = useState([]); // same-class/ingredient pairs in this profile's schedules
   const filterRef = useRef(null);
   const timelineRef = useRef(null);
   const rowOffsets = useRef({});
@@ -100,13 +105,14 @@ export default function RemindersPage() {
   useEffect(() => { scrollToNow(); }, [currentHour]);
 
   useEffect(() => {
+    if (loading) return; // strip isn't mounted while the skeleton shows
     // Scroll month strip to center on current month (~58px per pill)
     const currentMonthIdx = new Date().getMonth();
     const { width } = Dimensions.get('window');
     const PILL_W = 58;
     const x = currentMonthIdx * PILL_W - (width - 80) / 2 + PILL_W / 2;
     setTimeout(() => monthScrollRef.current?.scrollTo({ x: Math.max(0, x), animated: false }), 100);
-  }, []);
+  }, [loading]);
 
   useFocusEffect(useCallback(() => { loadSchedules(); }, []));
 
@@ -121,9 +127,20 @@ export default function RemindersPage() {
       const all = await getAllSchedules(pid);
       setSchedules(all);
       loadDaySchedules(selectedDate, all);
+      refreshDuplicateBanner(all);
     } catch (err) {
       console.error('Error loading schedules:', err);
+    } finally {
+      setLoading(false);
     }
+  };
+
+  // Duplicate-therapy banner: same-class/same-ingredient pairs across this profile's schedules.
+  // Fire-and-forget — the check fails open and the banner only renders when groups exist.
+  const refreshDuplicateBanner = (all) => {
+    const names = [...new Set((all || []).map(s => s.medicineName).filter(Boolean))];
+    if (names.length < 2) { setDuplicateGroups([]); return; }
+    checkDuplicateGroups(names).then(setDuplicateGroups).catch(() => setDuplicateGroups([]));
   };
 
   const handleProfileFilter = (pid) => {
@@ -187,6 +204,16 @@ export default function RemindersPage() {
   const grouped = groupByHour(daySchedules);
   const activeHours = Object.keys(grouped).map(Number).sort((a, b) => a - b);
 
+  if (loading) {
+    return (
+      <View style={{ flex: 1, backgroundColor: C.bg }}>
+        <View style={{ flex: 1, paddingHorizontal: 20, paddingTop: 52 }}>
+          <RemindersSkeleton />
+        </View>
+      </View>
+    );
+  }
+
   return (
     <View style={{ flex: 1, backgroundColor: C.bg }}>
       <View style={{ flex: 1, paddingHorizontal: 20, paddingTop: 52, paddingBottom: 0 }}>
@@ -203,7 +230,12 @@ export default function RemindersPage() {
                 <ArrowLeft size={20} color="#ffffff" />
               </TouchableOpacity>
             </HardShadow>
-            <Text style={{ fontSize: 17, fontWeight: '900', color: C.dark }}>My Reminders</Text>
+            {/* rotated sticker-badge title — same treatment as the profiles page */}
+            <View style={{ transform: [{ rotate: '-2deg' }], ...BTN_SHADOW }}>
+              <View style={{ backgroundColor: '#ffffff', borderWidth: 1.5, borderColor: C.border, borderRadius: 4, paddingHorizontal: 14, paddingVertical: 6 }}>
+                <Text style={{ fontSize: 13, fontWeight: '900', color: C.dark, letterSpacing: 1.5 }}>MY REMINDERS</Text>
+              </View>
+            </View>
             <HardShadow offset={2}>
               <TouchableOpacity
                 style={{ padding: 8, backgroundColor: C.purple, borderWidth: 1.5, borderColor: C.border, borderRadius: 4 }}
@@ -301,6 +333,27 @@ export default function RemindersPage() {
           </View>
         </View>
 
+        {/* Duplicate-therapy banner — only rendered when same-class/ingredient pairs exist */}
+        {duplicateGroups.length > 0 && (
+          <View style={{ marginBottom: 10 }}>
+            <SafetyWarnings
+              compact
+              title="Duplicate therapy check"
+              safety={{
+                checked: true,
+                warnings: duplicateGroups.map(g => ({
+                  severity: g.kind === 'same_ingredient' ? 'high' : 'medium',
+                  type: 'duplicate therapy',
+                  message: g.kind === 'same_ingredient'
+                    ? `${(g.medicines || []).join(' and ')} contain the same active ingredient (${g.friendlyLabel || 'same salt'}). Taking both risks double-dosing — verify with your doctor.`
+                    : `${(g.medicines || []).join(' and ')} are in the same therapeutic class (${g.friendlyLabel || g.className || 'similar medicines'}). Verify this combination with your doctor.`
+                })),
+                note: null
+              }}
+            />
+          </View>
+        )}
+
         {/* Timeline */}
         <ScrollView ref={timelineRef} showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 60 }}>
           {HOURS.map((hour) => {
@@ -324,13 +377,32 @@ export default function RemindersPage() {
 
                 <View style={{ flex: 1, borderTopWidth: 2, borderTopColor: isActive ? C.purple : hasItems ? 'rgba(42,42,42,0.35)' : 'rgba(42,42,42,0.1)', paddingTop: 8, paddingBottom: 8, backgroundColor: isActive ? C.purpleLight : 'transparent', ...(isActive ? { borderBottomLeftRadius: 4, borderBottomRightRadius: 4, paddingHorizontal: 6 } : {}) }}>
                   {hasItems ? (
-                    <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 10 }}>
+                    <>
+                      {/* Swipe hint — only when the row actually scrolls */}
+                      {items.length > 1 && (
+                        <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginBottom: 6 }}>
+                          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 2, paddingHorizontal: 8, paddingVertical: 3, borderRadius: 4, borderWidth: 1.5, borderColor: C.border, backgroundColor: '#ffffff' }}>
+                            <Text style={{ fontSize: 9, fontWeight: '800', color: C.purple, letterSpacing: 0.5 }}>
+                              {items.length} MEDS · SWIPE
+                            </Text>
+                            <ChevronRight size={10} color={C.purple} strokeWidth={3} />
+                          </View>
+                        </View>
+                      )}
+                    <ScrollView
+                      horizontal
+                      showsHorizontalScrollIndicator={false}
+                      // 200 card + 4 shadow + 10 gap → cards page one at a time
+                      snapToInterval={214}
+                      decelerationRate="fast"
+                      contentContainerStyle={{ gap: 10, paddingRight: 20 }}
+                    >
                       {items.map((sched) => (
                         <HardShadow key={sched.id} style={{ width: 200 }}>
                         <TouchableOpacity
                           activeOpacity={0.8}
                           onPress={() => setSelectedSchedule(sched)}
-                          style={{ backgroundColor: C.surface, borderRadius: 4, padding: 12, borderWidth: 1.5, borderColor: C.border }}
+                          style={{ backgroundColor: '#ffffff', borderRadius: 4, padding: 12, borderWidth: 1.5, borderColor: C.border }}
                         >
                           <View style={{ flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between' }}>
                             <View style={{ flex: 1, marginRight: 8 }}>
@@ -341,7 +413,7 @@ export default function RemindersPage() {
                                 {sched.dose} · {sched.medicineType}
                               </Text>
                               {sched.instruction && sched.instruction !== 'None' ? (
-                                <View style={{ alignSelf: 'flex-start', marginTop: 6, paddingHorizontal: 7, paddingVertical: 3, borderRadius: 4, borderWidth: 1.5, borderColor: C.border, backgroundColor: '#ffffff' }}>
+                                <View style={{ alignSelf: 'flex-start', marginTop: 6, paddingHorizontal: 7, paddingVertical: 3, borderRadius: 4, borderWidth: 1.5, borderColor: C.border, backgroundColor: C.surface }}>
                                   <Text style={{ fontSize: 9, fontWeight: '800', color: C.purple, textTransform: 'uppercase', letterSpacing: 0.5 }}>
                                     {sched.instruction}
                                   </Text>
@@ -361,6 +433,7 @@ export default function RemindersPage() {
                         </HardShadow>
                       ))}
                     </ScrollView>
+                    </>
                   ) : null}
                 </View>
               </View>
@@ -383,7 +456,10 @@ export default function RemindersPage() {
                 </TouchableOpacity>
               </HardShadow>
             </View>
-            <ScheduleFormCard onSubmit={handleAddSubmit} />
+            <ScheduleFormCard
+              onSubmit={handleAddSubmit}
+              onCheckDuplicates={(name) => checkBeforeSchedule(name, filterRef.current)}
+            />
           </ScrollView>
         </KeyboardAvoidingView>
       </Modal>

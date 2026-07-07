@@ -9,7 +9,7 @@ import HardShadow from './HardShadow';
 
 const C = {
   bg:      '#ede8d8',
-  surface: '#ffffff',
+  field:   '#f7f4ec',  // input/unselected fill — matches the profile page's form fields
   border:  '#2a2a2a',
   blue:    '#2198a8',
   dark:    '#2a2a2a',
@@ -64,7 +64,7 @@ export default function ChipInput({ label, values = [], onChange, quickPicks = [
                 key={qp}
                 activeOpacity={0.8}
                 onPress={() => toggleQuickPick(qp)}
-                style={{ paddingHorizontal: 12, paddingVertical: 8, borderRadius: 4, borderWidth: 1.5, borderColor: C.border, backgroundColor: on ? C.blue : C.surface, ...(on ? BTN_SHADOW : {}) }}
+                style={{ paddingHorizontal: 12, paddingVertical: 8, borderRadius: 4, borderWidth: 1.5, borderColor: C.border, backgroundColor: on ? C.blue : C.field, ...(on ? BTN_SHADOW : {}) }}
               >
                 <Text style={{ fontSize: 12, fontWeight: '800', color: on ? '#fff' : C.meta }}>{qp}</Text>
               </TouchableOpacity>
@@ -94,7 +94,7 @@ export default function ChipInput({ label, values = [], onChange, quickPicks = [
           placeholder={placeholder || 'Type and add'}
           placeholderTextColor="#b8b0a0"
           returnKeyType="done"
-          style={{ flex: 1, fontSize: 13, fontWeight: '600', color: C.dark, backgroundColor: C.surface, borderWidth: 1.5, borderColor: C.border, borderRadius: 4, paddingHorizontal: 12, paddingVertical: 10 }}
+          style={{ flex: 1, fontSize: 13, fontWeight: '600', color: C.dark, backgroundColor: C.field, borderWidth: 1.5, borderColor: C.border, borderRadius: 4, paddingHorizontal: 12, paddingVertical: 10 }}
         />
         <HardShadow offset={2}>
           <TouchableOpacity

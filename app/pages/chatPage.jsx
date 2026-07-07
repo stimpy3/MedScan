@@ -14,6 +14,7 @@ import MedicineOptionsCard from '../../components/MedicineOptionsCard';
 import ScheduleFormCard from '../../components/ScheduleFormCard';
 import { getApiBaseUrl } from '../services/ocrService';
 import { addSchedule } from '../services/scheduleService';
+import { checkBeforeSchedule } from '../services/duplicateCheckService';
 import { buildSafetyContext, getActiveProfile } from '../services/profileService';
 
 const C = {
@@ -212,6 +213,10 @@ export default function ChatPage() {
                       ) : null}
                       <ScheduleFormCard
                         medicineName={item.scheduleFormData.medicineName}
+                        onCheckDuplicates={async (name) => {
+                          const activeProfile = await getActiveProfile();
+                          return checkBeforeSchedule(name, activeProfile?.id || null);
+                        }}
                         onSubmit={async (formData) => {
                           try {
                             const activeProfile = await getActiveProfile();
@@ -269,7 +274,7 @@ export default function ChatPage() {
                           <BotBubble text={item.text} />
                         </View>
                       ) : null}
-                      <MedicineCard data={item.cardData} />
+                      <MedicineCard data={item.cardData} onSendMessage={sendMessage} />
                     </View>
                   );
                 }

@@ -2,7 +2,8 @@
 const { EXPLAIN_MEDICINE_SYSTEM_PROMPT } = require("../prompts/explainMedicine.prompt");
 const { ANSWER_FIELD_SYSTEM_PROMPT } = require("../prompts/answerField.prompt");
 const { chatCompletionJson } = require("./groq.service");
-const { searchMedicineByName } = require("./medicineSearch.service");
+const { searchMedicineByName, extractIngredients, getDomainsForIngredients, findTherapeuticAlternatives } = require("./medicineSearch.service");
+const { describeAtc } = require("./atcExplain.service");
 const { lazyEnrichFields } = require("./lazyEnrichment.service");
 const { runSafetyCheck } = require("./safetyCheck.service");
 const { cleanLlmJsonResponse } = require("../utils/helpers");
@@ -105,10 +106,34 @@ async function checkSafety(databaseDetails, safetyContext) {
     : { checked: false, warnings: [], note: null };
 }
 
+// Deterministic ATC-derived class info for the card: friendly class label, "commonly used for"
+// bullets, and up to 3 same-class (different-salt) examples. Null when the salt is missing,
+// is the NOT_FOUND sentinel, or maps to no ATC codes — the card renders without the section.
+function buildTherapeuticClass(medicineName, saltComposition) {
+  const salt = String(saltComposition || "").trim();
+  if (!salt || salt === NOT_FOUND_TEXT) return null;
+
+  const ingredients = extractIngredients(salt);
+  const codes = getDomainsForIngredients(ingredients);
+  const atc = describeAtc(codes);
+  if (!atc) return null;
+
+  const sameClassExamples = findTherapeuticAlternatives(ingredients, { limit: 3, targetName: medicineName })
+    .map(m => ({ name: m.name, price: m.price > 0 ? `₹${m.price.toFixed(2)}` : null }));
+
+  return {
+    label: atc.friendlyLabel,
+    officialName: atc.className,
+    commonUses: atc.commonUses,
+    sameClassExamples
+  };
+}
+
 async function getMedicineExplanationCard(medicineName, safetyContext = null) {
   console.log(`[ExplainMedicineService] Explaining medicine: "${medicineName}"`);
 
   const { databaseDetails, price, pack_size, manufacturer, webSources } = await assembleMedicineDetails(medicineName, !!safetyContext);
+  const therapeuticClass = buildTherapeuticClass(databaseDetails.name, databaseDetails.salt_composition);
 
   const messages = [
     { role: "system", content: EXPLAIN_MEDICINE_SYSTEM_PROMPT },
@@ -139,6 +164,7 @@ async function getMedicineExplanationCard(medicineName, safetyContext = null) {
         composition: generatedDetails.composition || "",
         side_effects: generatedDetails.side_effects || "",
         manufacturer: generatedDetails.manufacturer || manufacturer || "Unknown Manufacturer",
+        therapeuticClass,
         sources: webSources,
         safety: safetyValue
       };
@@ -161,6 +187,7 @@ async function getMedicineExplanationCard(medicineName, safetyContext = null) {
     composition: databaseDetails.salt_composition || "No composition details available.",
     side_effects: databaseDetails.side_effects || "No side effects information available.",
     manufacturer: manufacturer || "Unknown Manufacturer",
+    therapeuticClass,
     sources: webSources,
     safety: safetyValue
   };

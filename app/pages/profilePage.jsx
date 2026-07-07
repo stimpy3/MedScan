@@ -1,13 +1,18 @@
 // app/pages/profilePage.jsx
 // Manage local health profiles ("Me", "Mom", ...) that power the personalized safety layer.
 // Netflix-style: one switcher row up top, one editable form below for whichever profile is active.
+// Visual language matches home/auth: warm paper bg + dot grain, hard-shadow white cards,
+// per-profile accent colors on the avatar switcher.
 import * as Haptics from 'expo-haptics';
 import { useRouter, useFocusEffect } from 'expo-router';
-import { ArrowLeft, Baby, CloudUpload, LogOut, Plus, Trash2, User, Wine } from 'lucide-react-native';
+import { ArrowLeft, Baby, CloudUpload, HeartPulse, LogOut, Plus, Trash2, User, UserRound, Wine } from 'lucide-react-native';
 import { useCallback, useState } from 'react';
 import { KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import HardShadow from '../../components/HardShadow';
 import ChipInput from '../../components/ChipInput';
+import DotTexture from '../../components/DotTexture';
+import { ProfileSkeleton } from '../../components/Skeletons';
+import { StarSticker } from '../../components/Stickers';
 import {
   getProfilesState,
   createProfile,
@@ -19,16 +24,22 @@ import { getAccount } from '../services/authService';
 import { pullRemote, signOut } from '../services/syncService';
 
 const C = {
-  bg:      '#ffffff',
+  bg:      '#f7f4ec',   // warm paper — same as the home screen
   surface: '#ede8d8',
   card:    '#ffffff',
+  field:   '#f7f4ec',
   border:  '#2a2a2a',
   blue:    '#2198a8',
   purple:  '#6b5390',
+  ochre:   '#9f9065',
+  coral:   '#e07a5f',
   dark:    '#2a2a2a',
   meta:    '#8a7850',
   danger:  '#e53e3e',
 };
+
+// Each family member gets their own accent, cycling through the app palette.
+const PROFILE_COLORS = [C.blue, C.purple, C.ochre, C.coral];
 
 const BTN_SHADOW = {
   shadowColor: '#2a2a2a',
@@ -60,6 +71,21 @@ const SectionLabel = ({ icon: Icon, children }) => (
   </View>
 );
 
+// White card with hard shadow + colored icon square header — same treatment as home's feature cards.
+const SectionCard = ({ icon: Icon, iconColor, title, children }) => (
+  <HardShadow offset={3} style={{ width: '100%', marginBottom: 18 }}>
+    <View style={{ backgroundColor: C.card, borderWidth: 1.5, borderColor: C.border, borderRadius: 4, padding: 16 }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 16 }}>
+        <View style={{ width: 32, height: 32, borderRadius: 4, borderWidth: 1.5, borderColor: C.border, backgroundColor: iconColor, alignItems: 'center', justifyContent: 'center' }}>
+          <Icon size={16} color="#ffffff" strokeWidth={2.5} />
+        </View>
+        <Text style={{ fontSize: 15, fontWeight: '900', color: C.dark }}>{title}</Text>
+      </View>
+      {children}
+    </View>
+  </HardShadow>
+);
+
 export default function ProfilePage() {
   const router = useRouter();
   const [profiles, setProfiles] = useState([]);
@@ -85,7 +111,7 @@ export default function ProfilePage() {
 
   const handleSignOut = async () => {
     await signOut();
-    await load();
+    router.replace('/pages/authPage');
   };
 
   const switchTo = async (id) => {
@@ -129,17 +155,27 @@ export default function ProfilePage() {
   };
 
   if (!draft) {
-    return <View style={{ flex: 1, backgroundColor: C.bg }} />;
+    return (
+      <View style={{ flex: 1, backgroundColor: C.bg }}>
+        <DotTexture opacity={0.16} />
+        <View style={{ flex: 1, paddingHorizontal: 20, paddingTop: 52 }}>
+          <ProfileSkeleton />
+        </View>
+      </View>
+    );
   }
 
   const showPregnancy = draft.gender === 'female';
+  const activeIndex = Math.max(0, profiles.findIndex(p => p.id === activeId));
+  const activeColor = PROFILE_COLORS[activeIndex % PROFILE_COLORS.length];
 
   return (
     <KeyboardAvoidingView style={{ flex: 1, backgroundColor: C.bg }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+      <DotTexture opacity={0.16} />
       <View style={{ flex: 1, paddingHorizontal: 20, paddingTop: 52 }}>
 
         {/* Header */}
-        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingBottom: 16, borderBottomWidth: 1.5, borderBottomColor: C.border, marginBottom: 16 }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingBottom: 16, borderBottomWidth: 1.5, borderBottomColor: C.border, marginBottom: 20 }}>
           <HardShadow offset={2}>
             <TouchableOpacity
               style={{ padding: 8, backgroundColor: C.blue, borderWidth: 1.5, borderColor: C.border, borderRadius: 4 }}
@@ -148,17 +184,63 @@ export default function ProfilePage() {
               <ArrowLeft size={20} color="#ffffff" />
             </TouchableOpacity>
           </HardShadow>
-          <Text style={{ fontSize: 17, fontWeight: '900', color: C.dark }}>Profiles</Text>
-          <View style={{ width: 36 }} />
+          {/* rotated sticker-badge title, like the auth screen's "YOUR MEDICINE BUDDY" */}
+          <View style={{ transform: [{ rotate: '-2deg' }], ...BTN_SHADOW }}>
+            <View style={{ backgroundColor: C.card, borderWidth: 1.5, borderColor: C.border, borderRadius: 4, paddingHorizontal: 14, paddingVertical: 6 }}>
+              <Text style={{ fontSize: 13, fontWeight: '900', color: C.dark, letterSpacing: 1.5 }}>FAMILY PROFILES</Text>
+            </View>
+          </View>
+          <View style={{ width: 40 }} />
         </View>
 
         <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 40 }}>
 
+          {/* Profile switcher — avatar tiles, one accent color per member */}
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 14, paddingVertical: 6, paddingRight: 8 }} style={{ marginBottom: 6 }}>
+            {profiles.map((p, i) => {
+              const on = p.id === activeId;
+              const color = PROFILE_COLORS[i % PROFILE_COLORS.length];
+              const initial = p.label?.trim() ? p.label.trim()[0].toUpperCase() : null;
+              return (
+                <TouchableOpacity key={p.id} activeOpacity={0.85} onPress={() => switchTo(p.id)} style={{ alignItems: 'center', width: 64 }}>
+                  <View>
+                    <HardShadow offset={on ? 3 : 2} borderRadius={28}>
+                      <View style={{ width: 56, height: 56, borderRadius: 28, borderWidth: 1.5, borderColor: C.border, backgroundColor: on ? color : C.card, alignItems: 'center', justifyContent: 'center' }}>
+                        {initial ? (
+                          <Text style={{ fontSize: 22, fontWeight: '900', color: on ? '#ffffff' : color }}>{initial}</Text>
+                        ) : (
+                          <UserRound size={22} color={on ? '#ffffff' : color} />
+                        )}
+                      </View>
+                    </HardShadow>
+                    {on && (
+                      <View pointerEvents="none" style={{ position: 'absolute', top: -8, right: -4, zIndex: 10, elevation: 10 }}>
+                        <StarSticker size={22} fill={C.ochre} />
+                      </View>
+                    )}
+                  </View>
+                  <Text numberOfLines={1} style={{ fontSize: 11, fontWeight: on ? '900' : '700', color: on ? C.dark : C.meta, marginTop: 6 }}>
+                    {p.label}
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
+            {/* add member — dashed ghost tile */}
+            <TouchableOpacity activeOpacity={0.85} onPress={handleAddProfile} style={{ alignItems: 'center', width: 64 }}>
+              <View style={{ width: 56, height: 56, borderRadius: 28, borderWidth: 1.5, borderStyle: 'dashed', borderColor: C.meta, backgroundColor: C.surface, alignItems: 'center', justifyContent: 'center' }}>
+                <Plus size={22} color={C.meta} strokeWidth={2.5} />
+              </View>
+              <Text style={{ fontSize: 11, fontWeight: '700', color: C.meta, marginTop: 6 }}>Add</Text>
+            </TouchableOpacity>
+          </ScrollView>
+
           {/* Account — optional cloud backup. Guests see a sign-in nudge, members see their email. */}
-          <HardShadow style={{ width: '100%', marginBottom: 20 }}>
+          <HardShadow offset={3} style={{ width: '100%', marginVertical: 18 }}>
             {account ? (
-              <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: C.surface, borderRadius: 4, borderWidth: 1.5, borderColor: C.border, paddingHorizontal: 14, paddingVertical: 12, gap: 10 }}>
-                <CloudUpload size={16} color={C.purple} />
+              <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: C.card, borderRadius: 4, borderWidth: 1.5, borderColor: C.border, paddingHorizontal: 14, paddingVertical: 12, gap: 10 }}>
+                <View style={{ width: 32, height: 32, borderRadius: 4, borderWidth: 1.5, borderColor: C.border, backgroundColor: C.purple, alignItems: 'center', justifyContent: 'center' }}>
+                  <CloudUpload size={16} color="#ffffff" strokeWidth={2.5} />
+                </View>
                 <View style={{ flex: 1 }}>
                   <Text style={{ fontSize: 10, fontWeight: '800', color: C.meta, letterSpacing: 1, textTransform: 'uppercase', marginBottom: 2 }}>Synced to</Text>
                   <Text style={{ fontSize: 13, fontWeight: '800', color: C.dark }} numberOfLines={1}>{account.email}</Text>
@@ -183,43 +265,19 @@ export default function ProfilePage() {
             )}
           </HardShadow>
 
-          {/* Profile switcher */}
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 8, paddingBottom: 4 }} style={{ marginBottom: 20 }}>
-            {profiles.map(p => {
-              const on = p.id === activeId;
-              return (
-                <TouchableOpacity
-                  key={p.id}
-                  activeOpacity={0.85}
-                  onPress={() => switchTo(p.id)}
-                  style={{ paddingHorizontal: 16, paddingVertical: 10, borderRadius: 4, borderWidth: 1.5, borderColor: C.border, backgroundColor: on ? C.blue : C.surface, ...(on ? BTN_SHADOW : {}) }}
-                >
-                  <Text style={{ fontSize: 13, fontWeight: '800', color: on ? '#fff' : C.dark }}>{p.label}</Text>
-                </TouchableOpacity>
-              );
-            })}
-            <TouchableOpacity
-              activeOpacity={0.85}
-              onPress={handleAddProfile}
-              style={{ flexDirection: 'row', alignItems: 'center', gap: 4, paddingHorizontal: 14, paddingVertical: 10, borderRadius: 4, borderWidth: 1.5, borderColor: C.border, backgroundColor: C.surface }}
-            >
-              <Plus size={14} color={C.dark} strokeWidth={2.5} />
-              <Text style={{ fontSize: 13, fontWeight: '800', color: C.dark }}>Add</Text>
-            </TouchableOpacity>
-          </ScrollView>
-
-          {/* Basics */}
-          <View style={{ marginBottom: 22 }}>
-            <SectionLabel icon={User}>Name</SectionLabel>
+          {/* ── About card: name, relation, age, gender, pregnancy ── */}
+          <SectionCard icon={User} iconColor={activeColor} title={`About ${draft.label?.trim() || 'this member'}`}>
+            <SectionLabel>Name</SectionLabel>
             <TextInput
               value={draft.label}
               onChangeText={(v) => patchDraft({ label: v })}
               placeholder="e.g. Mom"
               placeholderTextColor="#b8b0a0"
-              style={{ fontSize: 15, fontWeight: '800', color: C.dark, backgroundColor: C.card, borderWidth: 1.5, borderColor: C.border, borderRadius: 4, paddingHorizontal: 12, paddingVertical: 12, marginBottom: 12 }}
+              style={{ fontSize: 15, fontWeight: '800', color: C.dark, backgroundColor: C.field, borderWidth: 1.5, borderColor: C.border, borderRadius: 4, paddingHorizontal: 12, paddingVertical: 12, marginBottom: 16 }}
             />
+
             <SectionLabel>Relation</SectionLabel>
-            <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6 }}>
+            <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginBottom: 16 }}>
               {RELATIONS.map(r => {
                 const on = draft.relation === r;
                 return (
@@ -227,17 +285,14 @@ export default function ProfilePage() {
                     key={r}
                     activeOpacity={0.8}
                     onPress={() => { tick(); patchDraft({ relation: r }); }}
-                    style={{ paddingHorizontal: 14, paddingVertical: 9, borderRadius: 4, borderWidth: 1.5, borderColor: C.border, backgroundColor: on ? C.blue : C.card, ...(on ? BTN_SHADOW : {}) }}
+                    style={{ paddingHorizontal: 14, paddingVertical: 9, borderRadius: 4, borderWidth: 1.5, borderColor: C.border, backgroundColor: on ? C.blue : C.field, ...(on ? BTN_SHADOW : {}) }}
                   >
                     <Text style={{ fontSize: 12, fontWeight: '800', color: on ? '#fff' : C.meta }}>{RELATION_LABELS[r]}</Text>
                   </TouchableOpacity>
                 );
               })}
             </View>
-          </View>
 
-          {/* Age + gender */}
-          <View style={{ marginBottom: 22 }}>
             <SectionLabel>Age (years)</SectionLabel>
             <TextInput
               value={draft.ageYears != null ? String(draft.ageYears) : ''}
@@ -245,8 +300,9 @@ export default function ProfilePage() {
               placeholder="Optional"
               placeholderTextColor="#b8b0a0"
               keyboardType="number-pad"
-              style={{ fontSize: 15, fontWeight: '700', color: C.dark, backgroundColor: C.card, borderWidth: 1.5, borderColor: C.border, borderRadius: 4, paddingHorizontal: 12, paddingVertical: 12, marginBottom: 12 }}
+              style={{ fontSize: 15, fontWeight: '700', color: C.dark, backgroundColor: C.field, borderWidth: 1.5, borderColor: C.border, borderRadius: 4, paddingHorizontal: 12, paddingVertical: 12, marginBottom: 16 }}
             />
+
             <SectionLabel>Gender</SectionLabel>
             <View style={{ flexDirection: 'row', gap: 8 }}>
               {['female', 'male', 'other'].map(g => {
@@ -256,28 +312,69 @@ export default function ProfilePage() {
                     key={g}
                     activeOpacity={0.8}
                     onPress={() => { tick(); patchDraft({ gender: g, ...(g !== 'female' ? { pregnant: false, breastfeeding: false } : {}) }); }}
-                    style={{ flex: 1, paddingVertical: 11, borderRadius: 4, alignItems: 'center', borderWidth: 1.5, borderColor: C.border, backgroundColor: on ? C.blue : C.card, ...(on ? BTN_SHADOW : {}) }}
+                    style={{ flex: 1, paddingVertical: 11, borderRadius: 4, alignItems: 'center', borderWidth: 1.5, borderColor: C.border, backgroundColor: on ? C.blue : C.field, ...(on ? BTN_SHADOW : {}) }}
                   >
                     <Text style={{ fontSize: 13, fontWeight: '800', color: on ? '#ffffff' : C.meta, textTransform: 'capitalize' }}>{g}</Text>
                   </TouchableOpacity>
                 );
               })}
             </View>
-          </View>
 
-          {/* Pregnancy / breastfeeding — shown only when relevant */}
-          {showPregnancy && (
-            <View style={{ marginBottom: 22 }}>
-              <SectionLabel icon={Baby}>Pregnancy</SectionLabel>
+            {/* Pregnancy / breastfeeding — shown only when relevant */}
+            {showPregnancy && (
+              <View style={{ marginTop: 16 }}>
+                <SectionLabel icon={Baby}>Pregnancy</SectionLabel>
+                <View style={{ flexDirection: 'row', gap: 8 }}>
+                  {[{ key: 'pregnant', label: 'Pregnant' }, { key: 'breastfeeding', label: 'Breastfeeding' }].map(({ key, label }) => {
+                    const on = !!draft[key];
+                    return (
+                      <TouchableOpacity
+                        key={key}
+                        activeOpacity={0.8}
+                        onPress={() => { tick(); patchDraft({ [key]: !on }); }}
+                        style={{ flex: 1, paddingVertical: 11, borderRadius: 4, alignItems: 'center', borderWidth: 1.5, borderColor: C.border, backgroundColor: on ? C.purple : C.field, ...(on ? BTN_SHADOW : {}) }}
+                      >
+                        <Text style={{ fontSize: 13, fontWeight: '800', color: on ? '#ffffff' : C.meta }}>{label}</Text>
+                      </TouchableOpacity>
+                    );
+                  })}
+                </View>
+              </View>
+            )}
+          </SectionCard>
+
+          {/* ── Health card: allergies, conditions, alcohol, other medicines ── */}
+          <SectionCard icon={HeartPulse} iconColor={C.purple} title="Health details">
+            <View style={{ marginBottom: 18 }}>
+              <ChipInput
+                label="Allergies"
+                values={draft.allergies}
+                onChange={(v) => patchDraft({ allergies: v })}
+                placeholder="e.g. penicillin"
+              />
+            </View>
+
+            <View style={{ marginBottom: 18 }}>
+              <ChipInput
+                label="Conditions"
+                values={draft.conditions}
+                onChange={(v) => patchDraft({ conditions: v })}
+                quickPicks={CONDITION_QUICK_PICKS}
+                placeholder="Add another condition"
+              />
+            </View>
+
+            <View style={{ marginBottom: 18 }}>
+              <SectionLabel icon={Wine}>Alcohol use</SectionLabel>
               <View style={{ flexDirection: 'row', gap: 8 }}>
-                {[{ key: 'pregnant', label: 'Pregnant' }, { key: 'breastfeeding', label: 'Breastfeeding' }].map(({ key, label }) => {
-                  const on = !!draft[key];
+                {ALCOHOL_OPTIONS.map(({ value, label }) => {
+                  const on = (draft.alcohol || null) === value;
                   return (
                     <TouchableOpacity
-                      key={key}
+                      key={label}
                       activeOpacity={0.8}
-                      onPress={() => { tick(); patchDraft({ [key]: !on }); }}
-                      style={{ flex: 1, paddingVertical: 11, borderRadius: 4, alignItems: 'center', borderWidth: 1.5, borderColor: C.border, backgroundColor: on ? C.purple : C.card, ...(on ? BTN_SHADOW : {}) }}
+                      onPress={() => { tick(); patchDraft({ alcohol: value }); }}
+                      style={{ flex: 1, paddingVertical: 11, borderRadius: 4, alignItems: 'center', borderWidth: 1.5, borderColor: C.border, backgroundColor: on ? C.blue : C.field, ...(on ? BTN_SHADOW : {}) }}
                     >
                       <Text style={{ fontSize: 13, fontWeight: '800', color: on ? '#ffffff' : C.meta }}>{label}</Text>
                     </TouchableOpacity>
@@ -285,58 +382,14 @@ export default function ProfilePage() {
                 })}
               </View>
             </View>
-          )}
 
-          {/* Allergies */}
-          <View style={{ marginBottom: 22 }}>
-            <ChipInput
-              label="Allergies"
-              values={draft.allergies}
-              onChange={(v) => patchDraft({ allergies: v })}
-              placeholder="e.g. penicillin"
-            />
-          </View>
-
-          {/* Conditions */}
-          <View style={{ marginBottom: 22 }}>
-            <ChipInput
-              label="Conditions"
-              values={draft.conditions}
-              onChange={(v) => patchDraft({ conditions: v })}
-              quickPicks={CONDITION_QUICK_PICKS}
-              placeholder="Add another condition"
-            />
-          </View>
-
-          {/* Alcohol */}
-          <View style={{ marginBottom: 22 }}>
-            <SectionLabel icon={Wine}>Alcohol use</SectionLabel>
-            <View style={{ flexDirection: 'row', gap: 8 }}>
-              {ALCOHOL_OPTIONS.map(({ value, label }) => {
-                const on = (draft.alcohol || null) === value;
-                return (
-                  <TouchableOpacity
-                    key={label}
-                    activeOpacity={0.8}
-                    onPress={() => { tick(); patchDraft({ alcohol: value }); }}
-                    style={{ flex: 1, paddingVertical: 11, borderRadius: 4, alignItems: 'center', borderWidth: 1.5, borderColor: C.border, backgroundColor: on ? C.blue : C.card, ...(on ? BTN_SHADOW : {}) }}
-                  >
-                    <Text style={{ fontSize: 13, fontWeight: '800', color: on ? '#ffffff' : C.meta }}>{label}</Text>
-                  </TouchableOpacity>
-                );
-              })}
-            </View>
-          </View>
-
-          {/* Other medicines */}
-          <View style={{ marginBottom: 26 }}>
             <ChipInput
               label="Other medicines"
               values={draft.otherMedicines}
               onChange={(v) => patchDraft({ otherMedicines: v })}
               placeholder="Medicines not in reminders"
             />
-          </View>
+          </SectionCard>
 
           {/* Save */}
           <HardShadow style={{ marginBottom: 12 }}>

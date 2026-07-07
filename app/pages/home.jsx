@@ -1,22 +1,26 @@
-import { useRouter, useFocusEffect } from "expo-router";
+import { useFocusEffect, useRouter } from "expo-router";
 import { ArrowLeftRight, Calendar, Clock, FileText, Pill, UserRound } from "lucide-react-native";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Keyboard, KeyboardAvoidingView, Platform, Text, TouchableOpacity, View } from "react-native";
-import Animated, { Easing, useAnimatedStyle, useSharedValue, withDelay, withSpring, withTiming } from "react-native-reanimated";
+import Animated, { Easing, useAnimatedStyle, useSharedValue, withDelay, withRepeat, withSequence, withSpring, withTiming } from "react-native-reanimated";
 
 import { SplitText } from "../../animations";
 import ChatInputBar from "../../components/ChatInputBar";
+import DotTexture from "../../components/DotTexture";
 import HardShadow from "../../components/HardShadow";
+import { PlusSticker, StarSticker } from "../../components/Stickers";
 import { getActiveProfile } from "../services/profileService";
 
 const C = {
-  bg:      '#faf9f5',
+  bg:      '#f7f4ec',   // warm paper — same family as the welcome screen, lighter
   surface: '#ede8d8',
   border:  '#2a2a2a',
   blue:    '#2198a8',
+  purple:  '#6b5390',
   ochre:   '#9f9065',
   dark:    '#2a2a2a',
   meta:    '#8a7850',
+  gray:    '#6b6b6b',   // true neutral gray, for the card subtext (meta above is a warm tan)
 };
 
 const CARD_SHADOW = {
@@ -49,10 +53,30 @@ export default function Home() {
   const inputY = useSharedValue(80);
   const inputScaleX = useSharedValue(0.3);
 
+  // Sticker idle motion. The star spins continuously (360° wraps to 0° — no visible loop
+  // boundary, truly seamless); the plus ping-pongs a soft bob with sine easing.
+  const bob = useSharedValue(0);
+  const spin = useSharedValue(0);
+
   useEffect(() => {
     inputY.value      = withDelay(300, withSpring(0, { damping: 18, stiffness: 160 }));
     inputScaleX.value = withDelay(300, withTiming(1, { duration: 380, easing: Easing.out(Easing.exp) }));
+    bob.value = withRepeat(
+      withSequence(
+        withTiming(1, { duration: 2400, easing: Easing.inOut(Easing.sin) }),
+        withTiming(0, { duration: 2400, easing: Easing.inOut(Easing.sin) })
+      ),
+      -1
+    );
+    spin.value = withRepeat(withTiming(360, { duration: 10000, easing: Easing.linear }), -1);
   }, []);
+
+  const starStyle = useAnimatedStyle(() => ({
+    transform: [{ rotate: `${spin.value}deg` }],
+  }));
+  const plusStyle = useAnimatedStyle(() => ({
+    transform: [{ translateY: -3 + bob.value * 6 }, { rotate: '-8deg' }],
+  }));
 
   useEffect(() => {
     const showSub = Keyboard.addListener('keyboardDidShow', (e) => setKeyboardHeight(e.endCoordinates?.height || 0));
@@ -87,41 +111,57 @@ export default function Home() {
     });
   };
 
+  // One deliberate accent per action: blue = compare, dark = explain (documents),
+  // ochre = alternatives, purple = schedule (purple means time everywhere in the app).
   const cards = [
-    { icon: Pill,          title: "Compare medicines", description: "Side by side comparison",  action: "compare_medicines" },
-    { icon: FileText,      title: "Explain medicine",  description: "Simplify doctor's notes",  action: "explain_medicine" },
-    { icon: ArrowLeftRight,title: "Find alternatives", description: "Search generic options",   action: "find_alternatives" },
-    { icon: Calendar,      title: "Schedule",          description: "Set dose reminders",       action: "schedule_medicine" },
+    { icon: Pill,          title: "Compare medicines", description: "Side by side comparison",  action: "compare_medicines", color: C.blue },
+    { icon: FileText,      title: "Explain medicine",  description: "Simplify doctor's notes",  action: "explain_medicine",  color: C.dark },
+    { icon: ArrowLeftRight,title: "Find alternatives", description: "Search generic options",   action: "find_alternatives", color: C.ochre },
+    { icon: Calendar,      title: "Schedule",          description: "Set dose reminders",       action: "schedule_medicine", color: C.purple },
   ];
 
   return (
     <View style={{ flex: 1, backgroundColor: C.bg }}>
+      <DotTexture opacity={0.16} />
       <View style={{ flex: 1, paddingHorizontal: 20, paddingTop: 52, paddingBottom: 100 }}>
 
-        {/* Profile button */}
-        <HardShadow offset={2} style={{ position: 'absolute', top: 52, left: 20 }}>
-          <TouchableOpacity
-            style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: '#6b5390', borderWidth: 1.5, borderColor: C.border, borderRadius: 4, paddingHorizontal: 14, paddingVertical: 10 }}
-            onPress={() => router.push('/pages/profilePage')}
-          >
-            <UserRound size={15} color="#ffffff" />
-            <Text style={{ color: '#ffffff', fontWeight: '800', marginLeft: 6, fontSize: 13 }}>{activeProfileLabel}</Text>
-          </TouchableOpacity>
-        </HardShadow>
+        {/* Profile button — round avatar with the active member's initial, star + plus riding it */}
+        <View style={{ position: 'absolute', top: 52, left: 20 }}>
+          <HardShadow offset={2} borderRadius={22}>
+            <TouchableOpacity
+              style={{ width: 44, height: 44, borderRadius: 22, backgroundColor: C.purple, borderWidth: 1.5, borderColor: C.border, alignItems: 'center', justifyContent: 'center' }}
+              onPress={() => router.push('/pages/profilePage')}
+            >
+              {activeProfileLabel?.trim() ? (
+                <Text style={{ color: '#ffffff', fontWeight: '900', fontSize: 18 }}>
+                  {activeProfileLabel.trim()[0].toUpperCase()}
+                </Text>
+              ) : (
+                <UserRound size={18} color="#ffffff" />
+              )}
+            </TouchableOpacity>
+          </HardShadow>
+          {/* stickers overlap the avatar's rim and always render on top of it */}
+          <Animated.View pointerEvents="none" style={[{ position: 'absolute', top: -10, right: -8, zIndex: 10, elevation: 10 }, starStyle]}>
+            <StarSticker size={28} fill={C.blue} />
+          </Animated.View>
+          <Animated.View pointerEvents="none" style={[{ position: 'absolute', bottom: -6, left: -6, zIndex: 10, elevation: 10 }, plusStyle]}>
+            <PlusSticker size={19} fill={C.ochre} />
+          </Animated.View>
+        </View>
 
-        {/* My Reminders button */}
-        <HardShadow offset={2} style={{ position: 'absolute', top: 52, right: 20 }}>
+        {/* My Reminders button — round icon */}
+        <HardShadow offset={2} borderRadius={22} style={{ position: 'absolute', top: 52, right: 20 }}>
           <TouchableOpacity
-            style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: C.ochre, borderWidth: 1.5, borderColor: C.border, borderRadius: 4, paddingHorizontal: 14, paddingVertical: 10 }}
+            style={{ width: 44, height: 44, borderRadius: 22, backgroundColor: C.blue, borderWidth: 1.5, borderColor: C.border, alignItems: 'center', justifyContent: 'center' }}
             onPress={() => router.push('/pages/remindersPage')}
           >
-            <Clock size={15} color="#ffffff" />
-            <Text style={{ color: '#ffffff', fontWeight: '800', marginLeft: 6, fontSize: 13 }}>My Reminders</Text>
+            <Clock size={18} color="#ffffff" />
           </TouchableOpacity>
         </HardShadow>
 
-        {/* Hero title */}
-        <View style={{ alignItems: 'flex-start', marginTop: 60, marginBottom: 32 }}>
+        {/* Hero headline */}
+        <View style={{ marginTop: 60, marginBottom: 30 }}>
           <SplitText
             text={`What would you\nlike to know today?`}
             style={"text-[32px] font-black text-[#2a2a2a] leading-[40px]"}
@@ -137,7 +177,7 @@ export default function Home() {
         <View style={{ gap: 12 }}>
           <View style={{ flexDirection: 'row', gap: 12 }}>
             {[0, 1].map(i => {
-              const { icon: Icon, title, description, action } = cards[i];
+              const { icon: Icon, title, description, action, color } = cards[i];
               return (
                 <HardShadow key={i} style={{ flex: 1 }}>
                   <TouchableOpacity
@@ -145,11 +185,11 @@ export default function Home() {
                     onPress={() => handlePress(action)}
                     activeOpacity={0.85}
                   >
-                    <View style={{ backgroundColor: C.blue, width: 44, height: 44, borderRadius: 4, borderWidth: 1.5, borderColor: C.border, alignItems: 'center', justifyContent: 'center', marginBottom: 14 }}>
+                    <View style={{ backgroundColor: color, width: 44, height: 44, borderRadius: 4, borderWidth: 1.5, borderColor: C.border, alignItems: 'center', justifyContent: 'center', marginBottom: 14 }}>
                       <Icon size={22} color="#ffffff" />
                     </View>
-                    <Text style={{ fontSize: 16, fontWeight: '900', color: C.dark, lineHeight: 20, marginBottom: 6 }}>{title}</Text>
-                    <Text style={{ fontSize: 13, color: C.meta, lineHeight: 17 }}>{description}</Text>
+                    <Text style={{ fontSize: 16, fontWeight: '900', color, lineHeight: 20, marginBottom: 6 }}>{title}</Text>
+                    <Text style={{ fontSize: 13, color: C.gray, lineHeight: 17 }}>{description}</Text>
                   </TouchableOpacity>
                 </HardShadow>
               );
@@ -157,7 +197,7 @@ export default function Home() {
           </View>
           <View style={{ flexDirection: 'row', gap: 12 }}>
             {[2, 3].map(i => {
-              const { icon: Icon, title, description, action } = cards[i];
+              const { icon: Icon, title, description, action, color } = cards[i];
               return (
                 <HardShadow key={i} style={{ flex: 1 }}>
                   <TouchableOpacity
@@ -165,11 +205,11 @@ export default function Home() {
                     onPress={() => handlePress(action)}
                     activeOpacity={0.85}
                   >
-                    <View style={{ backgroundColor: C.blue, width: 44, height: 44, borderRadius: 4, borderWidth: 1.5, borderColor: C.border, alignItems: 'center', justifyContent: 'center', marginBottom: 14 }}>
+                    <View style={{ backgroundColor: color, width: 44, height: 44, borderRadius: 4, borderWidth: 1.5, borderColor: C.border, alignItems: 'center', justifyContent: 'center', marginBottom: 14 }}>
                       <Icon size={22} color="#ffffff" />
                     </View>
-                    <Text style={{ fontSize: 16, fontWeight: '900', color: C.dark, lineHeight: 20, marginBottom: 6 }}>{title}</Text>
-                    <Text style={{ fontSize: 13, color: C.meta, lineHeight: 17 }}>{description}</Text>
+                    <Text style={{ fontSize: 16, fontWeight: '900', color, lineHeight: 20, marginBottom: 6 }}>{title}</Text>
+                    <Text style={{ fontSize: 13, color: C.gray, lineHeight: 17 }}>{description}</Text>
                   </TouchableOpacity>
                 </HardShadow>
               );
@@ -189,7 +229,7 @@ export default function Home() {
             value={inputText}
             onChangeText={setInputText}
             onSend={handleSend}
-            placeholder="Ask anything about medicines..."
+            placeholder="Ask about medicines..."
           />
         </Animated.View>
       </KeyboardAvoidingView>
