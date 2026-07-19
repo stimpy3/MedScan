@@ -1,223 +1,130 @@
-# How Your App Finds Similar Medicines
+# MedScan 💊
 
-## Overview
+**Scan, understand, and manage medicines — an AI-assisted medicine companion for Indian medicines.**
 
-This document describes how the system converts a user medicine query into normalized ingredients, maps medicines using ATC domains, and ranks substitutes using a weighted confidence score.
+MedScan is a React Native (Expo) app backed by a Node/Express server. Point your camera at a medicine strip or a doctor's prescription, or just type a question, and MedScan can explain the medicine, find cheaper substitutes, compare two medicines side by side, check delivery availability for your pincode, and set up dose reminders — with **personalized safety warnings** checked against your health profile (allergies, conditions, pregnancy, current medicines).
 
-Similarity is graded (0–1.0). The goal is to answer:
+The core design principle: **the LLM never authors medical facts.** Every price, salt composition, side effect, and warning traces back to a real record — a 254K-row medicines dataset, deterministic ATC classification rules, or a verified 1mg page fetched on demand. LLMs are used only to *route*, *phrase*, and *judge* — never to invent.
 
-“How safe is this as a substitute?”
-
-—not merely “is this similar.”
+> 📐 **Want the deep dive?** The full technical breakdown — chat pipeline, medicine-detection algorithms, safety rule engine, data model — lives in [ARCHITECTURE.md](ARCHITECTURE.md).
 
 ---
 
-## 1. User Input → RxNorm Matching
+## Demo
 
-When a user searches for a medicine, the app receives raw ingredient text.
+<table>
+  <tr>
+    <td align="center"><img src="docs/screenshots/home.png" width="220" alt="Home screen"/><br/><sub><b>Home</b> — scan or ask</sub></td>
+    <td align="center"><img src="docs/screenshots/scan.png" width="220" alt="Scanning a medicine"/><br/><sub><b>Scan</b> — label / prescription OCR</sub></td>
+    <td align="center"><img src="docs/screenshots/explain.png" width="220" alt="Medicine explanation card"/><br/><sub><b>Explain</b> — full medicine card</sub></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="docs/screenshots/alternatives.png" width="220" alt="Alternatives carousel"/><br/><sub><b>Alternatives</b> — same-salt & same-class</sub></td>
+    <td align="center"><img src="docs/screenshots/compare.png" width="220" alt="Comparison card"/><br/><sub><b>Compare</b> — side-by-side</sub></td>
+    <td align="center"><img src="docs/screenshots/safety.png" width="220" alt="Safety warnings"/><br/><sub><b>Safety</b> — profile-aware warnings</sub></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="docs/screenshots/schedule.png" width="220" alt="Schedule form"/><br/><sub><b>Schedule</b> — in-chat reminder setup</sub></td>
+    <td align="center"><img src="docs/screenshots/reminders.png" width="220" alt="Reminders page"/><br/><sub><b>Reminders</b> — with duplicate-therapy banner</sub></td>
+    <td align="center"><img src="docs/screenshots/profile.png" width="220" alt="Health profiles"/><br/><sub><b>Profiles</b> — one per family member</sub></td>
+  </tr>
+</table>
 
-Examples:
-
-Ambroxol  
-Paracetamol + Ibuprofen  
-
-Each ingredient is normalized using `ingredientNormalization.json`.
-
-Handled by `normalizeIngredient()`:
-
-- Convert to lowercase  
-- Remove dosage info (anything in parentheses like 500mg)  
-- Map brand names to generics via RxNorm normalization  
-- Remove duplicate ingredients using Sets  
-
-Result:
-
-["ambroxol"]
-
-or
-
-["paracetamol", "ibuprofen"]
+*(Screenshots live in `docs/screenshots/` — see the note there for the capture list.)*
 
 ---
 
-## 2. Ingredient Extraction and Grouping
+## What it can do
 
-The CSV contains raw `salt_composition` values such as:
-
-Ambroxol 30mg + Bromhexine 8mg
-
-Processing:
-
-- `extractIngredients()` splits by + or ,
-- Dosages are removed
-- If an ingredient itself is a combination (defined in `ingredientCodes.json`), it is expanded into components
-
-At load time, an `ingredientIndex` is built:
-
-normalized ingredient → all medicine indices containing it
-
-Result:
-
-All medicines containing ambroxol (30mg, 75mg, or combinations) are grouped together.
+| Feature | How |
+|---|---|
+| 🔍 **Explain a medicine** | Full card (overview, composition, side effects, price, manufacturer, therapeutic class) or a targeted one-line answer ("price of Dolo 650?") |
+| 💬 **Answer open questions** | "Can I take it with milk?" — answered *only* from verified assembled data, with an honest "not found" when the data isn't there |
+| 💰 **Find alternatives** | Same-salt substitutes (exact / different strength / combination) ranked by per-unit price, plus same-ATC-class therapeutic options when no direct substitute exists |
+| ⚖️ **Compare two medicines** | Deterministic database columns + LLM-written comparative summary |
+| 📅 **Schedule reminders** | In-chat form → local notifications; duplicate-therapy check before saving |
+| 📦 **Check availability** | Live 1mg availability + delivery estimate for a pincode |
+| 📷 **Scan labels & prescriptions** | Vision LLM reads the image into structured medicines, grounded against the dataset |
+| ⚠️ **Personalized safety warnings** | Health profile × medicine: pregnancy/alcohol/kidney/liver verdicts, drug-interaction matching, ATC rule engine (NSAID + kidney disease, steroid + diabetes, duplicate therapy…) |
+| 👨‍👩‍👧 **Family profiles** | Netflix-style member profiles; works fully as a guest (on-device) or with an account (MongoDB sync) |
 
 ---
 
-## 3. ATC Codes: Classification and Similarity
+## Tech stack
 
-`ingredientCodes.json` stores ATC codes for each ingredient.
+**App** — React Native (Expo SDK 54), Expo Router, NativeWind/Tailwind, AsyncStorage (guest persistence), expo-camera + image picker (OCR input).
 
-Example:
+**Server** — Node.js, Express 5, in-memory search indexes (FlexSearch + custom trigram + ingredient/ATC maps) over a 254K-row medicines CSV, Mongoose/MongoDB (accounts, profiles, schedules only), JWT auth.
 
-Ambroxol → R05CB06
+**AI / data providers** —
 
-For each medicine:
-
-`getDomainsForIngredients()` gathers ALL ATC codes from its ingredients.
-
-Single ingredient → one ATC  
-Multiple ingredients → multiple ATCs  
-
-ATC hierarchy:
-
-Level 1: Anatomical class (R = Respiratory)  
-Level 2: Therapeutic subgroup (R05 = Cough/Cold)  
-Level 3+: Chemical substance (R05CB06)  
-
-Shared ATC prefixes determine therapeutic similarity.
+| Role | Model | Provider |
+|---|---|---|
+| Routing, extraction, card writing, suggestions | `gpt-oss-20b` (fast tier) | Groq |
+| Hard semantic judgments (compare validation & writing) | `gpt-oss-120b` (smart tier) | Groq |
+| Personalized safety checks | `zai-glm-4.7` | Cerebras |
+| OCR / vision | `gemma-4-31b` (default) / Gemini 2.5 Flash (backup) | Cerebras / Google |
+| Web search (enrichment fallback only) | Serper.dev (locked to `site:1mg.com`) | Serper |
 
 ---
 
-## 4. Confidence Scoring
+## Quick start
 
-Final confidence:
+### 1. Server
 
-Confidence =
-(Ingredient Score × 0.4) +
-(Domain Score × 0.35) +
-(Extra Ingredient Penalty × 0.25)
+```bash
+cd server
+npm install
+```
 
-### Ingredient Match (40%)
+Create `server/.env`:
 
-- 1.0 if ALL query ingredients are present
-- Medicines missing any query ingredient are excluded
+```env
+GROQ_API_KEY=...        # required — chat pipeline
+CEREBRAS_API_KEY=...    # required — OCR + safety checks
+GEMINI_API_KEY=...      # optional — backup vision provider
+SERPER_API_KEY=...      # optional — web-search enrichment fallback
+MONGODB_URI=...         # optional — accounts/profiles/schedules (guest mode works without it)
+JWT_SECRET=...          # required only if MONGODB_URI is set
+```
 
-### ATC Domain Match (35%)
+```bash
+npm start   # loads the CSV + builds indexes (~a few seconds), listens on :3000
+```
 
-shared_domains / total_query_domains
+### 2. App
 
-Example:
+```bash
+npm install
+npx expo start          # or: npx expo run:android
+```
 
-Query has 2 ATCs  
-Medicine shares 1  
-
-Score = 0.5
-
-### Extra Ingredient Penalty (25%)
-
-No extras → 1.0  
-
-With extras:
-
-max(0.5, 1 - (extra_count × 0.1))
-
-10% penalty per extra ingredient, minimum 50%.
-
-Encourages closest formulation.
+The app auto-detects the server on your LAN in dev; set `EXPO_PUBLIC_API_URL` to point elsewhere.
 
 ---
 
-## Safety Filter
+## Repository layout
 
-Dangerous ATC classes are capped at 0.3 confidence:
-
-J01 – Antibiotics  
-H02 – Steroids  
-M01 – NSAIDs  
-
-Prevents unsafe substitutions from ranking highly.
-
----
-
-## 5. Similarity Types
-
-Each result is classified:
-
-EXACT – Same ingredients, same count  
-COMBINATION – Query ingredients plus extras  
-THERAPEUTIC – Same ATC domain, different ingredient  
-PARTIAL – Some ingredients match  
-UNSAFE – Filtered or very low confidence  
-
-Rules:
-
-- Must contain ALL query ingredients
-- Dangerous ATCs capped
-- THERAPEUTIC only allowed when query has ATC codes
+```
+app/                  Expo Router screens (home, chat, reminders, profiles, auth)
+  services/           client-side services (auth, profiles, schedules, OCR, sync)
+components/           chat cards & UI (MedicineCard, AlternativesCarousel, ComparisonCard, …)
+server/
+  controllers/        intent.controller.js — the chat pipeline orchestrator
+  handlers/           one handler per intent (explain / compare / alternatives / schedule / availability)
+  services/           routing, extraction, search, enrichment, safety, LLM providers
+  prompts/            every LLM system prompt, one file each
+  models/             Mongoose schemas (Account, Profile, Schedule)
+  routes/             Express routes (intent, ocr, auth, profiles, schedules, sync)
+  data/               medicines.csv + ATC/ingredient reference data + 1mg index + caches
+```
 
 ---
 
-## 6. Complete Flow
+## Documentation
 
-User searches: Ambroxol
+- **[ARCHITECTURE.md](ARCHITECTURE.md)** — the system: end-to-end flow, the data layer and why MongoDB, the datasets, how safety warnings are decided, the scan/vision flow, LLM tier strategy, and the full API surface.
+- **[docs/CHAT_PIPELINE.md](docs/CHAT_PIPELINE.md)** — one chat turn under the microscope: topic routing, how medicines are detected in free text (and when the system asks "which one did you mean?"), when web search fires, and how conversation context works.
+- **[docs/notes/](docs/notes)** — historical design and planning notes.
 
-Normalize → ["ambroxol"]
-
-Ingredient index lookup
-
-Query ATC domains → [R05CB06]
-
-For each candidate:
-
-- Verify ingredient match
-- Extract ingredients
-- Collect ATC domains
-- Compute ingredient score
-- Compute domain score
-- Apply extra ingredient penalty
-- Apply safety caps
-
-Results sorted by:
-
-1. EXACT matches
-2. Highest confidence
-3. Cheapest price
-
-Final output:
-
-Ranked safe alternatives.
-
----
-
-## Definition of Similarity
-
-A medicine is similar if it:
-
-- Contains ALL original active ingredients
-- Shares therapeutic ATC domains
-- Has minimal extra ingredients
-- Passes safety rules
-
-Similarity is continuous (0–1.0), not binary.
-
-The system answers:
-
-“How safe is this as a substitute?”
-
-not:
-
-“Is this identical?”
-
----
-
-## Summary
-
-The pipeline combines:
-
-- RxNorm normalization
-- Ingredient indexing
-- ATC classification
-- Weighted scoring
-- Safety caps
-
-to deliver ranked, clinically safer alternatives while suppressing risky replacements.
-
+> ⚕️ **Disclaimer:** MedScan is an information tool, not medical advice. It deliberately refuses symptom-based medicine recommendations and always defers dosing decisions to a doctor.
