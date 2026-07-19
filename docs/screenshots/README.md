@@ -1,6 +1,10 @@
-# Screenshot capture list
+# Screenshots
 
-The main README's demo table expects these 9 files, **with these exact names**, in this folder. Capture in phone portrait (any modern device size; consistent device across all shots looks best).
+The 9 PNGs in this folder feed the main README's demo table. The current set was captured from the **Expo web build** at phone dimensions (390×844 @2x) driving the real server — live data, real safety warnings. To replace any of them with native device captures, screenshot the states below and keep the exact filenames.
+
+Note: `scan.png` currently shows the scan sheet (Take Photo / Choose from Gallery) — a real camera-view capture from a phone would be a nice upgrade.
+
+## Capture list
 
 | File | What to capture |
 |---|---|
